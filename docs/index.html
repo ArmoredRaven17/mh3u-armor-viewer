@@ -1,0 +1,1572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MH3U Armor Viewer</title>
+<link rel="icon" href="assets/MH4G-Binoculars_Icon_White.png?v=1">
+<style>
+/* MHFU game font, as the sibling MHGU apps use */
+@font-face{ font-family:'MHFU'; src:url('fonts/mhfu_font.ttf') format('truetype'); font-display:swap; }
+
+:root{
+  --bg:#3e3e3e; --bg1:#000000; --bg2:#333; --hover:#2f2f2f;
+  --accent:#7a7a7a; --accent-hover:#9a9a9a; --cta:#19e0d2;
+  --text:#f3f3f3; --text-dim:#ffffff; --text-hint:#b9b9b9;
+  --stage:#0e1013;
+  --line:#ffffff1f; --card:#ffffff0d;
+}
+*{box-sizing:border-box}
+/* The standard properties and ::-webkit-scrollbar are mutually exclusive in Chrome: set
+   `scrollbar-color` or `scrollbar-width` on an element and the -webkit pseudo-elements
+   below are IGNORED for it. Having both on `*` is why the width here had no effect --
+   scrollbars measured 15px (the `auto` default) no matter what was asked for. So the
+   standard ones are scoped to engines with no -webkit pseudo-element (Firefox), which
+   get the colours; Chrome takes the rules below and an actual custom width. */
+@supports not selector(::-webkit-scrollbar){
+  *{scrollbar-color:var(--accent) var(--bg2);scrollbar-width:auto}
+}
+::-webkit-scrollbar{width:22px;height:22px}
+/* a touch darker than the panel so the channel itself is visible */
+::-webkit-scrollbar-track{background:var(--bg);border-radius:11px}
+/* min-height matters more than width on these lists: an equipment dropdown holds over a
+   thousand options, so a proportional thumb is a few pixels tall and unusable to drag. */
+/* The thumb sat on a track the same colour as the panel behind it, so it read as part of
+   the background. A lighter fill plus a light inset edge gives it a shape of its own
+   without hard-coding a colour that would fight the theme. */
+::-webkit-scrollbar-thumb{background:var(--accent-hover);border-radius:10px;min-height:56px;
+  border:3px solid transparent;background-clip:padding-box;
+  box-shadow:inset 0 0 0 1px #ffffff55}
+::-webkit-scrollbar-thumb:hover{background:var(--accent-hover);background-clip:padding-box;
+  border:2px solid transparent;box-shadow:inset 0 0 0 1px #ffffff99}
+/* Stated again for the dropdown lists. Whether a native <select> popup honours page CSS
+   is up to the engine -- Chrome on Windows draws that list itself and ignores it. */
+select::-webkit-scrollbar{width:22px}
+select::-webkit-scrollbar-thumb{min-height:56px}
+input,select,button,textarea{font-family:inherit}
+html,body{margin:0;height:100%;overflow:hidden}
+body{font-family:'MHFU',"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);
+     font-size:14px;user-select:none;-webkit-user-select:none}
+#app{display:flex;flex-direction:column;height:100vh}
+.hidden{display:none !important}
+
+/* Title bar */
+.titlebar{display:flex;align-items:center;gap:10px;padding:8px 14px}
+.titlebar-header{
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--accent) 90%,transparent),color-mix(in srgb,var(--accent) 90%,transparent)),
+    url('assets/titlebar-background.png');
+  background-size:auto 100%;background-position:left center;background-repeat:repeat;
+}
+.titlebar h1{font-size:15px;font-weight:600;margin:0;flex:1}
+.titlebar .btn.tiny{margin-right:6px;white-space:nowrap}
+.icon-btn{background:transparent;border:none;color:var(--text);font-size:18px;
+  cursor:pointer;padding:6px 9px;border-radius:6px;line-height:1}
+.icon-btn:hover{background:#ffffff1a}
+/* an id rule setting display: would outrank the UA [hidden] rule */
+[hidden]{display:none !important}
+
+/* Layout */
+.layout{display:flex;flex:1;min-height:0}
+/* the sidebar's own gap only reaches its direct children, and the panels are now one
+   level down inside a pane -- so each pane carries the same column gap itself */
+#paneMonster{display:flex;flex-direction:column;gap:8px}
+.sidebar{
+  width:300px;flex-shrink:0;padding:12px;overflow-y:scroll;scrollbar-gutter:stable;
+  display:flex;flex-direction:column;gap:8px;
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--accent) 90%,transparent),color-mix(in srgb,var(--accent) 90%,transparent)),
+    url('assets/sidebar-background-texture1.png');
+  background-size:auto 100%;background-position:left center;background-repeat:repeat;
+}
+/* The render area is the Weapon Tree's stage: --stage, the darkest shade in the set. It is
+   the one surface with no backing of its own — the model sits directly on it. */
+.content{
+  flex:1;min-width:0;position:relative;
+  background-color:var(--stage);
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--stage) 78%,transparent),color-mix(in srgb,var(--stage) 78%,transparent)),
+    url('assets/rockyTextureDark2.png');
+  background-repeat:repeat;background-size:auto,200px 200px;
+}
+/* The render area is the Weapon Tree's stage: --stage, the darkest shade in the set — the one
+   surface with no backing of its own, with the model sitting directly on it.
+
+   The texture and its tint are the Hunting Log's .editor (its editorPane), verbatim, so the two
+   apps' main working surfaces match: rockyTextureDark.png under an 84% wash of the surface
+   colour, repeated at 200px. */
+.content{
+  flex:1;min-width:0;position:relative;
+  background-color:var(--stage);
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--stage) 84%,transparent),color-mix(in srgb,var(--stage) 84%,transparent)),
+    url('assets/rockyTextureDark.png');
+  background-repeat:repeat;background-size:auto,200px 200px;
+}
+/* A chroma backdrop has to be a flat, single value for a keyer to pull, so the texture and its
+   tint come off. Nothing else about the app changes — only the surface being keyed. */
+:root.chroma .content{background-image:none}
+#viewport{position:absolute;inset:0}
+/* "Loading..." over the render area until the first framed render (Raven, 2026-09-03) */
+#loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:var(--text-hint);font-size:15px;letter-spacing:.06em;pointer-events:none}
+#loading[hidden]{display:none}
+/* Label/value rows. Every readout in this app used to be one sentence joined by middots, which
+   wrapped mid-value in a 300px sidebar -- "Back 20" split across two lines (Raven, 2026-09-05:
+   "the way the info is display is a bit difficult to read ... List the values in a list"). A
+   fixed label column and tabular figures keep the numbers under each other. */
+dl.info{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:0;font-size:11px;
+  color:var(--text-hint);line-height:1.45}
+dl.info dt{color:var(--text-hint);opacity:.8;white-space:nowrap}
+dl.info dd{margin:0;color:var(--text);font-variant-numeric:tabular-nums;
+  overflow-wrap:anywhere}
+/* The hit-zone chart, floating over the render area: parts down, damage types across. It lives
+   here rather than in the sidebar because ten numeric columns do not fit a 300px column. */
+#zonePanel{position:absolute;top:12px;left:12px;z-index:5;max-width:calc(100% - 24px);
+  max-height:calc(100% - 90px);display:flex;flex-direction:column;
+  background:var(--bg2);
+  border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.45);
+  overflow:hidden}
+/* The title bar is the drag handle: the table below it scrolls and its column headers pick the
+   damage type, so neither of those can be one. touch-action:none so a drag on a touch screen
+   moves the window instead of scrolling the page. */
+#zoneHead{display:flex;align-items:center;gap:8px;padding:5px 6px 5px 10px;
+  border-bottom:1px solid var(--line);cursor:move;user-select:none;touch-action:none}
+/* while dragging, the table underneath stops swallowing the pointer */
+#zonePanel.dragging #monZoneWrap{pointer-events:none}
+#zoneTitle{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-hint);flex:1}
+#zoneClose{background:none;border:none;color:var(--text-hint);cursor:pointer;font-size:15px;
+  line-height:1;padding:2px 5px;border-radius:4px}
+#zoneClose:hover{color:var(--text);background:#ffffff1a}
+/* One table at a time. Three stacked in a fixed box made the window a scrolling column of
+   unrelated grids; Raven, 2026-09-06: "can we have the pop up use tabs that switch if they are
+   selected in the drop down" and "this window can be resize with the table, no need to keep the
+   element the same size". The panel has no width of its own, so with a single table showing it
+   shrink-wraps whichever one that is. */
+/* A DROPDOWN PICKS THE TABLE, NOT A STRIP OF TABS. Raven, 2026-09-13: "I would like to have a drop
+   down menu to help keep it compact". The five tabs needed 352px on one row, so the window was 354px
+   whichever table it showed -- measured on Khezu at 1280x800, where the tables themselves run from
+   127px (Stun/Exhaust) to 239px (Elemental). One select is narrower than the title row, so the window
+   now shrink-wraps the title and the table. Styled as the sidebar's dropdowns, at the window's 11px:
+   those read as a lighter box on a darker panel, and this window IS --bg2, so the fill is lifted a
+   step. Opaque on purpose -- Chrome draws the open list in the select's own background colour. */
+#zoneTabRow{padding:3px 6px;border-bottom:1px solid var(--line)}
+#zoneTabSel{background:color-mix(in srgb,var(--bg2) 90%,#fff);color:var(--text);
+  border:1px solid var(--line);border-radius:5px;font-size:11px;line-height:1.4;padding:2px 6px;
+  max-width:100%}
+#monZoneWrap > table{display:none}
+#monZoneWrap > table.shown{display:table}
+#monZoneWrap{overflow:auto;max-width:100%}
+/* The panes share two shapes, so these are classes rather than a growing list of ids:
+   .zchart is a damage grid (parts down, types across), .pchart the narrow part-record table. */
+.zchart,.pchart{border-collapse:collapse;font-size:11px;font-variant-numeric:tabular-nums}
+.pchart{margin:6px}
+.zchart th,.zchart td{padding:2px 5px;text-align:center;white-space:nowrap}
+.pchart th,.pchart td{padding:2px 8px;text-align:center;white-space:nowrap}
+.zchart thead th,.pchart thead th{color:var(--text-hint);font-weight:600;
+  border-bottom:1px solid var(--line);user-select:none}
+.zchart thead th{cursor:pointer}
+.zchart thead th:hover{color:var(--text)}
+.zchart tbody th,.pchart tbody th{text-align:left;font-weight:400;color:var(--text)}
+/* A zone the ROM defines that the heat map never paints -- see zoneSlots(). Listed, but marked. */
+.zchart tbody th.unpainted,.pchart tbody th.unpainted{font-style:italic;color:var(--text-hint)}
+.zchart tbody th{position:sticky;left:0;background:var(--bg2)}
+/* Selecting a type lights the WHOLE COLUMN, not each cell in it. Ported from the Zenny Gauntlet's
+   crosshair, whose comment records why: every single-cell marker there "read as off", while a lit
+   band is visible from anywhere on the board. Outlining each cell separately drew a stack of little
+   boxes rather than one column, which is the same failure.
+   That app spans its band with a single grid-placed overlay; these are <table>s, so the band is
+   drawn instead by giving the column's cells their left and right edges, the header its top and the
+   last row its bottom. border-collapse merges them into one unbroken rectangle.
+   The dark sandwich is the Zenny trick too: these cells carry heat colours from dark blue to red,
+   and a bare accent line cannot separate itself from a cell of similar lightness. A dark hairline
+   inside the accent gives it an edge to read against whatever it lands on. */
+.zchart th.sel,.pchart th.sel{color:var(--cta)}
+.zchart .sel,.pchart .sel{border-left:2px solid var(--cta);border-right:2px solid var(--cta);
+  box-shadow:inset 1px 0 rgba(0,0,0,.55), inset -1px 0 rgba(0,0,0,.55)}
+.zchart thead th.sel,.pchart thead th.sel{border-top:2px solid var(--cta);
+  box-shadow:inset 1px 1px rgba(0,0,0,.55), inset -1px 0 rgba(0,0,0,.55)}
+.zchart tbody tr:last-child td.sel,.pchart tbody tr:last-child td.sel{
+  border-bottom:2px solid var(--cta);
+  box-shadow:inset 1px -1px rgba(0,0,0,.55), inset -1px 0 rgba(0,0,0,.55)}
+/* ROOM FOR THE BAND. Raven, 2026-09-13: "when selecting a column, the table expands, it would be best
+   to have the spacing accomendate the selection highlight". The band's 2px edges used to be ADDED on
+   selection, growing the table 4px each way (Khezu's Raw table 151x94 -> 155x98) and shoving every
+   column to its right. Every cell a band can land on now carries those edges already, transparent, so
+   selecting recolours them and moves nothing. `inset` is deliberate: a collapsed border goes to the
+   wider edge, then to the higher-priority style, and inset is the lowest -- so where a reserved edge
+   meets a band edge, the band's `solid` shows on both sides. With the same style the tie would go to
+   the cell on the left, and the band would lose its left edge. */
+.zchart td,.pchart td,.zchart thead th + th,.pchart thead th + th{
+  border-left:2px inset transparent;border-right:2px inset transparent}
+.zchart thead th + th,.pchart thead th + th{border-top:2px inset transparent}
+.zchart tbody tr:last-child td,.pchart tbody tr:last-child td{border-bottom:2px inset transparent}
+/* A PICKED ZONE lights its row, the column band turned on its side (see pickZone). Drawn with inset
+   shadows rather than borders so picking moves nothing, and with the same dark hairline inside the accent
+   so the edge reads against any heat colour. Where the row crosses a lit column the cell keeps both. */
+.zchart tbody th,.pchart tbody th{cursor:pointer}
+.zchart tbody tr.zpick > *,.pchart tbody tr.zpick > *{
+  box-shadow:inset 0 2px var(--cta),inset 0 3px rgba(0,0,0,.55),inset 0 -2px var(--cta),inset 0 -3px rgba(0,0,0,.55)}
+.zchart tbody tr.zpick > th,.pchart tbody tr.zpick > th{color:var(--cta)}
+.zchart tbody tr.zpick > td.sel,.pchart tbody tr.zpick > td.sel{
+  box-shadow:inset 0 2px var(--cta),inset 0 -2px var(--cta),inset 1px 0 rgba(0,0,0,.55),inset -1px 0 rgba(0,0,0,.55)}
+/* Floating toolbar over the render area, matching the Weapon Tree's #bar.
+   width:max-content is load-bearing: with left:50% the default shrink-to-fit only
+   counts the space from the centre to the right edge, so the bar would cap at half
+   the viewport and wrap into a stack while the left half sat empty. */
+#bar{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;
+  width:max-content;max-width:calc(100% - 32px);
+  padding:8px 12px;border:1px solid var(--line);border-radius:8px;
+  background-color:var(--bg2);
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--bg2) 84%,transparent),
+                    color-mix(in srgb,var(--bg2) 84%,transparent)),
+    url('assets/rockyTextureDark2.png');
+  background-repeat:repeat;background-size:auto,200px 200px;
+  box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#bar > *{flex:0 0 auto}
+#bar button{white-space:nowrap}
+#bar .sep{width:1px;height:20px;background:var(--line);margin:0 3px}
+#bar .btn.on{border-color:var(--accent-hover);background:#ffffff26}
+#bar .btn:disabled{opacity:.4;pointer-events:none}
+/* the Animation panel: Loop, frame stepping, the scrubber and a frame readout. Greyed
+   out until an animation is playing, so the panel never has to hide or move. */
+#anim{display:flex;flex-direction:column;gap:6px}
+#anim .row{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}   /* Raven: centred */
+#anim .btn.on{border-color:var(--accent-hover);background:#ffffff26}
+#animPlay{min-width:var(--play-w,58px)}   /* one width for "Play" and "Pause" (Raven) */
+#anim input[type=range]{width:100%;margin:0}
+#anim.idle .transport .btn,#anim.idle .transport input{opacity:.4;pointer-events:none}
+#anim .transport{display:flex;flex-direction:column;gap:6px}
+#anim .chain-head{font-size:13px;font-weight:600;color:var(--text-dim);margin-top:6px}
+#anim .row.pick{justify-content:flex-start;flex-wrap:nowrap}
+#anim .row.pick select{flex:1 1 auto;min-width:0}
+#anim .row.pick .btn{flex:0 0 auto}
+#animFrame{font-size:12px;color:var(--text-hint);text-align:center}   /* under the scrubber, centred (Raven) */
+/* the chain, listed in order under its buttons (Raven); the playing link is lit, the x removes */
+.chain{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.chain li{display:flex;align-items:center;gap:6px;font-size:12px;padding:3px 8px;border:1px solid var(--line);border-radius:6px;background:#ffffff14}
+.chain li.on{border-color:var(--accent-hover);background:#ffffff26}
+.chain li.off .lab{opacity:.45}
+/* the hunter slots: click a row to switch to that hunter; the one on screen is lit */
+.chain.hunters li{cursor:pointer}
+.chain.hunters li.on{cursor:default}
+.chain.hunters .tag{font-size:11px;color:var(--text-hint)}
+.chain.hunters input{flex:1 1 auto;min-width:0;font:inherit;font-size:12px;padding:1px 4px;background:#00000033;color:var(--text);border:1px solid var(--line);border-radius:4px}
+.chain li .n{color:var(--text-hint);min-width:1.4em}
+.chain li .lab{flex:1 1 auto}
+.chain li .x{cursor:pointer;color:var(--text-hint);padding:0 4px}
+.chain li .x:hover{color:var(--text)}
+.chain-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
+/* Toggled off, the toolbar MOVES into the header rather than disappearing, so the
+   controls stay reachable while the render area is left clear. It is the same element,
+   so `#bar .sep` and `#bar .btn.on` keep applying -- which is why the whole bar moves
+   rather than its buttons being reparented one by one. */
+header #bar{position:static;transform:none;width:auto;max-width:none;
+  padding:0;border:none;border-radius:0;background:none;box-shadow:none;flex-wrap:nowrap}
+header #bar .sep{height:16px}
+/* the titlebar adds its own margin to .btn.tiny, which doubles up with #bar's gap */
+header #bar .btn.tiny{margin-right:0}
+/* The camera bar's controls are icons, their labels moved into the tooltip as
+   "Label: what it does" (Raven, 2026-09-04). Equal squares, so a button that the state
+   renames can no longer shunt the ones beside it -- which is what the two width-pinning
+   measurements this app used to run were for. */
+#bar .ico{display:inline-flex;align-items:center;justify-content:center;width:32px;padding:3px 0}
+#bar .ico svg{width:15px;height:15px;display:block;fill:none;stroke:currentColor;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+/* the Record button is bright red in both states, the dot and the stop square */
+#clipBtn svg{color:#ff2a2a}
+/* The clip countdown, the Armor Viewer's (Raven there, 2026-09-05: "a timer that counts down ... :30 -> :09 format
+   ... remains the same size"; here, 2026-09-19: "I would like to make both apps have the same camera controls bar"):
+   tabular digits in a fixed box, so :30 and :09 take the same room and nothing beside it shifts. Amber through the
+   3 s lead, red while the clip runs, and a flash of :00 when it ends. The Record button blinks in step: fast through
+   the lead, once a second while recording -- opacity only, so the button never changes size. */
+#bar .clip-timer{display:inline-flex;align-items:center;justify-content:center;width:34px;height:22px;
+  font-size:12px;font-variant-numeric:tabular-nums;letter-spacing:.5px;color:var(--text-hint);user-select:none}
+#bar .clip-timer.pre{color:#ffb020}
+#bar .clip-timer.on{color:#ff2a2a}
+#bar .clip-timer.end{color:#ff2a2a;animation:clipEndFlash .45s steps(1,end) 4}
+#clipBtn.pre svg{animation:clipBlink .5s steps(1,end) infinite}
+#clipBtn.on svg{animation:clipBlink 1s steps(1,end) infinite}
+@keyframes clipBlink{50%{opacity:.15}}
+@keyframes clipEndFlash{50%{opacity:.1}}
+@media (prefers-reduced-motion: reduce){#clipBtn.pre svg,#clipBtn.on svg,#bar .clip-timer.end{animation:none}}
+#orbitLock{display:inline-flex;align-items:center;gap:6px}
+#orbitLock img{width:14px;height:14px;display:block}
+/* the monster's own icon, from the set the sibling apps share */
+.mon-icon{width:34px;height:34px;flex:0 0 auto;object-fit:contain;
+  image-rendering:auto;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+/* the dropdown's row keeps the icon's height when a monster has none, so the dropdown does not jump
+   4px on the way to or from one */
+#monPick{min-height:34px}
+#viewport canvas{display:block;width:100%;height:100%}
+/* Scoped to the render area on purpose: #bar and the overlays are SIBLINGS of #viewport,
+   so the toolbar keeps its pointer and stays usable while the cursor is hidden. */
+#viewport.nocursor,#viewport.nocursor canvas{cursor:none}
+
+/* Buttons */
+.btn{background:#ffffff14;color:var(--text);border:1px solid var(--line);
+  border-radius:7px;padding:8px 14px;cursor:pointer;font-size:14px}
+.btn:hover{background:#ffffff24}
+.btn.block{width:100%}
+.btn.tiny{padding:3px 10px;font-size:12px}
+.btn.block,.btn.tiny{
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--bg2) 80%,transparent),color-mix(in srgb,var(--bg2) 80%,transparent)),
+    url('assets/banner-background.png');
+  background-position:right;
+}
+.btn.accent{background:var(--bg1);border-color:#000;color:#fff;font-weight:600}
+/* Reset: the Bingo app's accent button on the theme's complementary colour (--cta) */
+.btn.cta{background:var(--cta);background-image:none;border-color:rgba(0,0,0,.45);color:#fff;font-weight:600;
+  text-shadow:-1px 0 rgba(0,0,0,.55),1px 0 rgba(0,0,0,.55),0 -1px rgba(0,0,0,.55),0 1px rgba(0,0,0,.55)}
+.btn.cta:hover{background:color-mix(in srgb,var(--cta) 84%,#ffffff)}
+/* Selected gender. Was a fixed green (#3d6b45) that ignored the theme entirely; this is the
+   theme's own colour instead — var(--hover) is darken(hex,.30), the family's deep shade.
+
+   The white border does the selecting, not the fill. A lighter fill was the obvious try (the
+   family's .btn.on white wash) and it reads well but costs legibility: white label text drops
+   to 3.67:1 on the pale themes, against 6.5:1 on the green it replaced, so it made the button
+   worse to read in order to look righter. --hover goes the other way and holds white text at
+   14.7:1 everywhere. The fill difference alone is slight, which is why the border is white and
+   the label bold — that pair is unambiguous without asking the fill to carry it. */
+.btn.accent.on{background:var(--hover);border-color:#fff;color:#fff;font-weight:600}
+
+/* Collapsible panels */
+.panel{border:1px solid var(--line);border-radius:8px;overflow:clip;background:var(--bg2)}
+.panel-head{width:100%;text-align:left;background:transparent;border:none;color:var(--text);
+  padding:8px 14px;font-size:16px;font-weight:600;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--bg2) 80%,transparent),color-mix(in srgb,var(--bg2) 80%,transparent)),
+    url('assets/banner-background.png');
+  background-size:auto 100%;background-position:left center;background-repeat:repeat;
+}
+.panel-head:hover{background-color:#ffffff0d}
+/* a kept-open panel has nothing to toggle, so its head does not light up or take a pointer */
+.panel[data-keep-open] .panel-head{cursor:default}
+.panel[data-keep-open] .panel-head:hover{background-color:transparent}
+/* The panel chevrons are hidden -- the accordion only ever has one panel open, so the
+   open one is obvious from the panel body and the arrows were just noise. The spans stay
+   in the markup so the heads keep their layout. */
+.chev{display:none}
+.panel-body{display:none;padding:8px 12px 12px;flex-direction:column;gap:6px;
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--bg1) 60%,transparent),color-mix(in srgb,var(--bg1) 60%,transparent)),
+    url('assets/panel-body-bg.png');
+  background-size:contain 100%;background-position:left center;background-repeat:repeat;
+}
+.panel[data-open="true"] .panel-body{display:flex}
+
+/* Controls */
+.chk{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer;line-height:1.3}
+.chk input{accent-color:var(--accent);width:16px;height:16px;cursor:pointer;flex-shrink:0}
+.chk:hover{color:var(--accent-hover)}
+.hint{color:var(--text-hint);font-size:12px;margin:2px 0}
+.row{display:flex;align-items:center}
+.row.gap{gap:8px}
+.field{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--text-dim)}
+.field .row.gap > select{flex:1;min-width:0}
+/* The Parts panel is a stack of label-over-dropdown pairs, and without room between them a label
+   sits as close to the select ABOVE it as to its own. So each label is pulled nearer its own
+   control and the rows are pushed apart from each other. Scoped to #monGroups, because every other
+   panel in the app is a form where the tighter rhythm is right. */
+#monGroups .field{gap:5px}
+#monGroups .field + .field{margin-top:13px}
+.hexbtn{flex:1;min-width:0;background:transparent;border:1px solid transparent;
+  color:var(--text-hint);font-family:inherit;font-size:12px;letter-spacing:.02em;
+  text-align:left;padding:3px 5px;border-radius:5px;cursor:text}
+.hexbtn:hover{border-color:var(--line);color:var(--text)}
+.hexbtn:focus{border-color:var(--accent-hover);color:var(--text);outline:none;
+  background:var(--bg2)}
+.field select,.field input[type=text]{
+  background:var(--bg2);color:var(--text);border:1px solid var(--line);border-radius:7px;
+  padding:6px 8px;font-size:13px;line-height:1.4;
+  /* option names run past 60 chars; without min-width:0 a flex select forces the
+     sidebar far wider than its declared width */
+  width:100%;min-width:0;max-width:100%;text-overflow:ellipsis;
+}
+
+/* no focus ring on selects: a select just picked stays focused, and the ring around it
+   read as a stray highlight (Raven, 2026-09-04: "We don't need the highlight around the
+   box") -- Chrome keeps :focus-visible on after its popup closes, so it goes outright */
+select:focus{outline:none}
+.field input[type=text]::placeholder{color:var(--text-hint);opacity:1}
+input[type=range]{width:100%;accent-color:var(--accent)}
+
+/* Pigment swatches */
+#pig{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;max-height:170px;overflow-y:auto}
+#pig i{display:block;aspect-ratio:1;border-radius:3px;cursor:pointer;border:1px solid #0006}
+#pig i.on{outline:2px solid var(--accent-hover);outline-offset:1px}
+
+/* Viewport overlays */
+
+#err{position:absolute;bottom:12px;left:12px;color:#ff6b6b;white-space:pre;max-width:60ch}
+/* sits over the render area; pointer-events off so it never eats an orbit drag */
+#renderNote{position:absolute;top:10px;left:0;right:0;margin:0;text-align:center;
+  font-size:12px;line-height:1.4;color:var(--text-hint);opacity:.75;
+  pointer-events:none;padding:0 12px}
+#legend{font-size:11px;line-height:1.35}
+
+/* In-game pigment palette. Opens per pigment row and writes into that row's hex field,
+   so it is a way to REACH the game's 125 colours through the existing RGB interface
+   rather than a second interface beside it. */
+.palbtn{flex:0 0 auto;width:26px;height:26px;padding:0;line-height:1;font-size:13px;
+  background:transparent;color:var(--text);border:1px solid var(--line);border-radius:6px;
+  cursor:pointer}
+.palbtn:hover{background:#ffffff1a;border-color:var(--accent-hover)}
+#pigModal .modal-card{width:min(420px,92vw)}
+#pigGrid,.pig-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin:12px 0}
+/* black, not --line: a pale swatch against the panel had no edge at all, so light
+   colours ran together and white was invisible */
+#pigGrid button,.pig-grid button{aspect-ratio:1;padding:0;border:1px solid #000;
+  border-radius:4px;cursor:pointer}
+#pigGrid button:hover,.pig-grid button:hover{border-color:#fff}
+#pigGrid button.sel,.pig-grid button.sel{outline:2px solid #fff;outline-offset:1px}
+#pigDeviant .stage-h{margin:14px 0 0}
+#pigDevList .stage-h{margin:14px 0 6px}
+#pigPalettes .stage-h,#pigBaseHead .stage-h{margin:16px 0 0;font-size:13px}
+#pigPalettes .hx,#pigBaseHead .hx{font-weight:400;font-size:11px;opacity:.6}
+#pigPalettes .stage-h:first-child{margin-top:6px}
+.devrow{display:flex;align-items:center;gap:6px;margin:0 0 4px}
+.devpick{display:flex;align-items:center;gap:8px;flex:1;min-width:0;padding:5px 8px;
+  background:transparent;border:1px solid var(--line);border-radius:6px;color:var(--text);
+  cursor:pointer;font:inherit;font-size:12px;text-align:left}
+.devpick:hover{border-color:var(--accent-hover);background:#ffffff12}
+.devanim{flex:0 0 auto;width:76px}
+.devrow .sw{width:16px;height:16px;border-radius:3px;border:1px solid #000;flex:0 0 auto}
+.devrow .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.devrow .hx{opacity:.65;font-size:11px}
+
+/* Modals (About, Settings) — the block is shared verbatim with the sibling apps. */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;
+  align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal-card{background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+  padding:20px;max-width:560px;width:100%;max-height:82vh;overflow-y:auto}
+.modal-card h2{margin:0 0 12px;font-size:22px}
+.modal-card h3{margin:16px 0 6px;font-size:14px;color:var(--text-dim)}
+.modal-card code{font-size:12px;opacity:.85}
+.modal-card p{line-height:1.55;font-size:13px}
+.modal-card a{color:var(--accent-hover)}
+.modal-card .muted{color:var(--text-dim);font-size:13px;opacity:.75}
+/* Backdrop override, above the swatches so it is seen. Chroma chips sit on the two key buttons so
+   the colour is visible on the control that sets it. */
+.stage-h{margin:0 0 4px;font-size:14px}
+.stage-row{margin-bottom:15px}
+.stage-row .btn{position:relative;padding-left:26px}
+.stage-row .btn::before{content:"";position:absolute;left:8px;top:50%;width:10px;height:10px;
+  margin-top:-5px;border-radius:2px;border:1px solid #0006;background:var(--chip,transparent)}
+#stgTheme::before{display:none}
+#stgGreen{--chip:#00FF00}
+#stgBlue{--chip:#0000FF}
+
+/* Settings modal — Theme and Backdrop live here too, because "Theme" on its own was
+   easy to miss when looking for a setting. The swatch grid is copied verbatim from the
+   other apps; the id stays `themeModal` so the shared theme script needs no change. */
+/* A modal card is 560px; the family sizes the THEME card at 460 so a swatch comes out the
+   same size here as in every other app. Scoped so the About card is untouched. */
+#themeModal .modal-card{width:min(460px,90vw)}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:15px}
+.swatch{aspect-ratio:1;border-radius:8px;border:2px solid transparent;cursor:pointer;position:relative;overflow:hidden;padding:0}
+.swatch.sel{border-color:#fff}
+.swatch span{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:10px;line-height:1.5;color:#fff;background:rgba(0,0,0,.45)}
+.row.end{justify-content:flex-end}
+.app-links{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:10px}
+.app-links li{border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:#ffffff08}
+.app-links li.current{opacity:.72}
+.app-links a,.app-name{font-weight:600;font-size:14px}
+.app-here{font-weight:400;font-size:11px;opacity:.7;border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin-left:7px}
+.app-desc{display:block;margin-top:3px;font-size:12px;opacity:.8;line-height:1.4}
+/* MH3U Armor Viewer: a colour chip beside a colour select, and the game's colour board */
+.chip{display:inline-block;flex:0 0 26px;width:26px;height:26px;border-radius:5px;border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
+.board-wrap canvas{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:crosshair;border-radius:4px;border:1px solid rgba(255,255,255,.35)}
+#skinTone{flex:1;min-width:0}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="titlebar titlebar-header">
+    <h1>MH3U Armor Viewer</h1>
+    <button id="barBtn" class="btn tiny on" title="Show or hide the camera controls">Camera Controls</button>
+    <button id="resetBtn" class="btn tiny cta" title="Back to no armour and the first face and hair">Reset</button>
+    <button id="aboutBtn" class="icon-btn" title="About" aria-label="About">&#9432;</button>
+    <button id="themeBtn" class="icon-btn" title="Settings" aria-label="Settings">&#9881;</button>
+    <button id="linksBtn" class="icon-btn" title="Other MHGU apps" aria-label="Other MHGU apps">&#128279;</button>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div id="paneMonster">
+
+      <section class="panel" data-open="true" data-keep-open>
+        <div class="panel-head">Equipment <span class="chev">&#9662;</span></div>
+        <div class="panel-body">
+          <div class="field"><label for="htype">Type</label><select id="htype">
+            <option value="all">Both</option>
+            <option value="b">Blademaster</option>
+            <option value="g">Gunner</option></select></div>
+          <div class="field"><input type="text" id="filter" placeholder="Filter by name&hellip;"></div>
+          <div class="field"><label for="s_helm">Head</label><select id="s_helm" data-slot="helm"></select></div>
+          <div class="field"><label for="s_body">Chest</label><select id="s_body" data-slot="body"></select></div>
+          <div class="field"><label for="s_arm">Arms</label><select id="s_arm" data-slot="arm"></select></div>
+          <div class="field"><label for="s_wst">Waist</label><select id="s_wst" data-slot="wst"></select></div>
+          <div class="field"><label for="s_leg">Legs</label><select id="s_leg" data-slot="leg"></select></div>
+        </div>
+      </section>
+
+      <section class="panel" data-open="true" data-keep-open>
+        <div class="panel-head">Hunter <span class="chev">&#9662;</span></div>
+        <div class="panel-body">
+          <div class="field"><label for="genderSel">Gender</label><select id="genderSel">
+            <option value="f">Female</option>
+            <option value="m">Male</option></select></div>
+          <div class="field"><label for="faceStyle">Face</label><select id="faceStyle"></select></div>
+          <div class="field"><label for="hairStyle">Hair</label><select id="hairStyle"></select></div>
+          <div class="field"><label for="clothing">Clothing</label><select id="clothing"></select></div>
+        </div>
+      </section>
+
+      <!-- THE GAME'S OWN CHARACTER COLOURS (StMenu: Skin Tone, Hair Color, Clothing Color, Features). Each
+           colour is written by the game into the albedo colour of the materials of one colour type; see
+           armor.json _about.colors. The presets are the game's 12 per list, and Custom picks a pixel of the
+           game's own colour board (td_color), which is where every preset is taken from. -->
+      <section class="panel" data-open="true">
+        <button class="panel-head">Colors <span class="chev">&#9662;</span></button>
+        <div class="panel-body">
+          <div class="field"><label for="skinTone">Skin Tone</label>
+            <div class="row gap"><input type="range" id="skinTone" min="0" max="189" step="1"><span class="chip" id="skinChip"></span></div></div>
+          <div class="field"><label for="hairColor">Hair Color</label>
+            <div class="row gap"><select id="hairColor" data-color="hair"></select><span class="chip" id="hairChip"></span></div></div>
+          <div class="field"><label for="clothColor">Clothing Color</label>
+            <div class="row gap"><select id="clothColor" data-color="cloth"></select><span class="chip" id="clothChip"></span></div></div>
+          <div class="field"><label for="feat1Color">Feature 1</label>
+            <div class="row gap"><select id="feat1Color" data-color="feat1"></select><span class="chip" id="feat1Chip"></span></div></div>
+          <div class="field"><label for="feat2Color">Feature 2</label>
+            <div class="row gap"><select id="feat2Color" data-color="feat2"></select><span class="chip" id="feat2Chip"></span></div></div>
+          <div class="field board-wrap" id="boardWrap" hidden>
+            <label id="boardLabel" for="board">Color Board</label>
+            <canvas id="board" title="Click or drag to pick a color from the game's own color board"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARMOUR PIGMENT: every piece draws its pigment region (colour type 3) in its own default colour,
+           armour record +5 into the game's 44-colour table. Pieces whose record +4 is 2 can carry their own
+           colour instead; Custom picks it from the colour board. -->
+      <section class="panel" data-open="false">
+        <button class="panel-head">Pigment <span class="chev">&#9662;</span></button>
+        <div class="panel-body">
+          <div class="field"><label for="pig_helm">Head</label><div class="row gap"><select id="pig_helm" data-pig="helm"></select><span class="chip" id="pigChip_helm"></span></div></div>
+          <div class="field"><label for="pig_body">Chest</label><div class="row gap"><select id="pig_body" data-pig="body"></select><span class="chip" id="pigChip_body"></span></div></div>
+          <div class="field"><label for="pig_arm">Arms</label><div class="row gap"><select id="pig_arm" data-pig="arm"></select><span class="chip" id="pigChip_arm"></span></div></div>
+          <div class="field"><label for="pig_wst">Waist</label><div class="row gap"><select id="pig_wst" data-pig="wst"></select><span class="chip" id="pigChip_wst"></span></div></div>
+          <div class="field"><label for="pig_leg">Legs</label><div class="row gap"><select id="pig_leg" data-pig="leg"></select><span class="chip" id="pigChip_leg"></span></div></div>
+          <div class="field board-wrap" id="pigBoardWrap" hidden>
+            <label id="pigBoardLabel" for="pigBoard">Color Board</label>
+            <canvas id="pigBoard" title="Click or drag to pick a color from the game's own color board"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- THE GAME'S OWN MOTIONS: the hunter's common motion lists (player\mot\plcom). The clips carry no
+           names in the game data, so they are listed as the game stores them. -->
+      <section class="panel" data-open="false">
+        <button class="panel-head">Pose <span class="chev">&#9662;</span></button>
+        <div class="panel-body">
+          <div class="field"><label for="poseList">Motion List</label><select id="poseList"></select></div>
+          <div class="field"><label for="poseClip">Clip</label><select id="poseClip"></select></div>
+        </div>
+      </section>
+
+      </div>
+    </aside>
+
+    <section class="content">
+      <div id="viewport"></div>
+      <div id="loading">Loading...</div>
+      <p id="renderNote">Some models may not render correctly at this time or some oddities may happen</p>
+      <div id="err"></div>
+      <div id="bar">
+        <button id="fitBtn" class="btn tiny ico" aria-label="Fit to View" title="Fit to View: Frame the whole hunter"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/></svg></button>
+        <button id="spinBtn" class="btn tiny ico" aria-label="Rotate" title="Rotate: Cycle the turntable speed"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 4v4.5H16"/></svg></button>
+        <button id="orbitLock" class="btn tiny ico" aria-label="Orbit" title="Orbit: Lock the orbit so dragging pans the view instead of rotating it"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><ellipse cx="12" cy="12" rx="9.6" ry="4.3" transform="rotate(-30 12 12)"/></svg></button>
+        <button id="wireBtn" class="btn tiny ico" aria-label="Wireframe" title="Wireframe: Draw the meshes as wireframe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20.5 8v8L12 21 3.5 16V8L12 3Z"/><path d="M3.5 8 12 12.5 20.5 8M12 12.5V21"/></svg></button>
+        <button id="shotBtn" class="btn tiny ico" aria-label="Screenshot" title="Screenshot: Save a PNG of the render area"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.6h3.2L8.2 6.5h7.6l1.5 2.1h3.2v10.4H3.5V8.6Z"/><circle cx="12" cy="13.6" r="3.3"/></svg></button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="linksModal" class="modal hidden">
+  <div class="modal-card">
+    <h2>Other MHGU Apps</h2>
+    <p class="muted">Companion fan tools by the same author. Each opens in a new tab.</p>
+    <ul class="app-links">
+      <li>
+        <a href="https://armoredraven17.github.io/MHGU-Quest-Randomizer/" target="_blank" rel="noopener">Quest Randomizer</a>
+        <span class="app-desc">Rolls random quests when you can't decide what to hunt.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-collection-tracker/" target="_blank" rel="noopener">Collection Tracker</a>
+        <span class="app-desc">Tracks which weapons, armor and Palico gear you own, and what it costs to finish them.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-equipment-box/" target="_blank" rel="noopener">Equipment Box</a>
+        <span class="app-desc">Mirrors the in-game box &mdash; 2000 hunter slots and 1000 Palico &mdash; so you can plan where things sit.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/MHGU-Bingo/" target="_blank" rel="noopener">Bingo</a>
+        <span class="app-desc">Builds a bingo card of hunting goals, with a shareable seed so a group can race the same board.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/MHGU-Hunting-Log/" target="_blank" rel="noopener">Hunting Log</a>
+        <span class="app-desc">Keeps a running record of your hunts &mdash; what you were after, what you wore, who came along.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/MHGU-Zenny-Gauntlet/" target="_blank" rel="noopener">Zenny Gauntlet</a>
+        <span class="app-desc">A scored challenge run &mdash; fail a hunt or get carted and you lose that weapon/style combo for the rest of the run.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-set-builder/" target="_blank" rel="noopener">Set Builder</a>
+        <span class="app-desc">Assemble a full set by hand and see exactly which skills it activates.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-weapon-trees/" target="_blank" rel="noopener">Weapon Trees</a>
+        <span class="app-desc">Browse every weapon upgrade tree, with full stats on any node you click.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/MHGU-Challenge-Run/" target="_blank" rel="noopener">Challenge Run</a>
+        <span class="app-desc">A permadeath challenge run &mdash; start from a root weapon, lose it on any quest failure, clear every Key Quest.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-charm-farm/" target="_blank" rel="noopener">Charm Farm</a>
+        <span class="app-desc">A Clicker/Idle game about beating up various Brachydios until you finally get the desired God Charms you always wanted.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-talisman-bingo/" target="_blank" rel="noopener">Talisman Bingo</a>
+        <span class="app-desc">A bingo card of talisman conditions &mdash; keep drawing charms until one finally fills the line you needed.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-fishing/" target="_blank" rel="noopener">Fishing</a>
+        <span class="app-desc">A fishing sim on the game's own tables &mdash; prepare at camp, travel to a locale, come home with the catch.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-armor-viewer/" target="_blank" rel="noopener">Armor Viewer</a>
+        <span class="app-desc">Renders a hunter in 3D with every armor piece swappable, so you can mix and match a set.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mhgu-monster-viewer/" target="_blank" rel="noopener">Monster Viewer</a>
+        <span class="app-desc">Renders every monster in 3D with its own motion lists, so you can watch what they actually do.</span>
+      </li>
+    </ul>
+    <div class="row end gap">
+      <button id="linksClose" class="btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="themeModal" class="modal hidden">
+  <div class="modal-card">
+    <h2>Settings</h2>
+    <h3 class="stage-h">Display</h3>
+    <label class="chk"><input type="checkbox" id="setNote">Hide rendering notice</label>
+    <h3 class="stage-h">Backdrop</h3>
+    <p class="hint">Overrides the render background so the model can be keyed out.</p>
+    <div class="row gap stage-row">
+      <button id="stgTheme" class="btn accent" style="flex:1">Theme</button>
+      <button id="stgGreen" class="btn accent" style="flex:1">Digital Green</button>
+      <button id="stgBlue"  class="btn accent" style="flex:1">Digital Blue</button>
+    </div>
+    <h3 class="stage-h">Theme</h3>
+    <div id="swatches" class="swatches"></div>
+    <button id="themeClose" class="btn accent">Done</button>
+  </div>
+</div>
+
+<div id="aboutModal" class="modal hidden">
+  <div class="modal-card">
+    <h2>About</h2>
+    <p class="muted">A fan-made viewer for the armour of Monster Hunter 3 Ultimate, with the game's own models, textures and names. Not affiliated with, endorsed by, or supported by Capcom.</p>
+
+    <h3>Game content</h3>
+    <p>Monster Hunter 3 Ultimate and all of its models, textures, animations and data tables are &copy; CAPCOM CO., LTD. All rights reserved. Every asset here was extracted from a personally owned copy of the game and is shown for reference only.</p>
+
+    <h3>What you are looking at</h3>
+    <p>Each armour piece is its own model in the game, worn over the hunter's skeleton. The names, which model a piece draws for each gender, the clothing shown under an empty slot, and which parts of the hair and face a helm leaves visible all come from the game's own tables.</p>
+
+    <h3>Tools used to build this</h3>
+    <ul class="app-links">
+      <li><span class="app-name">RevilLib / RevilToolset</span> &mdash; by PredatorCZ (Lukas Cone)
+        <span class="app-desc">Converted MT Framework <code>.mod</code> meshes to glTF and <code>.tex</code> textures to DDS.</span></li>
+      <li><span class="app-name">three.js</span>
+        <span class="app-desc">Renders the scene, with GLTFLoader, OrbitControls and SkeletonUtils.</span></li>
+      <li><span class="app-name">Pillow</span>
+        <span class="app-desc">Converted the extracted textures during the build.</span></li>
+    </ul>
+
+    <h3>Assets</h3>
+    <p>The UI textures and the MHFU font are shared with the same author's MHGU fan apps. Armour names come from the game's own text files.</p>
+
+    <div class="row end gap">
+      <button id="aboutClose" class="btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Plain script, not the module below: the modals and the view preferences are independent of the
+  // viewer, and reading them here means a hidden notice or bar never flashes before the module loads.
+  (function () {
+    var am = document.getElementById("aboutModal");
+    document.getElementById("aboutBtn").onclick = function () { am.classList.remove("hidden"); };
+    document.getElementById("aboutClose").onclick = function () { am.classList.add("hidden"); };
+    am.onclick = function (e) { if (e.target === am) am.classList.add("hidden"); };
+
+    // mh3u-armor-: its own keys, so it never reads another viewer's preferences on a shared origin
+    var UI_KEY = "mh3u-armor-viewer-ui";
+    var ui = { note: true, bar: true };
+    try { ui = Object.assign(ui, JSON.parse(localStorage.getItem(UI_KEY) || "{}")); } catch (_) {}
+    var noteEl = document.getElementById("renderNote"),
+        barEl = document.getElementById("bar"),
+        barHome = barEl.parentNode,
+        barBtn = document.getElementById("barBtn"),
+        header = barBtn.parentNode,
+        setNote = document.getElementById("setNote");
+    function paintUi() {
+      noteEl.hidden = !ui.note;
+      if (ui.bar) barHome.appendChild(barEl);
+      else header.insertBefore(barEl, barBtn);
+      barBtn.classList.toggle("on", ui.bar);
+      setNote.checked = !ui.note;
+      try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); } catch (_) {}
+    }
+    paintUi();
+    barBtn.onclick = function () { ui.bar = !ui.bar; paintUi(); };
+    setNote.onchange = function () { ui.note = !setNote.checked; paintUi(); };
+
+    var m = document.getElementById("linksModal");
+    document.getElementById("linksBtn").onclick = function () { m.classList.remove("hidden"); };
+    document.getElementById("linksClose").onclick = function () { m.classList.add("hidden"); };
+    m.onclick = function (e) { if (e.target === m) m.classList.add("hidden"); };
+  })();
+</script>
+
+<script>
+  // Theme system — the MHGU family's, installed from mhgu-fishing/docs/theme.js. Every shade
+  // is derived from ONE chosen colour by moving only its lightness in HSL, so hue and
+  // saturation are preserved and every derived surface stays "in family". That is why the
+  // palette can be a list of bare hexes rather than a set of hand-built themes.
+  //
+  // THE PALETTE HAS ONE INVARIANT: every swatch holds white text and a white checkbox tick.
+  // Both come off one number — the browser picks a checkbox tick itself, white below relative
+  // luminance .1791 and black above, and white body text needs its ground at .1833 or below to
+  // clear 4.5:1 — so the checkbox line is the stricter of the two. Every theme clears it, which
+  // is why this app paints white text unconditionally and has no light-theme branch.
+  //
+  // A NEW COLOUR HAS TO CLEAR THAT. Do not add one without checking it, and keep this list
+  // byte-identical to the other apps: it is hand-copied with no shared source. (Its `icon`
+  // names go unused here: the monster icon set is not shipped with this app, so a swatch is
+  // its colour and its name.)
+  (function () {
+    const THEMES = [
+    { name: "Teostra", hex: "#570B0B" },
+    { name: "Rathalos", hex: "#b51717" },
+    { name: "Tetsucabra", hex: "#783E0F" },
+    { name: "Agnaktor", hex: "#C7620E" },
+    { name: "Tigrex", hex: "#74631D" },
+    { name: "Rajang", hex: "#9C8328" },
+    { name: "Najarala", hex: "#436713" },
+    { name: "Gendrome", hex: "#67922E" },
+    { name: "Deviljho", hex: "#0B570F" },
+    { name: "Rathian", hex: "#39993E" },
+    { name: "Astalos", hex: "#14503d" },
+    { name: "Zinogre", hex: "#279773" },
+    { name: "Zamtrios", hex: "#0C5D68" },
+    { name: "Kirin", hex: "#118898" },
+    { name: "S. Ceanataur", hex: "#005984", icon: "Shogun Ceanataur" },
+    { name: "Plesioth", hex: "#0080c1" },
+    { name: "Brachydios", hex: "#0B2757" },
+    { name: "Lagiacrus", hex: "#0b3f97" },
+    { name: "G. Magala", hex: "#1F0B57", icon: "Gore Magala" },
+    { name: "Nerscylla", hex: "#4e2fa2" },
+    { name: "Y. Garuga", hex: "#62008f", icon: "Yian Garuga" },
+    { name: "Chameleos", hex: "#8e50ab" },
+    { name: "Mizutsune", hex: "#D4358C" },
+    { name: "Congalala", hex: "#C8679D" },
+    { name: "Duramboros", hex: "#5a411f" },
+    { name: "Diablos", hex: "#997c54" },
+    { name: "Barroth", hex: "#835A32" },
+    { name: "Bulldrome", hex: "#B17A47" },
+    { name: "K. Daora", hex: "#505358", icon: "Kushala Daora" },
+    { name: "Valstrax", hex: "#7C879B" },
+    { name: "Forbidden", hex: "#1E2025", icon: "Question Mark" },
+    ];
+    // mh3u-: this app can share an origin with the MHGU Monster Viewer and keeps its own theme
+    const KEY = "mh3u-armor-viewer-theme";
+    const DEFAULT_HEX = "#1E2025";           // Forbidden, the family default
+
+    // Backdrop override for the render area. The stage is normally darken(hex,.18) — the
+    // Weapon Tree's factor — but these two are chroma-key colours, so a screenshot of the
+    // model can be keyed out. They deliberately do NOT follow the theme: the whole point is a
+    // flat, known value the keyer can pull. Everything else (sidebar, titlebar, panels) still
+    // follows the theme, so only the surface being composited is overridden.
+    //
+    // Full-gun primaries, #00FF00 and #0000FF, chosen deliberately over the SMPTE-ish digital
+    // greens and blues. Those key more forgivingly on real footage, where the backdrop is lit
+    // cloth, but here the backdrop is a flat framebuffer value with no lighting on it at all,
+    // so the reason to prefer them does not apply and a full channel is the easier pull.
+    const STAGE_KEY = "mh3u-monster-viewer-stage";
+    const STAGES = { theme: null, green: "#00FF00", blue: "#0000FF" };
+    let stageMode = "theme";
+    try { const v = localStorage.getItem(STAGE_KEY); if (v && v in STAGES) stageMode = v; } catch (e) {}
+
+    const byHex = new Map(THEMES.map(t => [t.hex.toUpperCase(), t]));
+
+    // A saved theme is a bare hex, so anyone sitting on a retired one keeps a colour that is no
+    // longer in the list: it never picks up the change, and anything keyed off the hex stops
+    // matching. Remap on read, not on write. Kept identical to the other apps rather than
+    // trimmed to this app's own history, because a per-app map is one more thing to drift.
+    const LEGACY_HEX = {
+      '#C8A319': '#74631D', '#57470B': '#74631D', '#5E4D0C': '#74631D',           // Tigrex
+      '#574916': '#74631D', '#68581A': '#74631D',
+      '#F1D364': '#9C8328', '#B59417': '#9C8328', '#C39F19': '#9C8328',           // Rajang
+      '#BEA031': '#9C8328',
+      '#C65900': '#783E0F', '#FC933E': '#C7620E',                                 // Tetsucabra, Agnaktor
+      '#68360D': '#783E0F', '#B5590D': '#C7620E',
+      '#3A9B3F': '#39993E', '#2DAE85': '#279773',                                 // Rathian, Zinogre
+      '#D84696': '#D4358C', '#CE79A8': '#C8679D',                                 // Mizutsune, Congalala
+      '#B57C45': '#835A32', '#CFAA87': '#B17A47',                                 // Barroth, Bulldrome
+      '#AEB5C1': '#7C879B',                                                       // Valstrax
+
+    };
+    const migrateHex = (h) => (h && LEGACY_HEX[h.toUpperCase()]) || h;
+
+    const hexRgb = h => { h = h.replace("#", ""); return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)); };
+    const clamp = n => Math.max(0, Math.min(255, Math.round(n)));
+    const clamp01 = n => Math.max(0, Math.min(1, n));
+    const rgbToHsl = ([r, g, b]) => {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+      const l = (max + min) / 2;
+      if (d === 0) return [0, 0, l];
+      const s = d / (1 - Math.abs(2 * l - 1));
+      const h = max === r ? ((g - b) / d + (g < b ? 6 : 0)) / 6
+        : max === g ? ((b - r) / d + 2) / 6
+          : ((r - g) / d + 4) / 6;
+      return [h, s, l];
+    };
+    const hslToRgb = ([h, s, l]) => {
+      const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs((h * 6) % 2 - 1)), m = l - c / 2;
+      const hi = Math.floor(h * 6) % 6;
+      const [r, g, b] = hi === 0 ? [c, x, 0] : hi === 1 ? [x, c, 0] : hi === 2 ? [0, c, x]
+        : hi === 3 ? [0, x, c] : hi === 4 ? [x, 0, c] : [c, 0, x];
+      return [r + m, g + m, b + m].map(v => clamp(v * 255));
+    };
+    // darken/lighten only nudge lightness, so every derived shade keeps the chosen
+    // colour's hue and saturation.
+    const darken = (rgb, f) => { const [h, s, l] = rgbToHsl(rgb); return hslToRgb([h, s, clamp01(l * f)]); };
+    const lighten = (rgb, t) => { const [h, s, l] = rgbToHsl(rgb); return hslToRgb([h, s, clamp01(l + (1 - l) * t)]); };
+    const css = rgb => `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+    // The complementary colour, the Bingo app's rule for its highlight (winColor): the hue
+    // rotated a full 180 deg from the theme, saturation .95, the lightest shade from .60 down
+    // that keeps white text at 4.5:1. The Reset button wears it (Raven, 2026-09-03:
+    // "complementary colored, refer to Bingo App").
+    const lin = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+    const relLum = ([r, g, b]) => 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+    const contrast = (a, b) => { const x = relLum(a), y = relLum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const WHITE = [255, 255, 255];
+    function complement(c) {
+      const hue = (rgbToHsl(c)[0] + 0.5) % 1;
+      for (let l = 0.60; l >= 0.20; l -= 0.01) {
+        const cand = hslToRgb([hue, 0.95, l]);
+        if (contrast(cand, WHITE) >= 4.5) return cand;
+      }
+      return hslToRgb([hue, 0.95, 0.20]);
+    }
+
+    let current = DEFAULT_HEX;
+
+    function applyTheme(hex) {
+      const c = hexRgb(hex), r = document.documentElement.style;
+      r.setProperty("--bg", css(darken(c, .70)));
+      r.setProperty("--bg1", css(darken(c, .80)));
+      r.setProperty("--bg2", css(darken(c, .95)));
+      r.setProperty("--hover", css(darken(c, .30)));
+      r.setProperty("--accent", css(darken(c, .70)));
+      r.setProperty("--accent-hover", css(lighten(c, .40)));
+      r.setProperty("--cta", css(complement(c)));
+      // Weapon Trees' factor, verbatim — unless a chroma backdrop is overriding it.
+      r.setProperty("--stage", STAGES[stageMode] || css(darken(c, .18)));
+      r.setProperty("--text", "#ffffff");
+      r.setProperty("--text-dim", "#fffffff5");
+      r.setProperty("--line", "rgba(11, 8, 8, 0.12)");
+      r.setProperty("--card", "rgba(255,255,255,0.05)");
+
+      current = hex;
+      try { localStorage.setItem(KEY, hex); } catch (e) { /* private mode */ }
+
+      document.querySelectorAll(".swatch").forEach(s => s.classList.toggle("sel", s.dataset.hex === hex));
+
+      // Flat for a chroma key, textured for a theme colour. The canvas is transparent, so
+      // .content is what shows and this is the only switch needed.
+      document.documentElement.classList.toggle("chroma", stageMode !== "theme");
+    }
+
+    function renderSwatches() {
+      const grid = document.getElementById("swatches");
+      if (!grid) return;
+      grid.textContent = "";
+      for (const t of THEMES) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "swatch" + (t.hex === current ? " sel" : "");
+        b.dataset.hex = t.hex;
+        b.style.background = t.hex;      // the tile IS the colour, as in every other app
+        b.title = t.name;
+        const span = document.createElement("span");
+        span.textContent = t.name;
+        b.append(span);
+        b.addEventListener("click", () => applyTheme(t.hex));
+        grid.appendChild(b);
+      }
+    }
+
+    let saved = DEFAULT_HEX;
+    try { saved = migrateHex(localStorage.getItem(KEY)) || DEFAULT_HEX; } catch (e) { /* private mode */ }
+    if (!byHex.has(saved.toUpperCase())) saved = DEFAULT_HEX;
+    applyTheme(saved);
+    renderSwatches();
+    applyTheme(saved);   // re-run so the freshly drawn swatches get the `sel` marker
+
+    const modal = document.getElementById("themeModal");
+    document.getElementById("themeBtn").onclick = () => modal.classList.remove("hidden");
+    const STAGE_BTN = { theme: "stgTheme", green: "stgGreen", blue: "stgBlue" };
+    function setStage(mode) {
+      stageMode = mode in STAGES ? mode : "theme";
+      try { localStorage.setItem(STAGE_KEY, stageMode); } catch (e) { /* private mode */ }
+      for (const m in STAGE_BTN) document.getElementById(STAGE_BTN[m]).classList.toggle("on", m === stageMode);
+      applyTheme(current);   // re-derives --stage and repaints the scene
+    }
+    for (const m in STAGE_BTN) document.getElementById(STAGE_BTN[m]).onclick = () => setStage(m);
+    setStage(stageMode);
+
+    document.getElementById("themeClose").onclick = () => modal.classList.add("hidden");
+    modal.onclick = (e) => { if (e.target === modal) modal.classList.add("hidden"); };
+  })();
+</script>
+
+
+<script>
+// Once MHFU has swapped in, Chrome still draws each select's text too low, its bottom clipped,
+// until the select is restyled: zooming the page does it, a repaint does not. A font-family round
+// trip restyles them; the serif step is styled but never laid out. Kept out of the module so it is
+// armed before the module's first await.
+if (document.fonts) document.fonts.load('1em MHFU').then(() => {
+  const selects = document.querySelectorAll('select');
+  selects.forEach(s => { s.style.fontFamily = 'serif'; });
+  selects.forEach(s => getComputedStyle(s).fontFamily);
+  selects.forEach(s => { s.style.fontFamily = ''; });
+}, () => {});
+</script>
+
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+// The MH3U Armor Viewer. One figure: a hunter in the game's own armour, played in the game's own common
+// motions. A simple version: MH3U's shading is undecoded, so it draws under the monster viewer's generic
+// lighting; the hunter's colours are the game's -- each material's colour type picks which of skin,
+// hair, clothing, pigment and the two facial features multiplies its map (armor.json _about.colors).
+//
+// The render core (render/stage.js, assets.js, skeleton.js, material.js, materials-db.js, pose.js) is
+// the MH3U Monster Viewer's; render/piece.js builds one player model the way that viewer builds a
+// monster.
+//
+// Data (build_armor.py, build_armor_poses.py, mh3u_armor.py; see armor.json `_about`):
+//   armor.json      the game's five armour tables (names, the model each gender draws, who may wear
+//                   it, its default pigment), every player model, the clothing drawn under an empty
+//                   slot, per helm model the hair and face parts it leaves, the colour choices, the
+//                   motion lists
+//   materials.json  each material's albedo map, blend state and colour type
+//   models/<g>      one glb per model           poses/<g>   one glb per motion list
+//   ui/td_color.png the game's colour board
+import * as THREE from 'three';
+import { createStage } from './render/stage.js';
+import { initAssets, loadJson } from './render/assets.js';
+import { allMats, setWire, setBiasUnitsPerStep } from './render/material.js';
+import { loadMaterialsDb } from './render/materials-db.js';
+import { loadPiece, applyParts, applyColours, releasePiece } from './render/piece.js';
+import { PoseDriver } from './render/pose.js';
+
+const errEl = document.getElementById('err');
+const errors = [];
+window.__errors = errors;
+function noteError(msg){ errors.push(String(msg)); errEl.textContent = String(msg); }
+addEventListener('error', e => noteError('ERROR: ' + e.message));
+
+const DATA = await loadJson('armor.json');
+await loadMaterialsDb();
+
+const MARGIN = 1.25;
+const viewport = document.getElementById('viewport');
+const stage = createStage(viewport, { margin: MARGIN });
+const { renderer, scene, camera, controls, world } = stage;
+initAssets(renderer);
+
+// ---- generic lighting: the MH3U Monster Viewer's rig, turning with the view -------------------
+const _fwd = new THREE.Vector3();
+const lightRig = new THREE.Group(); lightRig.name = 'lightRig';
+scene.add(lightRig);
+lightRig.add(stage.lights.key, stage.lights.rim, stage.lights.fill);
+function trackLights(){
+  camera.getWorldDirection(_fwd);
+  lightRig.rotation.y = Math.atan2(-_fwd.x, -_fwd.z);
+}
+
+// ---- camera bar -----------------------------------------------------------------------------
+const ICON = {
+  orbit: '<circle cx="12" cy="12" r="3.2"/><ellipse cx="12" cy="12" rx="9.6" ry="4.3" transform="rotate(-30 12 12)"/>',
+  pan:   '<path d="M12 3.5v17M3.5 12h17M12 3.5 9.6 6M12 3.5 14.4 6M12 20.5 9.6 18M12 20.5 14.4 18M3.5 12 6 9.6M3.5 12 6 14.4M20.5 12 18 9.6M20.5 12 18 14.4"/>'
+};
+function setLabel(btn, label, tip){ btn.setAttribute('aria-label', label); btn.title = label + ': ' + tip; }
+let orbitLocked = false;
+const orbitLockBtn = document.getElementById('orbitLock');
+function paintOrbitLock(){
+  orbitLockBtn.querySelector('svg').innerHTML = ICON[orbitLocked ? 'pan' : 'orbit'];
+  setLabel(orbitLockBtn, orbitLocked ? 'Pan' : 'Orbit', 'Lock the orbit so dragging pans the view instead of rotating it; the right button always does the other one');
+  orbitLockBtn.classList.toggle('on', !orbitLocked);
+  controls.mouseButtons.LEFT = orbitLocked ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+  controls.mouseButtons.RIGHT = orbitLocked ? THREE.MOUSE.ROTATE : THREE.MOUSE.PAN;
+  controls.touches.ONE = orbitLocked ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+}
+orbitLockBtn.onclick = () => { orbitLocked = !orbitLocked; paintOrbitLock(); };
+const SPIN_SPEEDS = [0, 3, 5, 7, 11, 18, 27, 42, 66, 103, 160];
+let spinStep = 0;
+const spinBtn = document.getElementById('spinBtn');
+function paintSpin(){
+  const v = SPIN_SPEEDS[spinStep];
+  setLabel(spinBtn, spinStep === SPIN_SPEEDS.length - 1 ? 'Turbo' : 'Rotate', 'Cycle the turntable speed');
+  spinBtn.classList.toggle('on', v > 0);
+  controls.autoRotate = v > 0; controls.autoRotateSpeed = v || 3;
+}
+spinBtn.onclick = () => { spinStep = (spinStep + 1) % SPIN_SPEEDS.length; paintSpin(); };
+let wireOn = false;
+const wireBtn = document.getElementById('wireBtn');
+wireBtn.onclick = () => { wireOn = !wireOn; wireBtn.classList.toggle('on', wireOn); setWire(allMats, wireOn); };
+document.getElementById('shotBtn').onclick = () => {
+  renderer.render(scene, camera);
+  renderer.domElement.toBlob(b => {
+    if (!b) return;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b); a.download = 'mh3u-armor.png'; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }, 'image/png');
+};
+
+// ---- what is worn -----------------------------------------------------------------------------
+const SLOTS = DATA.slots;                 // helm, body, arm, wst, leg
+const C = DATA.colors;
+const LS_KEY = 'mh3u-armor-viewer';
+// A slot holds an ARMOUR RECORD id (0 = nothing), not a model: pieces sharing a model can carry
+// different default pigments, and the record is what the game colours by.
+// The starting colours: skin is the game's own (slider 189, 0x3db30c). The game's starting hair,
+// clothing and feature colours are not read, so hair starts on preset 12 (near black), clothing on
+// preset 11 (near white) and both features Off -- the viewer's picks, not the game's.
+const DEFAULTS = { g: 'f', type: 'all', helm: 0, body: 0, arm: 0, wst: 0, leg: 0, face: 0, hair: 0, cloth: 0,
+                   skin: C.skin.default, hairC: { p: 11 }, clothC: { p: 10 }, feat1: { off: true }, feat2: { off: true },
+                   pig: { helm: null, body: null, arm: null, wst: null, leg: null },
+                   pose: { list: '0000', clip: 'Motion[1]_loop' } };
+const clone = o => JSON.parse(JSON.stringify(o));
+const state = clone(DEFAULTS);
+try {
+  const saved = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+  if (saved && saved.v === 2) Object.assign(state, saved);
+} catch (_) {}
+state.v = 2;
+function saveState(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (_) {} }
+
+const pad3 = n => String(n).padStart(3, '0');
+const pieceRec = (g, slot, model) => DATA.pieces[g + '/' + g + '_' + slot + pad3(model)] || null;
+const recById = Object.fromEntries(SLOTS.map(s => [s, new Map(DATA.armor[s].map(r => [r.id, r]))]));
+const worn = slot => recById[slot].get(state[slot]) || null;
+
+// The model a slot draws: the worn record's model for this gender; with nothing worn, the game's own
+// fallback -- body, arm and leg draw the clothing (inner wear) models, 60-63 by the save's choice
+// (0x892a14), helm and waist draw their model 0 (armor.json _about.inner).
+function modelFor(slot){
+  const r = worn(slot);
+  if (r) return r[state.g];
+  const inner = DATA.inner[slot];
+  return inner ? inner[Math.min(state.cloth, inner.length - 1)] : 0;
+}
+
+// A slot's list: one item per (model, default pigment, dyeable) this gender can wear, in the game's own
+// table order, named by every piece in it (a Blademaster and a Gunner piece usually share one). Type and
+// the name filter narrow which pieces count; the worn piece always stays listed.
+function optionsFor(slot){
+  const g = state.g, f = (filterEl.value || '').trim().toLowerCase();
+  const groups = new Map();
+  for (const r of DATA.armor[slot]){
+    if (r.wear.indexOf(g) < 0) continue;
+    if (state.type !== 'all' && r.wear.indexOf(state.type) < 0) continue;
+    const k = r[g] + ':' + r.pig + ':' + (r.dye ? 1 : 0);
+    if (!groups.has(k)) groups.set(k, { id: r.id, model: r[g], ids: [], names: [] });
+    const e = groups.get(k);
+    e.ids.push(r.id);
+    if (e.names.indexOf(r.name) < 0) e.names.push(r.name);
+  }
+  const out = [];
+  for (const e of groups.values()){
+    const label = e.names.join(' / ');
+    const mine = e.ids.indexOf(state[slot]) >= 0;
+    if (f && label.toLowerCase().indexOf(f) < 0 && !mine) continue;
+    if (!pieceRec(g, slot, e.model)) continue;
+    out.push([mine ? state[slot] : e.id, label]);
+  }
+  return out;
+}
+const filterEl = document.getElementById('filter');
+const typeSel = document.getElementById('htype');
+const genderSel = document.getElementById('genderSel');
+const faceSel = document.getElementById('faceStyle'), hairSel = document.getElementById('hairStyle');
+const clothSel = document.getElementById('clothing');
+const slotSel = Object.fromEntries(SLOTS.map(s => [s, document.getElementById('s_' + s)]));
+const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+function buildLists(){
+  for (const slot of SLOTS){
+    const opts = optionsFor(slot);
+    // a worn piece the current type or gender does not list falls back to nothing
+    if (state[slot] && !opts.some(o => o[0] === state[slot])) state[slot] = 0;
+    slotSel[slot].innerHTML = '<option value="0">(None)</option>' +
+      opts.map(([id, label]) => '<option value="' + id + '">' + esc(label) + '</option>').join('');
+    slotSel[slot].value = String(state[slot]);
+  }
+  const chars = DATA.chars[state.g];
+  faceSel.innerHTML = chars.face.map((e, i) => '<option value="' + i + '">Type ' + (i + 1) + '</option>').join('');
+  hairSel.innerHTML = chars.hair.map((e, i) => '<option value="' + i + '">Type ' + (i + 1) + '</option>').join('');
+  const nCloth = Math.max(...Object.values(DATA.inner).map(a => a.length));
+  clothSel.innerHTML = Array.from({ length: nCloth }, (_, i) => '<option value="' + i + '">Type ' + (i + 1) + '</option>').join('');
+  state.face = Math.min(state.face, chars.face.length - 1);
+  state.hair = Math.min(state.hair, chars.hair.length - 1);
+  state.cloth = Math.min(state.cloth, nCloth - 1);
+  faceSel.value = String(state.face); hairSel.value = String(state.hair); clothSel.value = String(state.cloth);
+  genderSel.value = state.g; typeSel.value = state.type;
+  buildColourLists(); buildPigmentLists(); buildPoseLists();
+}
+
+// ---- colours ----------------------------------------------------------------------------------
+// The game's colour board (GUI\Texture\lobby\td_color): every preset IS one of its pixels, at the
+// preset's own x, y, and Custom picks any pixel of it. Sampled from the decoded image, RGB exact.
+const boardImg = new Image();
+await new Promise((ok, bad) => { boardImg.onload = ok; boardImg.onerror = bad; boardImg.src = C.board.png; });
+const boardData = (() => {
+  const cv = document.createElement('canvas'); cv.width = C.board.w; cv.height = C.board.h;
+  const cx = cv.getContext('2d'); cx.drawImage(boardImg, 0, 0);
+  return cx.getImageData(0, 0, C.board.w, C.board.h).data;
+})();
+const boardRGB = (x, y) => { const i = (y * C.board.w + x) * 4; return [boardData[i], boardData[i + 1], boardData[i + 2]]; };
+const presetRGB = gi => C.presets[gi].slice(0, 3);
+// a colour choice -> [R, G, B] or null (Off): { p: k } = preset k of the list, { x, y } = a board pixel
+function rgbOf(spec, list){
+  if (!spec || spec.off) return null;
+  if (spec.p !== undefined) return presetRGB(list[spec.p]);
+  if (spec.x !== undefined) return boardRGB(spec.x, spec.y);
+  return null;
+}
+// A FEATURE IS ON while its colour's top byte is not 0 (0x23f83c tests [colour] & 0xff000000, and the
+// colour is packed R << 24 | G << 16 | B << 8 | 0xff), so a board colour with R = 0 switches it off
+// exactly as it does in the game.
+const featureOn = spec => { const c = rgbOf(spec, C.otherPresets); return !!(c && c[0] !== 0); };
+const css = c => c ? 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')' : 'transparent';
+
+const COLOR_ROWS = [
+  { key: 'hairC', sel: 'hairColor', chip: 'hairChip', list: () => C.hairPresets, off: false, name: 'Hair Color' },
+  { key: 'clothC', sel: 'clothColor', chip: 'clothChip', list: () => C.otherPresets, off: false, name: 'Clothing Color' },
+  { key: 'feat1', sel: 'feat1Color', chip: 'feat1Chip', list: () => C.otherPresets, off: true, name: 'Feature 1' },
+  { key: 'feat2', sel: 'feat2Color', chip: 'feat2Chip', list: () => C.otherPresets, off: true, name: 'Feature 2' },
+];
+const specValue = s => !s || s.off ? 'off' : s.p !== undefined ? 'p' + s.p : 'custom';
+function buildColourLists(){
+  for (const r of COLOR_ROWS){
+    const sel = document.getElementById(r.sel);
+    sel.innerHTML = (r.off ? '<option value="off">Off</option>' : '') +
+      r.list().map((gi, k) => '<option value="p' + k + '">Color ' + (k + 1) + '</option>').join('') +
+      '<option value="custom">Custom</option>';
+    sel.value = specValue(state[r.key]);
+  }
+  const sk = document.getElementById('skinTone');
+  sk.value = String(state.skin);
+  sk.style.background = 'linear-gradient(to right,' + C.skin.strip.map(css).join(',') + ')';
+  paintChips();
+}
+function paintChips(){
+  for (const r of COLOR_ROWS){
+    const c = rgbOf(state[r.key], r.list());
+    document.getElementById(r.chip).style.background = (r.off && !featureOn(state[r.key])) ? 'transparent' : css(c);
+  }
+  document.getElementById('skinChip').style.background = css(C.skin.strip[state.skin]);
+}
+
+// ARMOUR PIGMENT (type 3): the worn piece's own colour, armour record +5 into the game's 44-colour
+// table (0x895754 -> 0x893e14); a dyeable piece (record +4 == 2) can take Custom instead.
+function pigmentOf(slot){
+  const r = worn(slot);
+  if (r && r.dye && state.pig[slot]) return boardRGB(state.pig[slot].x, state.pig[slot].y);
+  return C.pigments[r ? r.pig : 0];
+}
+function buildPigmentLists(){
+  for (const slot of SLOTS){
+    const sel = document.getElementById('pig_' + slot), r = worn(slot);
+    if (!(r && r.dye)) state.pig[slot] = null;
+    sel.innerHTML = '<option value="default">Default</option>' + (r && r.dye ? '<option value="custom">Custom</option>' : '');
+    sel.disabled = !(r && r.dye);
+    sel.value = state.pig[slot] ? 'custom' : 'default';
+    document.getElementById('pigChip_' + slot).style.background = css(pigmentOf(slot));
+  }
+}
+
+// THE GAME'S PER-UNIT COLOUR RULES (0x24bc00..0x24bcd0, 0x23f83c, 0x248bc4): every unit takes the
+// clothing colour (type 4); the hair takes the hair colour (1) and no skin; every other unit takes the
+// skin tone (2); the face takes the two features (5, 6); an armour slot takes its own pigment (3).
+function applyAllColours(){
+  const skin = C.skin.strip[state.skin];
+  const hair = rgbOf(state.hairC, C.hairPresets), cloth = rgbOf(state.clothC, C.otherPresets);
+  const f1 = featureOn(state.feat1) ? rgbOf(state.feat1, C.otherPresets) : null;
+  const f2 = featureOn(state.feat2) ? rgbOf(state.feat2, C.otherPresets) : null;
+  if (mounted.hair) applyColours(mounted.hair, { 1: hair, 4: cloth });
+  if (mounted.face) applyColours(mounted.face, { 2: skin, 4: cloth, 5: f1, 6: f2 });
+  for (const slot of SLOTS) if (mounted[slot]) applyColours(mounted[slot], { 2: skin, 3: pigmentOf(slot), 4: cloth });
+  paintChips(); buildPigmentLists();
+}
+
+// One board per panel. The row that chose Custom owns it until another row does.
+function makeBoard(canvasId, wrapId, labelId, onPick){
+  const cv = document.getElementById(canvasId), wrap = document.getElementById(wrapId);
+  const [x0, y0, x1, y1] = C.board.region;
+  const w = x1 - x0 + 1, h = y1 - y0 + 1;
+  cv.width = w * 4; cv.height = h * 4;
+  const cx = cv.getContext('2d');
+  let target = null, mark = null;
+  function draw(){
+    cx.imageSmoothingEnabled = false;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    cx.drawImage(boardImg, x0, y0, w, h, 0, 0, cv.width, cv.height);
+    if (mark){
+      cx.strokeStyle = '#fff'; cx.lineWidth = 2;
+      cx.strokeRect((mark.x - x0) * 4 - 3, (mark.y - y0) * 4 - 3, 10, 10);
+      cx.strokeStyle = '#000'; cx.lineWidth = 1;
+      cx.strokeRect((mark.x - x0) * 4 - 5, (mark.y - y0) * 4 - 5, 14, 14);
+    }
+  }
+  function pick(e){
+    if (!target) return;
+    const rc = cv.getBoundingClientRect();
+    const x = Math.min(x1, Math.max(x0, x0 + Math.floor((e.clientX - rc.left) / rc.width * w)));
+    const y = Math.min(y1, Math.max(y0, y0 + Math.floor((e.clientY - rc.top) / rc.height * h)));
+    if (boardData[(y * C.board.w + x) * 4 + 3] === 0) return;      // off the board
+    mark = { x, y }; draw(); onPick(target, mark);
+  }
+  let down = false;
+  cv.addEventListener('pointerdown', e => { down = true; cv.setPointerCapture(e.pointerId); pick(e); });
+  cv.addEventListener('pointermove', e => { if (down) pick(e); });
+  cv.addEventListener('pointerup', () => { down = false; });
+  return {
+    open(t, label, at){ target = t; mark = at || null; document.getElementById(labelId).textContent = label; wrap.hidden = false; draw(); },
+    close(t){ if (t === undefined || t === target){ target = null; wrap.hidden = true; } },
+    target: () => target };
+}
+const colourBoard = makeBoard('board', 'boardWrap', 'boardLabel', (key, at) => {
+  state[key] = { x: at.x, y: at.y }; applyAllColours(); applyHelmMasks(); saveState();
+});
+const pigBoard = makeBoard('pigBoard', 'pigBoardWrap', 'pigBoardLabel', (slot, at) => {
+  state.pig[slot] = { x: at.x, y: at.y }; applyAllColours(); saveState();
+});
+const presetAt = (list, k) => ({ x: C.presets[list[k]][3], y: C.presets[list[k]][4] });
+for (const r of COLOR_ROWS){
+  const sel = document.getElementById(r.sel);
+  sel.onchange = () => {
+    const v = sel.value;
+    if (v === 'off') state[r.key] = { off: true };
+    else if (v[0] === 'p') state[r.key] = { p: +v.slice(1) };
+    if (v === 'custom'){
+      // Custom starts where the colour is now: a preset's own spot on the board, or the last pick
+      const s = state[r.key];
+      const at = s && s.x !== undefined ? { x: s.x, y: s.y } : (s && s.p !== undefined ? presetAt(r.list(), s.p) : presetAt(r.list(), 0));
+      state[r.key] = { x: at.x, y: at.y };
+      colourBoard.open(r.key, r.name + ': pick a color', at);
+    } else colourBoard.close(r.key);
+    applyAllColours(); applyHelmMasks(); saveState();
+  };
+  // re-opening a Custom row's board
+  sel.onfocus = () => { if (sel.value === 'custom') colourBoard.open(r.key, r.name + ': pick a color', state[r.key]); };
+}
+document.getElementById('skinTone').oninput = e => { state.skin = +e.target.value; applyAllColours(); saveState(); };
+for (const slot of SLOTS){
+  const sel = document.getElementById('pig_' + slot);
+  const label = sel.closest('.field').querySelector('label').textContent;
+  sel.onchange = () => {
+    if (sel.value === 'custom'){
+      const r = worn(slot), base = C.pigments[r ? r.pig : 0];
+      // start on the board pixel nearest the piece's own pigment
+      let best = null, bd = 1e9;
+      const [x0, y0, x1, y1] = C.board.region;
+      for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++){
+        if (boardData[(y * C.board.w + x) * 4 + 3] === 0) continue;
+        const c = boardRGB(x, y), d = (c[0] - base[0]) ** 2 + (c[1] - base[1]) ** 2 + (c[2] - base[2]) ** 2;
+        if (d < bd){ bd = d; best = { x, y }; }
+      }
+      state.pig[slot] = state.pig[slot] || best;
+      pigBoard.open(slot, 'Pigment: ' + label, state.pig[slot]);
+    } else { state.pig[slot] = null; pigBoard.close(slot); }
+    applyAllColours(); saveState();
+  };
+}
+
+// ---- mounting ---------------------------------------------------------------------------------
+// Each slot loads on its own ticket: a fast scroll through a list fires faster than models load,
+// and a load that comes back stale drops its result instead of mounting it.
+const mounted = {};                       // helm/body/arm/wst/leg/face/hair -> root
+const shown = {};                         // the record each slot is showing
+const ticket = {};
+function unmount(k){
+  if (mounted[k]){ world.remove(mounted[k]); releasePiece(mounted[k]); delete mounted[k]; delete shown[k]; }
+}
+async function mountOne(k, rec){
+  const t = ticket[k] = (ticket[k] || 0) + 1;
+  if (shown[k] === rec && mounted[k]) return;
+  if (!rec){ unmount(k); return; }
+  const root = await loadPiece(rec, { wire: wireOn });
+  if (t !== ticket[k]){ releasePiece(root); return; }
+  unmount(k);
+  root.userData.slot = k;
+  world.add(root); mounted[k] = root; shown[k] = rec;
+}
+
+// THE HAIR AND FACE UNDER A HELM (0x24a9f8 / 0x24a930). The helm's MODEL picks a record per gender;
+// for each hair model it gives the hair parts left drawn, and a face mask; a hair model can also take
+// face part 0 away. Then the features (0x23f83c): face part 5 is Feature 1 and part 6 Feature 2, each
+// drawn only where the helm leaves it AND the feature is on. Parts above the loops' ranges (hair 0-8,
+// face 0-6) keep the all-on they start with.
+function applyHelmMasks(){
+  const hf = DATA.hairFace[state.g];
+  const helm = modelFor('helm');
+  const hairMasks = hf.hair[helm], faceMask = hf.face[helm];
+  if (mounted.hair && hairMasks) applyParts(mounted.hair, hairMasks[state.hair], 9);
+  if (mounted.face && faceMask !== undefined){
+    let m = faceMask & (hf.hairClearsFace0[state.hair] ? ~1 : ~0);
+    if (!featureOn(state.feat1)) m &= ~(1 << 5);
+    if (!featureOn(state.feat2)) m &= ~(1 << 6);
+    applyParts(mounted.face, m, 7);
+  }
+}
+
+let loads = 0;
+function setLoading(on){
+  loads = Math.max(0, loads + (on ? 1 : -1));
+  document.getElementById('loading').hidden = loads === 0;
+}
+let framed = false;
+async function refresh(){
+  setLoading(true);
+  try {
+    const g = state.g, chars = DATA.chars[g];
+    const jobs = SLOTS.map(slot => mountOne(slot, pieceRec(g, slot, modelFor(slot))));
+    jobs.push(mountOne('face', chars.face[state.face] || null));
+    jobs.push(mountOne('hair', chars.hair[state.hair] || null));
+    await Promise.all(jobs);
+    applyHelmMasks();
+    applyAllColours();
+    if (!framed){ frameAll(); framed = true; }
+  } catch (e) { noteError(e && e.message || e); }
+  finally { setLoading(false); }
+  saveState();
+}
+
+// ---- pose ---------------------------------------------------------------------------------------
+// The game's own common motions, played on an off-screen proxy -- the gender's inner-wear body, which
+// carries every bone the motions drive bar the accessory bones 20-23 -- and copied to every piece by
+// bone id each frame (render/pose.js). An accessory bone, placed differently by each helm and hair,
+// follows its animated parent. "Bind Pose" stops the clip and puts every piece back at rest.
+const pose = new PoseDriver({ frame: world, onError: msg => noteError(msg) });
+const poseListSel = document.getElementById('poseList'), poseClipSel = document.getElementById('poseClip');
+function poseSet(){ return DATA.poses && DATA.poses[state.g]; }
+function buildPoseLists(){
+  const P = poseSet();
+  const lists = (P && P.lists) || [];
+  poseListSel.innerHTML = lists.map(l => '<option value="' + l.id + '">List ' + (+l.id / 100) + ' &mdash; ' + l.clips.length + ' clips</option>').join('');
+  if (!lists.some(l => l.id === state.pose.list)) state.pose.list = lists.length ? lists[0].id : '';
+  poseListSel.value = state.pose.list;
+  const l = lists.find(x => x.id === state.pose.list);
+  const clips = (l && l.clips) || [];
+  poseClipSel.innerHTML = '<option value="">Bind Pose</option>' +
+    clips.map(c => '<option value="' + esc(c.clip) + '">' + esc(c.clip) + ' &mdash; ' + c.dur.toFixed(2) + ' s</option>').join('');
+  if (state.pose.clip && !clips.some(c => c.clip === state.pose.clip)) state.pose.clip = '';
+  poseClipSel.value = state.pose.clip;
+}
+function restoreBind(){
+  for (const root of Object.values(mounted))
+    for (const [node, p, q, s] of (root.userData.bind || [])){ node.position.copy(p); node.quaternion.copy(q); node.scale.copy(s); }
+}
+async function playPose(){
+  const P = poseSet();
+  const l = P && P.lists.find(x => x.id === state.pose.list);
+  if (!P || !l || !state.pose.clip){ pose.stop(); restoreBind(); return; }
+  await pose.play({ file: l.file, clip: state.pose.clip, model: P.model }, { joints: P.joints });
+}
+poseListSel.onchange = async () => {
+  state.pose.list = poseListSel.value;
+  const l = poseSet().lists.find(x => x.id === state.pose.list);
+  state.pose.clip = (l && l.clips.length) ? l.clips[0].clip : '';
+  buildPoseLists(); await playPose(); saveState();
+};
+poseClipSel.onchange = async () => { state.pose.clip = poseClipSel.value; await playPose(); saveState(); };
+
+// ---- framing ----------------------------------------------------------------------------------
+// Under a clip a skinned mesh keeps its rest bounds, so the pose driver's own bounds -- the union of
+// the whole loop -- and its body centre win where it has them.
+function frameAll(){
+  const box = new THREE.Box3();
+  let c = null;
+  if (pose.bounds && !pose.bounds.isEmpty()){ box.copy(pose.bounds); c = pose.center ? pose.center.clone() : null; }
+  else for (const o of Object.values(mounted)) box.expandByObject(o);
+  if (box.isEmpty()) return;
+  const size = box.getSize(new THREE.Vector3());
+  if (!c) c = box.getCenter(new THREE.Vector3());
+  const vFov = THREE.MathUtils.degToRad(camera.fov);
+  const reachY = Math.max(box.max.y - c.y, c.y - box.min.y) * 2;
+  const reachX = Math.max(box.max.x - c.x, c.x - box.min.x) * 2;
+  const dist = Math.max((Math.max(size.y, reachY) * 0.5) / Math.tan(vFov / 2),
+                        (Math.max(size.x, reachX) * 0.5) / Math.tan(vFov / 2) / camera.aspect) * MARGIN + size.z * 0.5;
+  controls.target.copy(c);
+  camera.position.copy(c).add(new THREE.Vector3(0, 0, dist));
+  camera.near = Math.max(dist / 1000, 1e-4); camera.far = dist * 20;
+  camera.updateProjectionMatrix(); controls.update();
+}
+document.getElementById('fitBtn').onclick = () => frameAll();
+const BIAS_STEP_M = 0.0005;
+function updateDepthBias(){
+  const dist = camera.position.distanceTo(controls.target);
+  if (dist > 0){
+    const near = Math.max(dist / 200, 1e-4), far = Math.max(dist * 20, 5000);
+    if (Math.abs(camera.near - near) > near * 0.02 || camera.far !== far){
+      camera.near = near; camera.far = far; camera.updateProjectionMatrix();
+    }
+  }
+  const lsb = dist * dist / camera.near / 16777216;
+  if (lsb > 0) setBiasUnitsPerStep(BIAS_STEP_M / lsb);
+}
+
+// ---- controls ---------------------------------------------------------------------------------
+for (const slot of SLOTS) slotSel[slot].onchange = () => {
+  state[slot] = +slotSel[slot].value; state.pig[slot] = null; pigBoard.close(slot); refresh();
+};
+filterEl.oninput = () => buildLists();
+typeSel.onchange = () => { state.type = typeSel.value; buildLists(); refresh(); };
+genderSel.onchange = async () => { state.g = genderSel.value; buildLists(); await refresh(); await playPose(); };
+faceSel.onchange = () => { state.face = +faceSel.value; refresh(); };
+hairSel.onchange = () => { state.hair = +hairSel.value; refresh(); };
+clothSel.onchange = () => { state.cloth = +clothSel.value; refresh(); };
+document.getElementById('resetBtn').onclick = async () => {
+  Object.assign(state, clone(DEFAULTS)); state.v = 2; filterEl.value = '';
+  colourBoard.close(); pigBoard.close();
+  buildLists(); framed = false; await refresh(); await playPose(); frameAll();
+};
+
+// THE WHEEL STEPS A DROPDOWN, CLOSED. The MHGU Monster Viewer's control (its index.html, commit f10d041), brought
+// over as it is, as the MHGU Armor Viewer did (7b10af24). Raven there, 2026-09-23: "Is it possible to have scrollable
+// dropdown menus?", "what the user wants is to be able to somehow scroll through the items", "Without needing to go
+// into the drop down". This engine does nothing with the wheel over a closed <select>, so one notch moves the selection
+// by one option here -- disabled entries and the group headings skipped, and clamped at both ends rather than
+// wrapping, so a flick cannot jump from the last piece to the first. The panel does not scroll under the pointer while
+// it happens, which is what makes the gesture readable: the wheel is either moving the list or moving the panel.
+//   THE CHANGE FIRES WHEN THE WHEEL SETTLES (STEP_HOLD). Each of these dropdowns does real work -- a piece mounts a
+// model, a clip loads a pose -- so a flick through ten of them would otherwise start ten loads and keep only the last.
+// The control shows every step as it goes; the work runs once, on the one the wheel stopped at.
+//   ONE STEP PER NOTCH. A mouse notch arrives as a single event of 100 px or so -- the size differs by mouse and by
+// system -- so any event that big is one item, whatever the number says: three notches move three, never seven. A
+// trackpad and a high-resolution wheel instead send a stream of small ones, which would race through the list an item
+// per event, so those are added up and take a step every STEP_PX of travel. The tally is dropped when the pointer moves
+// to another dropdown or the wheel rests (STEP_REST).
+{
+  const STEP_HOLD = 140, STEP_PX = 50, NOTCH = 50, STEP_REST = 400;
+  const LINE = 16, PAGE = 400;                 // deltaMode 1 is lines, 2 is pages
+  let stepTimer = null, stepping = null, acc = 0, accSel = null, accAt = 0;
+  const fire = () => {
+    stepTimer = null;
+    const sel = stepping; stepping = null;
+    if (sel && sel.isConnected) sel.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  addEventListener('wheel', e => {
+    const sel = e.target && e.target.closest && e.target.closest('select');
+    // a list box (size > 1) or a multiple select scrolls as a list of its own: leave those alone
+    if (!sel || sel.disabled || sel.multiple || sel.size > 1 || !sel.options.length) return;
+    e.preventDefault();                        // the panel stays where it is, whether or not this moves the list
+    const now = performance.now();
+    if (accSel !== sel || now - accAt > STEP_REST) acc = 0;
+    accSel = sel; accAt = now;
+    const d = (e.deltaY || 0) * (e.deltaMode === 1 ? LINE : e.deltaMode === 2 ? PAGE : 1);
+    let steps;
+    // a notch: an event counted in lines or pages is one by definition, and in pixels one that carries a notch's travel
+    if (e.deltaMode !== 0 || Math.abs(d) >= NOTCH){ steps = Math.sign(d); acc = 0; }
+    else { acc += d; steps = Math.trunc(acc / STEP_PX); acc -= steps * STEP_PX; }
+    if (!steps) return;
+    const dir = Math.sign(steps);
+    let i = sel.selectedIndex;
+    for (let n = Math.abs(steps); n > 0; n--){
+      let next = i;
+      for (let k = i + dir; k >= 0 && k < sel.options.length; k += dir){
+        const o = sel.options[k];
+        if (o.disabled || (o.parentElement && o.parentElement.disabled)) continue;
+        next = k; break;
+      }
+      if (next === i) break;                   // that end of the list
+      i = next;
+    }
+    if (i === sel.selectedIndex) return;
+    sel.selectedIndex = i;
+    if (stepping && stepping !== sel) fire();   // the pointer moved to another dropdown mid-flick
+    stepping = sel;
+    clearTimeout(stepTimer);
+    stepTimer = setTimeout(fire, STEP_HOLD);
+  }, { passive: false, capture: true });
+}
+
+// panels: one open at a time among the accordion panels; a data-keep-open panel stays as it is
+document.querySelectorAll('.panel:not([data-keep-open]) > .panel-head').forEach(h => {
+  h.onclick = () => {
+    const p = h.parentElement, wasOpen = p.dataset.open === 'true';
+    document.querySelectorAll('.panel:not([data-keep-open])').forEach(o => o.dataset.open = 'false');
+    p.dataset.open = wasOpen ? 'false' : 'true';
+  };
+});
+
+// ---- the loop ---------------------------------------------------------------------------------
+function fit(){ stage.fit(); }
+addEventListener('resize', fit);
+new ResizeObserver(fit).observe(viewport);
+fit();
+renderer.setAnimationLoop(() => {
+  if (pose.mixer) pose.step(Object.values(mounted));
+  controls.update();
+  stage.lights.head.position.copy(camera.position);
+  trackLights();
+  updateDepthBias();
+  renderer.render(scene, camera);
+});
+
+paintOrbitLock(); paintSpin();
+buildLists();
+await refresh();
+await playPose();
+frameAll();
+window.__view = { DATA, state, mounted, scene, camera, controls, world, pose, refresh, frameAll, buildLists, playPose,
+                  applyAllColours, applyHelmMasks };
+</script>
+</body>
+</html>
