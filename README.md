@@ -31,7 +31,10 @@ No build step. Serve `docs/` with any static file server:
                          empty slot, per helm the hair and face parts it leaves, the colour choices
                          and the motion lists; `_about` says where each comes from
     docs/materials.json  each material's base texture, blend state and colour type
+    docs/weapons.json    the game's weapon tables: classes, part names, every weapon's name and
+                         model (the Weapon panel is not built yet: the mount is not decoded)
     docs/models/<g>/     armour, clothing, face and hair meshes (.glb)
+    docs/models/weapons/ every weapon model (.glb)
     docs/poses/<g>/      the common motion lists, animations only
     docs/tex/            textures, deduplicated by content hash
     docs/ui/td_color.png the game's own colour board
