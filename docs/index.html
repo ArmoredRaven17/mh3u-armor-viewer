@@ -561,13 +561,15 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
       <!-- WEAPON: the game's own weapon tables (weapons.json) hung on the hunter by the game's own mount
            (mount.json, C:\MH3U-Extract\mh3u_mount.py): each part sits on a hunter bone with the placement
-           the game uses for its carry state, sheathed or drawn. -->
+           the game uses for its carry state, sheathed or drawn. Drawn plays a Stance -- a clip of the class's own
+           motion lists -- and the parts follow the game's placement on every frame of it (stances/wNN.json). -->
       <section class="panel" id="weaponPanel" data-open="false">
         <button class="panel-head">Weapon <span class="chev">&#9662;</span></button>
         <div class="panel-body">
           <div class="field"><label for="weaponClass">Class</label><select id="weaponClass"></select></div>
           <div class="field" id="weaponModelField"><label for="weaponModel">Weapon</label><select id="weaponModel"></select></div>
           <div class="field" id="weaponDrawnField"><label for="weaponDrawn">Carry</label><select id="weaponDrawn"><option value="1">Drawn</option><option value="0">Sheathed</option></select></div>
+          <div class="field" id="weaponStanceField"><label for="weaponStance">Stance</label><select id="weaponStance"></select></div>
         </div>
       </section>
 
@@ -1943,7 +1945,7 @@ const DEFAULTS = { g: 'f', type: 'all', helm: 0, body: 0, arm: 0, wst: 0, leg: 0
                    pig: { helm: null, body: null, arm: null, wst: null, leg: null },
                    pose: { list: '0000', clip: 'Motion[1]_loop' },
                    // the weapon: class -1 = none; the model and pigment pick one of the class's weapons
-                   weapon: { cls: -1, model: 0, pig: 0, drawn: false } };
+                   weapon: { cls: -1, model: 0, pig: 0, drawn: false, stance: 0 } };
 const clone = o => JSON.parse(JSON.stringify(o));
 // A hunter, every field type-guarded onto the defaults: what a save, a slot or an older version of this app
 // wrote is never trusted as it stands.
@@ -1964,7 +1966,7 @@ function hunterOf(h){
   const w = h.weapon;
   if (w && typeof w === 'object' && Number.isInteger(w.cls) && (w.cls === -1 || WEAPONS.classes.some(c => c.cls === w.cls)))
     o.weapon = { cls: w.cls, model: Number.isInteger(w.model) ? w.model : 0, pig: Number.isInteger(w.pig) ? w.pig : 0,
-                 drawn: w.drawn === true };
+                 drawn: w.drawn === true, stance: Number.isInteger(w.stance) && w.stance >= 0 ? w.stance : 0 };
   return o;
 }
 const state = clone(DEFAULTS);
@@ -2289,6 +2291,9 @@ async function refresh(){
 // bone id each frame (render/pose.js). An accessory bone, placed differently by each helm and hair,
 // follows its animated parent. "Bind Pose" stops the clip and puts every piece back at rest.
 const pose = new PoseDriver({ frame: world, onError: msg => noteError(msg) });
+// a weapon stance that ends in _loop is the game's own cycle and repeats; any other plays once and holds its
+// last frame, as the MHGU Armor Viewer's stances do; the common motions keep the driver's default
+pose.loopMode = entry => entry.stance ? (/_loop$/.test(entry.clip) ? 'repeat' : 'once') : null;
 const poseListSel = document.getElementById('poseList'), poseClipSel = document.getElementById('poseClip');
 function poseSet(){ return DATA.poses && DATA.poses[state.g]; }
 function buildPoseLists(){
@@ -2308,19 +2313,40 @@ function restoreBind(){
   for (const root of Object.values(mounted))
     for (const [node, p, q, s] of (root.userData.bind || [])){ node.position.copy(p); node.quaternion.copy(q); node.scale.copy(s); }
 }
+// What the figure plays: with a weapon DRAWN, its Stance (the class's own motion lists, poses/<g>/wNN_<list>.glb);
+// otherwise the Pose panel's clip. The Pose panel keeps its choice while a stance plays, so sheathing returns to
+// it, and picking a pose sheathes the weapon -- the MHGU Armor Viewer's rule. `playing` names what the driver
+// is running once it runs, for the weapon's per-frame placement (placeWeapon).
+let poseTicket = 0, playing = null;
 async function playPose(){
+  const t = ++poseTicket;
   const P = poseSet();
+  const st = await drawnStance();
+  if (t !== poseTicket) return;
+  if (P && st){
+    const c = wClass(state.weapon.cls);
+    await pose.play({ file: 'poses/' + state.g + '/' + c.key + '_' + st.list + '.glb', clip: st.clip, model: P.model, stance: true },
+                    { joints: P.joints });
+    if (t === poseTicket) playing = { stance: st };
+    return;
+  }
   const l = P && P.lists.find(x => x.id === state.pose.list);
-  if (!P || !l || !state.pose.clip){ pose.stop(); restoreBind(); return; }
+  if (!P || !l || !state.pose.clip){ pose.stop(); restoreBind(); playing = null; return; }
   await pose.play({ file: l.file, clip: state.pose.clip, model: P.model }, { joints: P.joints });
+  if (t === poseTicket) playing = { pose: state.pose.list + ':' + state.pose.clip };
+}
+function sheatheForPose(){
+  if (state.weapon.cls < 0 || !state.weapon.drawn) return;
+  state.weapon.drawn = false; weaponDrawnSel.value = '0'; buildStanceList();
 }
 poseListSel.onchange = async () => {
+  sheatheForPose();
   state.pose.list = poseListSel.value;
   const l = poseSet().lists.find(x => x.id === state.pose.list);
   state.pose.clip = (l && l.clips.length) ? l.clips[0].clip : '';
   buildPoseLists(); await playPose(); saveState();
 };
-poseClipSel.onchange = async () => { state.pose.clip = poseClipSel.value; await playPose(); saveState(); };
+poseClipSel.onchange = async () => { sheatheForPose(); state.pose.clip = poseClipSel.value; await playPose(); saveState(); };
 
 // ---- weapon -------------------------------------------------------------------------------------
 // THE GAME'S OWN WEAPON MOUNT (C:\MH3U-Extract\mh3u_mount.py, notes/armor.md "Weapon mount"; mount.json).
@@ -2336,13 +2362,53 @@ poseClipSel.onchange = async () => { state.pose.clip = poseClipSel.value; await 
 // weapon is never moved twice (three skins a mesh relative to its own world matrix).
 //   The weapon's own pigment (colour type 3) is the game's: record +0x18 (+9 for the Bowguns and the Bow)
 // into the RGB table 0xb02924 (weapons.json pigments); index 0 is drawn white, as table entry 0.
-//   PART VISIBILITY: a weapon model builds with every part on; the Long Sword shows only part 0 while
-// sheathed (0x24751c sets bit 0 alone; drawn, every bit). The other classes' per-state part masks (their
-// joint functions 0x23aec8 by type) are not read, so their multi-part models draw every part.
+//   STANCES, FRAME BY FRAME (C:\MH3U-Extract\build_stances.py -> stances/wNN.json). Every frame the game runs,
+// per part, 0x239f84 (the carry state, bone and record for the motion id and frame) and then the part type's
+// joint function 0x23aec8, which also moves the weapon's own MODE-1 joints (the Bow's limbs, the Switch Axe's
+// slide, the bowguns' folding) and sets its part mask. build_stances.py ran exactly that code in an emulator on
+// every frame of every clip of the class's three motion lists (and the two lobby motions 313 / 356 that take a
+// sheathed weapon in hand), per group of models whose per-model row (0xbd0c24) differs; this plays it back:
+// segment {f, state, joint, pos, rot, scale, rscale?, joints?, hide? | show?} at the clip's frame (60 a second).
+//   A mode-1 joint (0x23b3d8, mh3u_joint_probe.py): local translation = its bind + the record's position (cm),
+// local rotation = R(record, ZYX) x its bind rotation; its scale is the record's. The scale goes on the joint's
+// leaf where it has one (the bone its vertices bind to), so it does not carry down the chain -- INFERRED from the
+// converter's MT convention, not read in this build.
+//   PART VISIBILITY is the part mask the joint function leaves (model +0x108, one bit per mesh part): the Long
+// Sword's 0x24751c keeps only part 0 while sheathed, the Heavy Bowgun's drawn idle hides parts 1, 2, 101, 102.
 const weaponClassSel = document.getElementById('weaponClass'), weaponModelSel = document.getElementById('weaponModel'),
       weaponDrawnSel = document.getElementById('weaponDrawn');
 const W_CLASSES = WEAPONS.classes;
 const wClass = cls => W_CLASSES.find(c => c.cls === cls) || null;
+const weaponStanceSel = document.getElementById('weaponStance');
+// stances/wNN.json per class key, once; `stances` flattens its three lists in order as "Stance N", as the MHGU
+// Armor Viewer numbers them (Stance 1 is list 10's Motion[1]_loop, the drawn idle)
+const STANCE_LOADS = new Map(), stanceJson = {};
+function loadStances(key){
+  if (!STANCE_LOADS.has(key))
+    STANCE_LOADS.set(key, loadJson('stances/' + key + '.json').then(S => {
+      S.stances = [];
+      for (const L of S.lists) for (const c of L.clips) S.stances.push(Object.assign({ list: L.id, label: 'Stance ' + (S.stances.length + 1) }, c));
+      return (stanceJson[key] = S);
+    }).catch(e => { STANCE_LOADS.delete(key); noteError('stances/' + key + '.json: ' + (e && e.message || e)); return null; }));
+  return STANCE_LOADS.get(key);
+}
+// the stance the figure plays: the weapon's, when it is drawn
+async function drawnStance(){
+  const w = state.weapon, c = wClass(w.cls);
+  if (!c || !w.drawn) return null;
+  const S = await loadStances(c.key);
+  return (S && S.stances.length) ? S.stances[Math.min(w.stance, S.stances.length - 1)] : null;
+}
+function buildStanceList(){
+  const w = state.weapon, c = wClass(w.cls), S = c && stanceJson[c.key];
+  const list = (S && S.stances) || [];
+  if (S && w.stance >= list.length) w.stance = 0;
+  weaponStanceSel.innerHTML = list.map((st, i) => '<option value="' + i + '" title="List ' + (+st.list / 100) + ' ' + esc(st.clip) +
+    ' &mdash; ' + st.dur.toFixed(2) + ' s">' + st.label + '</option>').join('');
+  weaponStanceSel.value = String(w.stance);
+  weaponStanceSel.disabled = !w.drawn || !list.length;
+  document.getElementById('weaponStanceField').hidden = w.cls < 0;
+}
 // a class's list: one item per (model, pigment), named by every weapon that draws it -- as the armour lists
 function weaponOptions(cls){
   const c = wClass(cls);
@@ -2368,6 +2434,7 @@ function buildWeaponLists(){
   weaponDrawnSel.value = w.drawn ? '1' : '0';
   document.getElementById('weaponModelField').hidden = w.cls < 0;
   document.getElementById('weaponDrawnField').hidden = w.cls < 0;
+  buildStanceList();
 }
 // the mounted parts: { root, node (the mount joint), part (mount.json's), k }
 const weaponParts = [];
@@ -2385,12 +2452,12 @@ async function refreshWeapon(){
   const M = MOUNT.classes[String(c.cls)];
   // a part the cart has no model for (a Long Sword without a scabbard) is not drawn: the game asks for the
   // file by the weapon's own model number and there is none
-  const loaded = await Promise.all(c.parts.map(async (name, k) => {
+  const [loaded] = await Promise.all([Promise.all(c.parts.map(async (name, k) => {
     const rec = WEAPONS.models[c.dir + '/' + name + pad3(w.model)];
     if (!rec || !M || !M.parts[k]) return null;
     const root = await loadPiece(rec, { wire: wireOn });
     return { root, k, part: M.parts[k] };
-  }));
+  })), loadStances(c.key)]);
   if (t !== weaponTicket){ for (const p of loaded) if (p) releasePiece(p.root); return; }
   unmountWeapon();
   for (const p of loaded){
@@ -2402,24 +2469,48 @@ async function refreshWeapon(){
     world.add(p.root); weaponParts.push(p);
   }
   weaponShown = key;
+  buildStanceList();
   applyWeaponLook();
 }
-// the pigment, and the part masks the carry state sets
+// the pigment (the part masks follow the frame: placeWeapon)
 function applyWeaponLook(){
-  const w = state.weapon;
-  const rgb = WEAPONS.pigments[w.pig] || WEAPONS.pigments[0];
-  for (const p of weaponParts){
-    applyColours(p.root, { 3: rgb });
-    // the Long Sword (0x24751c, types 7 and 18): sheathed shows part 0 alone; drawn, every part
-    if (w.cls === 7){
-      const sheathed = placementOf(p).state === 2;
-      p.root.traverse(o => { if ((o.isMesh || o.isSkinnedMesh) && !o.userData.proxy) o.visible = !sheathed || o.userData.part === 0; });
-    }
-  }
+  const rgb = WEAPONS.pigments[state.weapon.pig] || WEAPONS.pigments[0];
+  for (const p of weaponParts) applyColours(p.root, { 3: rgb });
 }
-// the part's placement for the carry on screen, with the model's own rest record where it has one
-function placementOf(p){
-  const w = state.weapon, pl = w.drawn ? p.part.drawn : p.part.sheathed;
+// The timelines on screen and the frame: drawn, the stance the driver plays (its first frame while it loads);
+// sheathed, the lobby motion's own when the Pose panel plays one that moves the weapon, else the rest look.
+// The variant is the one whose models include the weapon's.
+function weaponTimeline(){
+  const w = state.weapon, c = wClass(w.cls), S = c && stanceJson[c.key];
+  if (!S) return null;
+  let v = S.ref;
+  for (const k in S.variants) if (S.variants[k].models.indexOf(w.model) >= 0){ v = k; break; }
+  const frame = pose.action ? Math.floor(pose.action.time * S.fps + 1e-4) : 0;
+  if (w.drawn){
+    const now = playing && playing.stance && S.stances.indexOf(playing.stance) >= 0;
+    const st = now ? playing.stance : S.stances[w.stance];
+    return st ? { parts: (st.v && st.v[v]) || st.parts, frame: now ? frame : 0 } : null;
+  }
+  const pp = playing && playing.pose && S.pose[playing.pose];
+  return pp ? { parts: pp.v[v], frame } : { parts: S.rest[v], frame: 0 };
+}
+function segmentAt(tl, frame){
+  let s = tl[0];
+  for (const x of tl){ if (x.f > frame) break; s = x; }
+  return s;
+}
+// the part's placement on this frame -- or, without its class's stances, mount.json's for the carry on screen
+function placementOf(p, T){
+  if (T === undefined) T = weaponTimeline();
+  const tl = T && T.parts[p.k];
+  if (tl && tl.length) return segmentAt(tl, T.frame);
+  const w = state.weapon, pl = carryPlacement(p, w.drawn ? p.part.drawn : p.part.sheathed);
+  // the Long Sword (0x24751c, types 7 and 18): sheathed shows part 0 alone; drawn, every part
+  return (w.cls === 7 && pl.state === 2) ? Object.assign({}, pl, { show: [0] }) : pl;
+}
+// mount.json's placement, with the model's own rest record where it has one
+function carryPlacement(p, pl){
+  const w = state.weapon;
   if (pl.state === 2 && p.part.type !== 16 && p.part.type !== 18){
     const ci = MOUNT.carry.byModel[w.cls + ':' + w.model];
     if (ci){
@@ -2432,15 +2523,46 @@ function placementOf(p){
   return pl;
 }
 const _wm = new THREE.Matrix4(), _wl = new THREE.Matrix4(), _wi = new THREE.Matrix4();
-const _we = new THREE.Euler(), _wq = new THREE.Quaternion(), _wp = new THREE.Vector3(), _ws = new THREE.Vector3();
+const _we = new THREE.Euler(), _wq = new THREE.Quaternion(), _wp = new THREE.Vector3(), _ws = new THREE.Vector3(), _wv = new THREE.Vector3();
+// the weapon's mode-1 joints: every joint but the mount goes back to its bind, then takes the frame's record
+function poseWeaponJoints(p, pl){
+  if (!p.joints){
+    const bind = new Map((p.root.userData.bind || []).map(([o, ps, q, sc]) => [o, [ps, q, sc]]));
+    p.joints = gidBonesOf(p.root).filter(b => b.node !== p.node && bind.has(b.node))
+      .map(b => ({ gid: b.gid, node: b.node, leaf: b.leaf, bind: bind.get(b.node), leafScale: b.leaf && bind.has(b.leaf) ? bind.get(b.leaf)[2] : null }));
+  }
+  const recs = pl.joints || [];
+  for (const j of p.joints){
+    j.node.position.copy(j.bind[0]); j.node.quaternion.copy(j.bind[1]); j.node.scale.copy(j.bind[2]);
+    if (j.leaf && j.leafScale) j.leaf.scale.copy(j.leafScale);
+    const r = recs.find(x => x[0] === j.gid);
+    if (!r) continue;
+    j.node.position.add(_wv.set(r[1][0] / 100, r[1][1] / 100, r[1][2] / 100));
+    _we.set(r[2][0] * DEG, r[2][1] * DEG, r[2][2] * DEG, MOUNT.order);
+    j.node.quaternion.premultiply(_wq.setFromEuler(_we));
+    ((j.leaf && j.leafScale) ? j.leaf : j.node).scale.multiply(_wv.fromArray(r[3]));
+  }
+}
+// the part mask: `show` lists the parts it keeps, `hide` the parts it clears; the stand-in layer stays off
+function maskWeapon(p, pl){
+  const key = pl.show ? 's' + pl.show.join() : pl.hide ? 'h' + pl.hide.join() : '';
+  if (key === p.mask) return;
+  p.mask = key;
+  p.root.traverse(o => {
+    if (!(o.isMesh || o.isSkinnedMesh) || o.userData.proxy) return;
+    const part = o.userData.part;
+    o.visible = pl.show ? pl.show.indexOf(part) >= 0 : !(pl.hide && pl.hide.indexOf(part) >= 0);
+  });
+}
 const DEG = Math.PI / 180;
 // every frame, after the pose: each part's mount joint = the bone's world * T R S, written as the joint's
 // local matrix under its own parent
 function placeWeapon(){
   if (!weaponParts.length) return;
   const roots = Object.values(mounted);
+  const T = weaponTimeline();
   for (const p of weaponParts){
-    const pl = placementOf(p);
+    const pl = placementOf(p, T);
     const bone = playerBone(roots, pl.joint);
     p.root.visible = !!bone;
     if (!bone) continue;
@@ -2448,29 +2570,34 @@ function placeWeapon(){
     _we.set(pl.rot[0] * DEG, pl.rot[1] * DEG, pl.rot[2] * DEG, MOUNT.order);
     _wq.setFromEuler(_we);
     _wp.set(pl.pos[0] / 100, pl.pos[1] / 100, pl.pos[2] / 100);     // cm -> the models' metres
-    _ws.setScalar(pl.scale);
+    // the model's scale (0x239f84's return, written to model +0x60) times the mount record's own
+    const rs = pl.rscale;
+    if (rs) _ws.set(pl.scale * rs[0], pl.scale * rs[1], pl.scale * rs[2]); else _ws.setScalar(pl.scale);
     _wl.compose(_wp, _wq, _ws);
     _wm.multiplyMatrices(bone.matrixWorld, _wl);
     const parent = p.node.parent;
     parent.updateWorldMatrix(true, false);
     p.node.matrix.multiplyMatrices(_wi.copy(parent.matrixWorld).invert(), _wm);
     p.node.matrixWorldNeedsUpdate = true;
+    poseWeaponJoints(p, pl);
+    maskWeapon(p, pl);
     p.root.updateMatrixWorld(true);
   }
 }
-weaponClassSel.onchange = () => {
+weaponClassSel.onchange = async () => {
   const cls = +weaponClassSel.value;
-  state.weapon.cls = cls;
+  state.weapon.cls = cls; state.weapon.stance = 0;       // Stance 1, the class's drawn idle
   const opts = weaponOptions(cls);
   if (opts.length){ state.weapon.model = opts[0].model; state.weapon.pig = opts[0].pig; }
-  buildWeaponLists(); refreshWeapon().then(saveState);
+  buildWeaponLists(); await refreshWeapon(); await playPose(); saveState();
 };
 weaponModelSel.onchange = () => {
   const [m, g] = weaponModelSel.value.split(':').map(Number);
   state.weapon.model = m; state.weapon.pig = g;
   refreshWeapon().then(saveState);
 };
-weaponDrawnSel.onchange = () => { state.weapon.drawn = weaponDrawnSel.value === '1'; applyWeaponLook(); saveState(); };
+weaponDrawnSel.onchange = async () => { state.weapon.drawn = weaponDrawnSel.value === '1'; buildStanceList(); await playPose(); saveState(); };
+weaponStanceSel.onchange = async () => { state.weapon.stance = +weaponStanceSel.value; await playPose(); saveState(); };
 
 // ---- framing ----------------------------------------------------------------------------------
 // Under a clip a skinned mesh keeps its rest bounds, so the pose driver's own bounds -- the union of
@@ -2784,7 +2911,8 @@ window.__view = { DATA, state, mounted, scene, camera, controls, world, pose, re
 Object.assign(window.__view, {
   renderer, setFocal, setFov, lookState, restoreLook, currentSet, applySet,
   weapon: { parts: () => weaponParts.map(p => ({ type: p.part.type, k: p.k, placement: placementOf(p), node: p.node, root: p.root })),
-            place: placeWeapon, refresh: refreshWeapon, MOUNT },
+            place: placeWeapon, refresh: refreshWeapon, MOUNT, timeline: weaponTimeline, playing: () => playing,
+            stances: () => { const c = wClass(state.weapon.cls); return (c && stanceJson[c.key] && stanceJson[c.key].stances) || []; } },
   hunters: { list: () => HUNTERS.map((h, i) => ({ name: h.name, g: i === hunterIndex ? state.g : (h.set && h.set.hunter && h.set.hunter.g) || null,
                                                    banked: !!h.set, fresh: !!h.fresh })),
              index: () => hunterIndex, switchTo: k => switchHunter(k) },

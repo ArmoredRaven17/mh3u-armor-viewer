@@ -16,6 +16,9 @@ either gender, with the hunter's face, hair, clothing and colours, in the game's
 - Every weapon in the game's tables, with the game's own names and pigment, hung on the hunter
   exactly where the game hangs it, sheathed or drawn (the game's own mount, read from the
   executable): shields on the forearm, the Long Sword in its scabbard, the Bow's arrows on the hip
+- Weapon stances, as in the MHGU Armor Viewer: drawn, the hunter plays any clip of the class's own
+  motion lists (Stance 1 is the drawn idle) and the weapon follows the game's own placement on every
+  frame -- the Bow unfolding, the Switch Axe's slide, the bowguns folding, the parts each stance hides
 - The hunter's common motion lists, clip by clip
 - Hunter slots, as in the MHGU Armor Viewer: named hunters, each with its own armour, look,
   colours, motion, lighting, effects and view; switch, copy, rename and delete them
@@ -45,9 +48,11 @@ No build step. Serve `docs/` with any static file server:
                          and pigment, and the pigment colours
     docs/mount.json      how the game hangs each weapon part on the hunter: the bone, the
                          placement for each carry state, the rest scale, per-model carry records
+    docs/stances/        per class, every weapon clip and where the game puts each weapon part, its
+                         moving joints and its visible parts on every frame of it
     docs/models/<g>/     armour, clothing, face and hair meshes (.glb)
     docs/models/weapons/ every weapon model (.glb)
-    docs/poses/<g>/      the common motion lists, animations only
+    docs/poses/<g>/      the common motion lists and each weapon class's three lists, animations only
     docs/tex/            textures, deduplicated by content hash
     docs/ui/td_color.png the game's own colour board
     docs/render/         the render core, copied from the MH3U Monster Viewer
@@ -64,6 +69,9 @@ The scripts live beside this repository in `C:\MH3U-Extract` and read a decrypte
     convert_weapons.py     every weapon model through RevilToolset
     build_weapons.py       the weapon models, their materials and weapons.json
     mh3u_mount.py          the weapon mount, read from the executable (mount.json)
+    build_weapon_poses.py  each weapon class's motion lists onto each gender's skeleton
+    build_stances.py       the game's own weapon update run on every frame of every weapon clip, in
+                           an emulator (stances/; mh3u_weapon_state.py)
 
 Decode notes: `C:\MH3U-Extract\notes\armor.md`. Neither the extract nor the game's files are part
 of this repository.
