@@ -1,0 +1,1321 @@
+{
+ "version": 1,
+ "_about": {
+  "mount": "How the game hangs each weapon part on the hunter, read from the executable by C:\\MH3U-Extract\\mh3u_mount.py (notes/armor.md \"Weapon mount\"). A part's callback (cPlayerBase::WeaponCallback) places the part model's mount joint at the hunter bone `joint` (a bone id) times T(pos cm) R(rot degrees, ZYX) S(scale). `sheathed` and `drawn` are the part's placement with no special motion playing: the drawn flag picks state 1 (0 for the Dual Blades' second blade); shields are always held (state 4), the arrows and the Long Sword scabbard always rest (state 2). A rest state takes the class's rest scale (0.8 / 0.9 / 1.0).",
+  "records": "The record tables are .bss filled at boot (static initialiser 0xa9f224), read by running it in an emulator (mh3u_static_init.py); the matrix convention was checked by running the callback's joint method 0x23bd14 on known inputs (mh3u_mount_probe.py).",
+  "carry": "records[i] replaces a sheathed part's placement when the weapon's model has a carry index i (byModel, \"class:model\", the per-model table 0xbd0c24 row +6; the Dual Blades' second blade takes i + 1); not for the arrows (type 16) or the scabbard, whose record comes from elsewhere",
+  "notRead": "Motion-specific placements (the per-type state functions switch on the motion id and its frame; the Light Bowgun and Switch Axe have keyframed tables for some motions); the alt table's game mode; the joint animation of a weapon's other joints (0x23aec8 per type)."
+ },
+ "order": "ZYX",
+ "units": {
+  "pos": "cm",
+  "rot": "degrees"
+ },
+ "compose": "world(the part model's mountJoint) = world(hunter bone `joint`) * T(pos) * R(rot, ZYX) * S(scale)",
+ "classes": {
+  "0": {
+   "restScale": 0.8,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 0,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -47.0,
+       51.0,
+       -24.0
+      ],
+      "rot": [
+       89.0,
+       -4.0,
+       41.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       10.0,
+       0.0,
+       58.0
+      ],
+      "rot": [
+       0.0,
+       0.0,
+       180.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "1": {
+   "restScale": 1.0,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 1,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       32.6,
+       -1.2,
+       -17.5
+      ],
+      "rot": [
+       97.0,
+       4.0,
+       -84.0
+      ],
+      "state": 2,
+      "joint": 1,
+      "scale": 1.0
+     },
+     "drawn": {
+      "pos": [
+       7.9,
+       -0.7,
+       -6.0
+      ],
+      "rot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    },
+    {
+     "index": 1,
+     "type": 13,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -18.5,
+       6.5,
+       3.0
+      ],
+      "rot": [
+       -26.0,
+       -3.0,
+       8.0
+      ],
+      "state": 4,
+      "joint": 11,
+      "scale": 1.0
+     },
+     "drawn": {
+      "pos": [
+       -18.5,
+       6.5,
+       3.0
+      ],
+      "rot": [
+       -26.0,
+       -3.0,
+       8.0
+      ],
+      "state": 4,
+      "joint": 11,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "2": {
+   "restScale": 0.8,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 2,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       62.0,
+       8.0,
+       -17.0
+      ],
+      "rot": [
+       82.0,
+       170.0,
+       -70.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       8.0,
+       -2.8,
+       0.0
+      ],
+      "rot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "3": {
+   "restScale": 0.9,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 3,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -1.2,
+       -24.0,
+       -20.0
+      ],
+      "rot": [
+       -0.7,
+       -98.3,
+       -89.7
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.9
+     },
+     "drawn": {
+      "pos": [
+       7.8,
+       -1.8,
+       -0.6
+      ],
+      "rot": [
+       -3.6,
+       31.0,
+       5.4
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    },
+    {
+     "index": 1,
+     "type": 14,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -16.0,
+       6.5,
+       -2.0
+      ],
+      "rot": [
+       -21.0,
+       8.0,
+       -2.5
+      ],
+      "state": 4,
+      "joint": 11,
+      "scale": 1.0
+     },
+     "drawn": {
+      "pos": [
+       -16.0,
+       6.5,
+       -2.0
+      ],
+      "rot": [
+       -21.0,
+       8.0,
+       -2.5
+      ],
+      "state": 4,
+      "joint": 11,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "4": {
+   "restScale": 0.8,
+   "gunner": true,
+   "parts": [
+    {
+     "index": 0,
+     "type": 4,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       40.0,
+       -14.0,
+       -29.0
+      ],
+      "rot": [
+       -47.0,
+       -95.0,
+       -110.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       8.0,
+       2.0,
+       1.0
+      ],
+      "rot": [
+       0.0,
+       180.0,
+       0.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "6": {
+   "restScale": 0.9,
+   "gunner": true,
+   "parts": [
+    {
+     "index": 0,
+     "type": 4,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -21.0,
+       6.0,
+       -7.5
+      ],
+      "rot": [
+       98.0,
+       -15.0,
+       1.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.9
+     },
+     "drawn": {
+      "pos": [
+       8.0,
+       2.0,
+       1.0
+      ],
+      "rot": [
+       0.0,
+       180.0,
+       0.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "7": {
+   "restScale": 0.8,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 7,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -47.0,
+       51.0,
+       -24.0
+      ],
+      "rot": [
+       89.0,
+       -4.0,
+       41.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       10.0,
+       0.0,
+       58.0
+      ],
+      "rot": [
+       0.0,
+       0.0,
+       180.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    },
+    {
+     "index": 1,
+     "type": 18,
+     "mountJoint": 4,
+     "sheathed": {
+      "pos": [
+       -47.0,
+       51.0,
+       -24.0
+      ],
+      "rot": [
+       89.0,
+       -4.0,
+       41.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       -47.0,
+       51.0,
+       -24.0
+      ],
+      "rot": [
+       89.0,
+       -4.0,
+       41.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     }
+    }
+   ]
+  },
+  "8": {
+   "restScale": 0.9,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 8,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -38.0,
+       -22.0,
+       -25.0
+      ],
+      "rot": [
+       92.0,
+       -4.0,
+       122.0
+      ],
+      "state": 2,
+      "joint": 1,
+      "scale": 0.9
+     },
+     "drawn": {
+      "pos": [
+       10.0,
+       -1.0,
+       65.0
+      ],
+      "rot": [
+       0.0,
+       0.0,
+       180.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "9": {
+   "restScale": 0.8,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 9,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       13.0,
+       8.0,
+       -22.0
+      ],
+      "rot": [
+       30.0,
+       91.0,
+       120.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       7.8,
+       -1.8,
+       -0.6
+      ],
+      "rot": [
+       3.6,
+       -31.0,
+       -174.6
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    },
+    {
+     "index": 1,
+     "type": 15,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -16.0,
+       6.5,
+       -2.0
+      ],
+      "rot": [
+       -21.0,
+       8.0,
+       -2.5
+      ],
+      "state": 4,
+      "joint": 11,
+      "scale": 1.0
+     },
+     "drawn": {
+      "pos": [
+       -16.0,
+       6.5,
+       -2.0
+      ],
+      "rot": [
+       -21.0,
+       8.0,
+       -2.5
+      ],
+      "state": 4,
+      "joint": 11,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "10": {
+   "restScale": 0.8,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 10,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       13.0,
+       15.0,
+       -24.0
+      ],
+      "rot": [
+       -90.0,
+       -114.0,
+       58.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       10.0,
+       -0.1,
+       1.0
+      ],
+      "rot": [
+       90.0,
+       0.0,
+       90.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    },
+    {
+     "index": 1,
+     "type": 16,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       8.5,
+       0.5,
+       -20.0
+      ],
+      "rot": [
+       -10.0,
+       0.0,
+       -16.0
+      ],
+      "state": 2,
+      "joint": 13,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       8.5,
+       0.5,
+       -20.0
+      ],
+      "rot": [
+       -10.0,
+       0.0,
+       -16.0
+      ],
+      "state": 2,
+      "joint": 13,
+      "scale": 0.8
+     }
+    }
+   ]
+  },
+  "11": {
+   "restScale": 1.0,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 11,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       32.0,
+       37.0,
+       -16.0
+      ],
+      "rot": [
+       -92.0,
+       -11.0,
+       126.0
+      ],
+      "state": 2,
+      "joint": 1,
+      "scale": 1.0
+     },
+     "drawn": {
+      "pos": [
+       7.9,
+       -0.7,
+       -6.0
+      ],
+      "rot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    },
+    {
+     "index": 1,
+     "type": 17,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       17.0,
+       50.0,
+       -18.0
+      ],
+      "rot": [
+       96.0,
+       8.5,
+       -28.0
+      ],
+      "state": 2,
+      "joint": 1,
+      "scale": 1.0
+     },
+     "drawn": {
+      "pos": [
+       -7.0,
+       -0.4,
+       -6.5
+      ],
+      "rot": [
+       0.0,
+       0.0,
+       180.0
+      ],
+      "state": 0,
+      "joint": 12,
+      "scale": 1.0
+     }
+    }
+   ]
+  },
+  "12": {
+   "restScale": 0.8,
+   "gunner": false,
+   "parts": [
+    {
+     "index": 0,
+     "type": 12,
+     "mountJoint": 0,
+     "sheathed": {
+      "pos": [
+       -2.0,
+       -60.0,
+       -21.0
+      ],
+      "rot": [
+       -90.0,
+       180.0,
+       0.0
+      ],
+      "state": 2,
+      "joint": 2,
+      "scale": 0.8
+     },
+     "drawn": {
+      "pos": [
+       7.0,
+       -6.7,
+       10.0
+      ],
+      "rot": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "state": 1,
+      "joint": 8,
+      "scale": 1.0
+     }
+    }
+   ]
+  }
+ },
+ "carry": {
+  "records": [
+   {
+    "pos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -47.0,
+     51.0,
+     -24.0
+    ],
+    "rot": [
+     89.0,
+     -90.0,
+     41.0
+    ]
+   },
+   {
+    "pos": [
+     -37.0,
+     40.0,
+     -24.0
+    ],
+    "rot": [
+     89.0,
+     -4.0,
+     41.0
+    ]
+   },
+   {
+    "pos": [
+     13.0,
+     15.0,
+     -33.0
+    ],
+    "rot": [
+     -90.0,
+     -110.0,
+     58.0
+    ]
+   },
+   {
+    "pos": [
+     -1.5,
+     -30.0,
+     -20.0
+    ],
+    "rot": [
+     -1.0,
+     -108.0,
+     -90.0
+    ]
+   },
+   {
+    "pos": [
+     -1.5,
+     -30.0,
+     -20.0
+    ],
+    "rot": [
+     -95.0,
+     10.0,
+     1.0
+    ]
+   },
+   {
+    "pos": [
+     -5.0,
+     -30.0,
+     -30.0
+    ],
+    "rot": [
+     -106.0,
+     -59.0,
+     14.0
+    ]
+   },
+   {
+    "pos": [
+     -2.0,
+     -45.0,
+     -21.0
+    ],
+    "rot": [
+     -85.0,
+     180.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -2.2,
+     -60.0,
+     -21.0
+    ],
+    "rot": [
+     -90.0,
+     90.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -2.2,
+     -60.0,
+     -21.0
+    ],
+    "rot": [
+     -85.0,
+     180.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -2.2,
+     -60.0,
+     -21.0
+    ],
+    "rot": [
+     -80.0,
+     180.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -2.2,
+     -60.0,
+     -21.0
+    ],
+    "rot": [
+     -5.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -2.0,
+     -40.0,
+     -21.0
+    ],
+    "rot": [
+     -80.0,
+     180.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     32.0,
+     37.0,
+     -16.0
+    ],
+    "rot": [
+     -92.0,
+     -11.0,
+     -54.0
+    ]
+   },
+   {
+    "pos": [
+     17.0,
+     50.0,
+     -18.0
+    ],
+    "rot": [
+     96.0,
+     8.5,
+     155.0
+    ]
+   },
+   {
+    "pos": [
+     35.5,
+     8.0,
+     -19.5
+    ],
+    "rot": [
+     -98.0,
+     10.0,
+     110.0
+    ]
+   },
+   {
+    "pos": [
+     -2.0,
+     -35.0,
+     -21.0
+    ],
+    "rot": [
+     -90.0,
+     180.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -32.0,
+     37.0,
+     -26.0
+    ],
+    "rot": [
+     89.0,
+     -4.0,
+     41.0
+    ]
+   },
+   {
+    "pos": [
+     -27.0,
+     29.0,
+     -24.0
+    ],
+    "rot": [
+     89.0,
+     -4.0,
+     41.0
+    ]
+   },
+   {
+    "pos": [
+     19.0,
+     20.0,
+     -38.0
+    ],
+    "rot": [
+     -90.0,
+     -114.0,
+     58.0
+    ]
+   },
+   {
+    "pos": [
+     32.0,
+     37.0,
+     -16.0
+    ],
+    "rot": [
+     -92.0,
+     -11.0,
+     126.0
+    ]
+   },
+   {
+    "pos": [
+     17.0,
+     40.0,
+     -22.0
+    ],
+    "rot": [
+     84.0,
+     -8.5,
+     152.0
+    ]
+   },
+   {
+    "pos": [
+     32.0,
+     37.0,
+     -16.0
+    ],
+    "rot": [
+     -92.0,
+     -11.0,
+     126.0
+    ]
+   },
+   {
+    "pos": [
+     17.0,
+     40.0,
+     -22.0
+    ],
+    "rot": [
+     84.0,
+     -8.5,
+     152.0
+    ]
+   },
+   {
+    "pos": [
+     -25.0,
+     31.0,
+     -24.0
+    ],
+    "rot": [
+     89.0,
+     -4.0,
+     41.0
+    ]
+   },
+   {
+    "pos": [
+     10.0,
+     8.0,
+     58.0
+    ],
+    "rot": [
+     10.0,
+     0.0,
+     180.0
+    ]
+   }
+  ],
+  "byModel": {
+   "0:28": 2,
+   "0:38": 2,
+   "2:38": 15,
+   "3:25": 4,
+   "3:38": 6,
+   "3:53": 6,
+   "7:30": 24,
+   "7:31": 17,
+   "7:32": 18,
+   "7:38": 24,
+   "10:27": 19,
+   "11:25": 13,
+   "11:26": 20,
+   "11:35": 22,
+   "12:2": 8,
+   "12:3": 8,
+   "12:4": 8,
+   "12:5": 9,
+   "12:6": 7,
+   "12:8": 10,
+   "12:11": 9,
+   "12:12": 9,
+   "12:13": 9,
+   "12:15": 7,
+   "12:16": 9,
+   "12:17": 10,
+   "12:20": 9,
+   "12:21": 9,
+   "12:22": 9,
+   "12:23": 16,
+   "12:25": 12,
+   "12:28": 8,
+   "12:30": 9,
+   "12:31": 16,
+   "12:33": 12,
+   "12:36": 10
+  }
+ },
+ "special": {
+  "6:41": {
+   "pos": [
+    -9.0,
+    6.0,
+    -12.0
+   ],
+   "rot": [
+    95.0,
+    -0.3,
+    -1.6
+   ],
+   "note": "Light Bowgun model 41 at rest (0x246734)"
+  }
+ },
+ "alt": {
+  "records": [
+   {
+    "pos": [
+     52.0,
+     50.0,
+     0.0
+    ],
+    "rot": [
+     -90.0,
+     0.0,
+     135.0
+    ]
+   },
+   {
+    "pos": [
+     -19.0,
+     -39.0,
+     0.0
+    ],
+    "rot": [
+     -90.0,
+     180.0,
+     23.0
+    ]
+   },
+   {
+    "pos": [
+     25.0,
+     -74.0,
+     -18.0
+    ],
+    "rot": [
+     75.0,
+     5.0,
+     -160.0
+    ]
+   },
+   {
+    "pos": [
+     -33.0,
+     -56.0,
+     0.0
+    ],
+    "rot": [
+     240.0,
+     60.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -26.0,
+     -7.0,
+     13.0
+    ],
+    "rot": [
+     290.0,
+     130.0,
+     -28.0
+    ]
+   },
+   {
+    "pos": [
+     -26.0,
+     -7.0,
+     13.0
+    ],
+    "rot": [
+     290.0,
+     130.0,
+     -28.0
+    ]
+   },
+   {
+    "pos": [
+     -26.0,
+     -7.0,
+     13.0
+    ],
+    "rot": [
+     290.0,
+     130.0,
+     -28.0
+    ]
+   },
+   {
+    "pos": [
+     81.0,
+     8.0,
+     0.0
+    ],
+    "rot": [
+     -90.0,
+     0.0,
+     120.0
+    ]
+   },
+   {
+    "pos": [
+     50.0,
+     67.0,
+     0.0
+    ],
+    "rot": [
+     -90.0,
+     0.0,
+     125.0
+    ]
+   },
+   {
+    "pos": [
+     10.0,
+     -50.0,
+     0.0
+    ],
+    "rot": [
+     -90.0,
+     90.0,
+     -30.0
+    ]
+   },
+   {
+    "pos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot": [
+     10.0,
+     90.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     0.0,
+     0.0,
+     -20.0
+    ],
+    "rot": [
+     -90.0,
+     180.0,
+     -45.0
+    ]
+   },
+   {
+    "pos": [
+     75.0,
+     75.0,
+     0.0
+    ],
+    "rot": [
+     45.0,
+     -80.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     36.0,
+     -3.0,
+     0.0
+    ],
+    "rot": [
+     90.0,
+     0.0,
+     151.0
+    ]
+   },
+   {
+    "pos": [
+     58.0,
+     -25.0,
+     0.0
+    ],
+    "rot": [
+     -90.0,
+     180.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -55.0,
+     0.0,
+     0.0
+    ],
+    "rot": [
+     -90.0,
+     180.0,
+     0.0
+    ]
+   },
+   {
+    "pos": [
+     -85.0,
+     20.0,
+     0.0
+    ],
+    "rot": [
+     0.0,
+     0.0,
+     -110.0
+    ]
+   },
+   {
+    "pos": [
+     0.0,
+     0.0,
+     20.0
+    ],
+    "rot": [
+     -90.0,
+     0.0,
+     45.0
+    ]
+   },
+   {
+    "pos": [
+     81.0,
+     8.0,
+     0.0
+    ],
+    "rot": [
+     -90.0,
+     0.0,
+     120.0
+    ]
+   }
+  ],
+  "note": "used for every part instead of the tables above while sGame +0xbd == 2 (0x239f84, 0x24751c); which game mode that is has not been read"
+ }
+}

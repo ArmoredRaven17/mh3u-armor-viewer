@@ -1,10 +1,11 @@
 {
  "version": 1,
- "generated": "2026-10-04T00:40:32",
+ "generated": "2026-10-04T09:12:52",
  "_about": {
   "weapons": "the game's weapon tables (build_weapons.py): [data manager +0x94] = 0xba353c, one per class, 0x1c-byte records (0x64 for the Heavy Bowgun, Light Bowgun and Bow), read through 0x8939a0; `model` = record +0, which the game's own getter 0x8949c8 returns. Names: the class's message file at the record's index (Lsword_eng.gmd for the Great Sword ...), an index rule the counts and the DUMMY rows bear out but whose lookup is not traced; the files carry a few names past the tables, which no record reaches. Records 0 and DUMMY are left out.",
   "classes": "`name` = Menu_eng.gmd 236 + class, in class order; `dir` and `parts` = the player loader's own names (0x8eebbc reads the class's array at 0xc76de8: part n is entry n, entry n + 1 for the Long Sword and Dual Blades), cut to the parts the cart ships.",
-  "models": "every weapon model on the cart, v flipped and ETC1A4 alpha replicated as for the armour; `hideIdx` = primitives whose mesh-table row lacks the draw bit (the proxy parts 100-102). How the game mounts a weapon on the hunter is not decoded yet."
+  "models": "every weapon model on the cart, v flipped and ETC1A4 alpha replicated as for the armour; `hideIdx` = primitives whose mesh-table row lacks the draw bit (the proxy parts 100-102). Mounted on the hunter as mount.json says (mh3u_mount.py).",
+  "pig": "a weapon's pigment (the colour its colour-type-3 materials take): record +0x18, +9 for the Heavy Bowgun, Light Bowgun and Bow (0x894534), an index into `pigments`, the RGB table 0xb02924 that 0x893e48 reads. With index 0 the game passes the part's stored colour instead (cPlayerBase +0x58, 0x242328), whose value is not read; the viewer draws it as entry 0, white."
  },
  "classes": [
   {
@@ -127,7002 +128,8539 @@
    {
     "id": 1,
     "name": "Iron Sword",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Iron Sword+",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Buster Sword",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Buster Sword+",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Buster Blade",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Ravager Blade",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Ravager Blade+",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Lacerator Blade",
-    "model": 54
+    "model": 54,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Devastator Blade",
-    "model": 54
+    "model": 54,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Chrome Razor",
-    "model": 53
+    "model": 53,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Chrome Quietus",
-    "model": 53
+    "model": 53,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Brazenwall",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Crimsonwall",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Cragscliff",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Goliath's Scream",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Hidden Blade",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Dark of Night",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Avidya Great Sword",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Eclipse Blade",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Merak's Asterism",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Type 41 Wyvernator",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Remalgalypse",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Remalgagorgon",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Rugged Great Sword",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Chieftain's Grt Swd",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "High Chief's Grt Swd",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Lagiacrus Blade",
-    "model": 10
+    "model": 10,
+    "pig": 27
    },
    {
     "id": 28,
     "name": "Lagiacrus Blade+",
-    "model": 10
+    "model": 10,
+    "pig": 27
    },
    {
     "id": 29,
     "name": "High Lagia Blade",
-    "model": 10
+    "model": 10,
+    "pig": 6
    },
    {
     "id": 30,
     "name": "Lagia Lightning",
-    "model": 18
+    "model": 18,
+    "pig": 2
    },
    {
     "id": 31,
     "name": "Lagia Wildfire",
-    "model": 18
+    "model": 18,
+    "pig": 19
    },
    {
     "id": 32,
     "name": "Neo Lagia Blade",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Lagia Fulmination",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Usurper's Storm",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Despot's Blackstorm",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Oppressor's Forger",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Orcus Tonitrus",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Nether Great Sword",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Nether Lufactrus",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Brimstren Drakepride",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Stygian Acedia",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Carapace Sword",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Carapace Blade",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Barroth Smasher",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Aurora Blade",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Northern Lights",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Northern Cross",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Viking Hornsword",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Ancharius Sword",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Excalius Sword",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Bone Blade",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Bone Blade+",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Jawblade",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Giant Jawblade",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Red Wing",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Rathalos Firesword",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Rathalos Flamesword",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Blue Wing",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Rathalos Glinsword",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Rathalos Gleamsword",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Dios Blade",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Dios Blade+",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Demolition Sword",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Myxo Demolisher",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Valkyrie Blade",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Sieglinde",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "High Sieglinde",
-    "model": 12
+    "model": 12,
+    "pig": 16
    },
    {
     "id": 68,
     "name": "Titania",
-    "model": 49
+    "model": 49,
+    "pig": 16
    },
    {
     "id": 69,
     "name": "Blushing Dame",
-    "model": 49
+    "model": 49,
+    "pig": 16
    },
    {
     "id": 70,
     "name": "Lj\u00f3s\u00e1lfar",
-    "model": 50
+    "model": 50,
+    "pig": 16
    },
    {
     "id": 71,
     "name": "Br\u00fcnnhilde",
-    "model": 50
+    "model": 50,
+    "pig": 16
    },
    {
     "id": 72,
     "name": "Siegmund",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "High Siegmund",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Reddnaught",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Auberon",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Pale Kaiser",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Golem Blade",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Blade of Talos",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Blade of Tartarus",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Wyvern Jawblade",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Quarrel Hornsword",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Quarrel Hornsword+",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Double Diablos",
-    "model": 51
+    "model": 51,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Cera Cigil",
-    "model": 51
+    "model": 51,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Cera Cymmetry",
-    "model": 51
+    "model": 51,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Ludroth Bone Sword",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Cataclysm Sword",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Cataclysm Blade",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Icicle Fang",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Icicle Fang+",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Paladire",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Galespike",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Simoom Sandbarb",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Simoom Sandbiter",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Finblade",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Plesioth Watercutter",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Plesioth Aquablade",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Plesioth Lullaby",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "Plesioth Lullabane",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 100,
     "name": "Wyvern's Perch",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 101,
     "name": "Roguish Deathcap",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 102,
     "name": "Lordly Deathcap",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 103,
     "name": "Amethyst Blade",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 104,
     "name": "Miasmethyst",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 105,
     "name": "Berserker Sword",
-    "model": 14
+    "model": 14,
+    "pig": 2
    },
    {
     "id": 106,
     "name": "Anguish",
-    "model": 14
+    "model": 14,
+    "pig": 2
    },
    {
     "id": 107,
     "name": "Nero's Anguish",
-    "model": 14
+    "model": 14,
+    "pig": 2
    },
    {
     "id": 108,
     "name": "Frozen Speartuna",
-    "model": 52
+    "model": 52,
+    "pig": 0
    },
    {
     "id": 109,
     "name": "Freezer Speartuna",
-    "model": 52
+    "model": 52,
+    "pig": 0
    },
    {
     "id": 110,
     "name": "Xiphias Gladius",
-    "model": 52
+    "model": 52,
+    "pig": 0
    },
    {
     "id": 111,
     "name": "Vulcanis",
-    "model": 17
+    "model": 17,
+    "pig": 3
    },
    {
     "id": 112,
     "name": "Vulcanis+",
-    "model": 17
+    "model": 17,
+    "pig": 3
    },
    {
     "id": 113,
     "name": "Vulcanvil",
-    "model": 17
+    "model": 17,
+    "pig": 3
    },
    {
     "id": 114,
     "name": "Vulcamagnon",
-    "model": 17
+    "model": 17,
+    "pig": 21
    },
    {
     "id": 115,
     "name": "Vulcatastrophe",
-    "model": 17
+    "model": 17,
+    "pig": 16
    },
    {
     "id": 116,
     "name": "Vulca Vendetta",
-    "model": 17
+    "model": 17,
+    "pig": 16
    },
    {
     "id": 117,
     "name": "Rusted Great Sword",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 118,
     "name": "Tarnished Great Swd",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 119,
     "name": "Ancient Blade",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 120,
     "name": "Elder Monument",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 121,
     "name": "Eternal Glyph",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 122,
     "name": "Worn Great Sword",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 123,
     "name": "Weathered Great Swd",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 124,
     "name": "Epitaph Blade",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 125,
     "name": "Epitaph Eternal",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 126,
     "name": "Alatreon Great Sword",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 127,
     "name": "Alatreon Revolution",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 128,
     "name": "Altheos Evolutia",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 129,
     "name": "Megiddo Blaze",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 130,
     "name": "The Depotheosis",
-    "model": 37
+    "model": 37,
+    "pig": 0
    }
   ],
   "w01": [
    {
     "id": 1,
     "name": "Hunter's Knife",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Hunter's Knife+",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Hunter's Dagger",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Assassin's Dagger",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Icicle Spike",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Icicle Spike+",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Nardebosche",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Nardebosche+",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Cryo Cross",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Grey Brume",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Gran Bhavani",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Spiked Saber",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Clawed Saber",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Serevento",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Shadow Saber",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Shadow Saber+",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Toxic Fang",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Hellt Epee",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Hellnox Epee",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Hidden Edge",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Flash in the Night",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Avidya Edge",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Eclipse Edge",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Phecda's Asterism",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Soldier's Dagger",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "Commander's Dagger",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Hydra Knife",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 28,
     "name": "Hydra Knife+",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 29,
     "name": "Deadly Knife",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 30,
     "name": "Baumf\u00e4ller",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Dendrotomy",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Plutocatena",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Hypnos Knife",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Hypnos Knife+",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Morpheus Knife",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Plesioth Finspike",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Plesioth Direspike",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Dirty Baron",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Dirty Marquis",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Dirty Graf",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Azi Dahaka",
-    "model": 8
+    "model": 8,
+    "pig": 14
    },
    {
     "id": 42,
     "name": "Azi Dahaka+",
-    "model": 8
+    "model": 8,
+    "pig": 14
    },
    {
     "id": 43,
     "name": "Almighty Dahaka",
-    "model": 8
+    "model": 8,
+    "pig": 17
    },
    {
     "id": 44,
     "name": "Almighty Dahaka+",
-    "model": 8
+    "model": 8,
+    "pig": 17
    },
    {
     "id": 45,
     "name": "Co Dolgan",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Coctura Balgang",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Usurper's Firebolt",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Despot's Crookbolt",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Oppressor's Bounty",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Brimstren Drakescale",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Stygian Luxuria",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Bone Kris",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Bone Kris+",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Bone Tomahawk",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Bone Tomahawk+",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Qurupeco Chopper",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Djinn",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Djinn+",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Blazing Falchion",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Corona",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Corona+",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Golden Falchion",
-    "model": 49
+    "model": 49,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Golden Radius",
-    "model": 49
+    "model": 49,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Blood Tabar",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Plague Tabar",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Contagion Tabar",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Lagia Sword",
-    "model": 12
+    "model": 12,
+    "pig": 27
    },
    {
     "id": 68,
     "name": "Lagia Sword+",
-    "model": 12
+    "model": 12,
+    "pig": 27
    },
    {
     "id": 69,
     "name": "High Lagia Sword",
-    "model": 12
+    "model": 12,
+    "pig": 6
    },
    {
     "id": 70,
     "name": "Storm Sword",
-    "model": 20
+    "model": 20,
+    "pig": 2
    },
    {
     "id": 71,
     "name": "Takemikazuchi",
-    "model": 20
+    "model": 20,
+    "pig": 25
    },
    {
     "id": 72,
     "name": "Neo Lagia Sword",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Neodignis Whitebolt",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Nether Lifesword",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Nether Maestral",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Ludroth's Nail",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Royal Claw",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Royal Claw+",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Royal Ludroth Claw",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Amethyst Claw",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Harmethyst",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Harmetristesse",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Carapace Mace",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Carapace Mace+",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Barroth Club",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Doomed Soul",
-    "model": 51
+    "model": 51,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Blackened Soul",
-    "model": 51
+    "model": 51,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Blackest Animus",
-    "model": 51
+    "model": 51,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Gigas Club",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Gigas Club+",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Gigas Crusher",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Mighty Gigantreon",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Dios Edge",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Dios Edge+",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Demolition Cutter",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Struxion Demolisher",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Secta Nulo",
-    "model": 27
+    "model": 27,
+    "pig": 16
    },
    {
     "id": 98,
     "name": "Secta Unu",
-    "model": 27
+    "model": 27,
+    "pig": 16
    },
    {
     "id": 99,
     "name": "Secta Nulo (W)",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 100,
     "name": "Secta Unu (W)",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 101,
     "name": "Secta Du (W)",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 102,
     "name": "Secta Nulo (G)",
-    "model": 27
+    "model": 27,
+    "pig": 21
    },
    {
     "id": 103,
     "name": "Secta Unu (G)",
-    "model": 27
+    "model": 27,
+    "pig": 21
    },
    {
     "id": 104,
     "name": "Secta Du (G)",
-    "model": 27
+    "model": 27,
+    "pig": 21
    },
    {
     "id": 105,
     "name": "Qurupeco's Flight",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 106,
     "name": "Qurupeco's Blight",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 107,
     "name": "Tusk Gear",
-    "model": 19
+    "model": 19,
+    "pig": 20
    },
    {
     "id": 108,
     "name": "Fossil Gear",
-    "model": 19
+    "model": 19,
+    "pig": 3
    },
    {
     "id": 109,
     "name": "Skull's Wrath",
-    "model": 19
+    "model": 19,
+    "pig": 24
    },
    {
     "id": 110,
     "name": "Chalcamine Sword",
-    "model": 19
+    "model": 19,
+    "pig": 17
    },
    {
     "id": 111,
     "name": "Chalcomatia",
-    "model": 19
+    "model": 19,
+    "pig": 17
    },
    {
     "id": 112,
     "name": "Sea Striker",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 113,
     "name": "Abyssal Striker",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 114,
     "name": "Ruinous Striker",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 115,
     "name": "Ark Striker",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 116,
     "name": "Arken Duelcalion",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 117,
     "name": "Jhen Kodachi",
-    "model": 14
+    "model": 14,
+    "pig": 1
    },
    {
     "id": 118,
     "name": "Calm Sands",
-    "model": 14
+    "model": 14,
+    "pig": 19
    },
    {
     "id": 119,
     "name": "Iris Earthkiller",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 120,
     "name": "Earthsbane Gladiolus",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 121,
     "name": "Chak Chak",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 122,
     "name": "Wagga Wagga",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 123,
     "name": "Gimble Gyre",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 124,
     "name": "Odyssey Blade",
-    "model": 52
+    "model": 52,
+    "pig": 0
    },
    {
     "id": 125,
     "name": "Master Odyssey",
-    "model": 52
+    "model": 52,
+    "pig": 0
    },
    {
     "id": 126,
     "name": "Rusted Sword",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 127,
     "name": "Tarnished Sword",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 128,
     "name": "Eternal Strife",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 129,
     "name": "Eternal Hate",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 130,
     "name": "Eternal Vengeance",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 131,
     "name": "Worn Sword",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 132,
     "name": "Weathered Sword",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 133,
     "name": "Divine Exodus",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 134,
     "name": "Divine Insodus",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 135,
     "name": "Alatreon Sword",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 136,
     "name": "Alatreon Star",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 137,
     "name": "Altheos Zodiarch",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 138,
     "name": "Megiddo Edge",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 139,
     "name": "The Mornifestation",
-    "model": 35
+    "model": 35,
+    "pig": 0
    }
   ],
   "w02": [
    {
     "id": 1,
     "name": "Iron Hammer",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Iron Hammer+",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "War Hammer",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "War Hammer+",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "War Mace",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Iron Striker",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Iron Striker+",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Iron Impact",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Anvil Hammer",
-    "model": 49
+    "model": 49,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Onslaught",
-    "model": 49
+    "model": 49,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Gun Hammer",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Deadeye Revolver",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Burst Revolver",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Plesioth Head",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Plesioth Head+",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Plesioth Breaker",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Verde Plesioth Head",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Green Ronperagon",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Fang Hammer \"Echo\"",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Fang Hammer \"Ruin\"",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Jhen Mohran Hammer",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Binding Bludgeon",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Armored Gogue",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Armored Megagogue",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Vortex Hammer",
-    "model": 9
+    "model": 9,
+    "pig": 27
    },
    {
     "id": 26,
     "name": "Vortex Hammer+",
-    "model": 9
+    "model": 9,
+    "pig": 27
    },
    {
     "id": 27,
     "name": "High Vortex Hammer",
-    "model": 9
+    "model": 9,
+    "pig": 6
    },
    {
     "id": 28,
     "name": "Vortical Hammer",
-    "model": 16
+    "model": 16,
+    "pig": 2
    },
    {
     "id": 29,
     "name": "Vortastrophe",
-    "model": 16
+    "model": 16,
+    "pig": 25
    },
    {
     "id": 30,
     "name": "Lagio Voltega",
-    "model": 40
+    "model": 40,
+    "pig": 25
    },
    {
     "id": 31,
     "name": "Lagio Vortivolte",
-    "model": 40
+    "model": 40,
+    "pig": 25
    },
    {
     "id": 32,
     "name": "Frozen Core",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Cocytus",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Pykrete Punisher",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Plume Flint",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Peco Flint",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Peco Igniter",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Peco Lectro",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Peco Lightning",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Peco Lectrocution",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Red Bludgeon",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Red Bludgeon+",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Huracan Hammer",
-    "model": 8
+    "model": 8,
+    "pig": 19
    },
    {
     "id": 44,
     "name": "Huracan Blueblaze",
-    "model": 43
+    "model": 43,
+    "pig": 19
    },
    {
     "id": 45,
     "name": "Rathalos Martesta",
-    "model": 43
+    "model": 43,
+    "pig": 19
    },
    {
     "id": 46,
     "name": "Rathalos Blueblazon",
-    "model": 43
+    "model": 43,
+    "pig": 19
    },
    {
     "id": 47,
     "name": "Leonid Starcrusher",
-    "model": 32
+    "model": 32,
+    "pig": 19
    },
    {
     "id": 48,
     "name": "Svarog Starsmasher",
-    "model": 32
+    "model": 32,
+    "pig": 19
    },
    {
     "id": 49,
     "name": "Dios Tailhammer",
-    "model": 34
+    "model": 34,
+    "pig": 19
    },
    {
     "id": 50,
     "name": "Dios Tailhammer+",
-    "model": 34
+    "model": 34,
+    "pig": 19
    },
    {
     "id": 51,
     "name": "Demolition Hammer",
-    "model": 44
+    "model": 44,
+    "pig": 19
    },
    {
     "id": 52,
     "name": "Novagio Demolisher",
-    "model": 44
+    "model": 44,
+    "pig": 19
    },
    {
     "id": 53,
     "name": "Numbingbird",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Paralykeet",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Alluring Lotus",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Plegia Bocciolo",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Plegia Fior",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Plegia Fantasia",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Usurper's Thunder",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Despot's Crackle",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Oppressor's Sway",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Nether Warhammer",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Nether Jarngrolnir",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Brimstren Drakemaw",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Stygian Industria",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Bone Hammer",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Bone Hammer+",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Bone Bludgeon",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Bone Bludgeon+",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Jupiter's Sphere",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Duramboros Fellmace",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Archambra Fellmace",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Archambra Fellmace+",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Archambra Resurgence",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Hidden Breaker",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Hidden Breaker+",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Night Eternal",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Virnar Breaker",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Midnight Aeternum",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Ludroth Bone Mace",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Ludroth Bone Maul",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Ludroth Splashhammer",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Vodyanoy Hammer",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Lorelei",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Bewitched Venodroth",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Violet Venodroth",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Dire Envenodroth",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Carapace Hammer",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Carapace Hammer+",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Barroth Hammer",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Barroth Martello",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Barroth Basher",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Barroth Grandbasher",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Ice Crusher",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Ice Obliterator",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Barroth Viseberg",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Barroth Ravinemaker",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Brazenclout",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "Gigas Hammer",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 100,
     "name": "Grongigas Hammer",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 101,
     "name": "Meltroknuckle",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 102,
     "name": "Uragantic Hammer",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 103,
     "name": "Uragantuan Hammer",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 104,
     "name": "Bull Hammer",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 105,
     "name": "Bull Head Hammer",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 106,
     "name": "Bull Tusk Hammer",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 107,
     "name": "Lobstrosity",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 108,
     "name": "King Lobstrosity",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 109,
     "name": "Royal Lobstrosity",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 110,
     "name": "Devil's Due",
-    "model": 12
+    "model": 12,
+    "pig": 3
    },
    {
     "id": 111,
     "name": "Devil's Crush",
-    "model": 12
+    "model": 12,
+    "pig": 3
    },
    {
     "id": 112,
     "name": "Nero's Chaos",
-    "model": 12
+    "model": 12,
+    "pig": 3
    },
    {
     "id": 113,
     "name": "Gaiasp",
-    "model": 15
+    "model": 15,
+    "pig": 15
    },
    {
     "id": 114,
     "name": "Gaiarch",
-    "model": 15
+    "model": 15,
+    "pig": 3
    },
    {
     "id": 115,
     "name": "Great Gaiarch",
-    "model": 15
+    "model": 15,
+    "pig": 21
    },
    {
     "id": 116,
     "name": "Mother Gaiarch",
-    "model": 15
+    "model": 15,
+    "pig": 17
    },
    {
     "id": 117,
     "name": "Gaia Horizon",
-    "model": 15
+    "model": 15,
+    "pig": 17
    },
    {
     "id": 118,
     "name": "Portsmark",
-    "model": 37
+    "model": 37,
+    "pig": 17
    },
    {
     "id": 119,
     "name": "Rusted Hammer",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 120,
     "name": "Tarnished Hammer",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 121,
     "name": "Breath Core Hammer",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 122,
     "name": "Lava Core Hammer",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 123,
     "name": "Crust Core Hammer",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 124,
     "name": "Worn Hammer",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 125,
     "name": "Weathered Hammer",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 126,
     "name": "Pulsating Core",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 127,
     "name": "Meteoric Core",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 128,
     "name": "Alatreon Hammer",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 129,
     "name": "Alatreon Metamorph",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 130,
     "name": "Altheos Morphexo",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 131,
     "name": "Megiddo Core",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 132,
     "name": "The Anteferno",
-    "model": 35
+    "model": 35,
+    "pig": 0
    }
   ],
   "w03": [
    {
     "id": 1,
     "name": "Iron Lance",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Iron Lance+",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Thane Lance",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Thane Lance+",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Knight Lance",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Rampart",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Rampart+",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Babel Spear",
-    "model": 4
+    "model": 4,
+    "pig": 25
    },
    {
     "id": 9,
     "name": "Elder Babel Spear",
-    "model": 4
+    "model": 4,
+    "pig": 25
    },
    {
     "id": 10,
     "name": "Lost Babel",
-    "model": 4
+    "model": 4,
+    "pig": 25
    },
    {
     "id": 11,
     "name": "Drill Lance",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Megadrill Lance",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Gigadrill Lance",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Red Tail",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Hellfire",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Spear of Prominence",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Red Prominence",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Silver Prominence",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Sol Prominence",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Blue Tail",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Blue Prominence",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Soul of Prominence",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Tusk Lance",
-    "model": 8
+    "model": 8,
+    "pig": 27
    },
    {
     "id": 24,
     "name": "Tusk Lance+",
-    "model": 8
+    "model": 8,
+    "pig": 27
    },
    {
     "id": 25,
     "name": "Sabertooth",
-    "model": 8
+    "model": 8,
+    "pig": 27
    },
    {
     "id": 26,
     "name": "Shiera Stolrata",
-    "model": 49
+    "model": 49,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Shiera Vitalica",
-    "model": 49
+    "model": 49,
+    "pig": 0
    },
    {
     "id": 28,
     "name": "Azure Crest",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 29,
     "name": "Azure Crest+",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 30,
     "name": "Great Azure",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Bandera Azul",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Aqua Spear",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Aqua Spear+",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Stream Spear",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Emerald Spear",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Esmeralda's Tide",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Rockabye Spear",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Requiem Spear",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Acrus Lance",
-    "model": 10
+    "model": 10,
+    "pig": 27
    },
    {
     "id": 40,
     "name": "Acrus Lance+",
-    "model": 10
+    "model": 10,
+    "pig": 27
    },
    {
     "id": 41,
     "name": "High Acrus Lance",
-    "model": 10
+    "model": 10,
+    "pig": 6
    },
    {
     "id": 42,
     "name": "Doris Spear",
-    "model": 16
+    "model": 16,
+    "pig": 2
    },
    {
     "id": 43,
     "name": "Amphitrite",
-    "model": 16
+    "model": 16,
+    "pig": 20
    },
    {
     "id": 44,
     "name": "Neo Acrus Lance",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Gaius Whitebolt",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Nether Warlance",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Nether Terracontier",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Boros Spear",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Boros Spear+",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Temblor Illboros",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Giga Sassoboros",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Tremblor Granboros",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Shadow Javelin",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Shadow Javelin+",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Toxic Javelin",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Iron Noxnymph",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Luinox the Thirsty",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Hidden Stinger",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Night Rains Black",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Avidya Lance",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Eclipse Lance",
-    "model": 51
+    "model": 51,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Dubhe's Asterism",
-    "model": 51
+    "model": 51,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Bone Lance",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Bone Lance+",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Longhorn Spear",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Longhorn Spear+",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Longtusk Spear",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Ploshasta",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Rhenohasta",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Diablos Lance",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Diablos Spear",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Cera Creos",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Black Tempest",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Black Tempest+",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Rising Tempest",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Gobulu Muruka",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Gobulu Muruka+",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Gobuluku Muraaka",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Gobulaluku Bosca",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Gobulaluku Aquir",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Rugged Lance",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Rugged Lance+",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Barroth Carver",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Crusher Lance",
-    "model": 52
+    "model": 52,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Bordenshkiold's Ice",
-    "model": 52
+    "model": 52,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Arktika's Ice",
-    "model": 52
+    "model": 52,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Usurper's Coming",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Despot's Cacophony",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Oppressor's Genesis",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Brimstren Draketail",
-    "model": 54
+    "model": 54,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Stygian Ira",
-    "model": 54
+    "model": 54,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Spiral Heat",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Agnaktor Firelance",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Vaskignator",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Spiral Water",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Agnaktor Aqualance",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Varunagnaktor",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Ludroth Bone Spear",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "Spiral Lance",
-    "model": 22
+    "model": 22,
+    "pig": 14
    },
    {
     "id": 100,
     "name": "Spiral Lance+",
-    "model": 22
+    "model": 22,
+    "pig": 14
    },
    {
     "id": 101,
     "name": "Spiral Splash",
-    "model": 22
+    "model": 22,
+    "pig": 25
    },
    {
     "id": 102,
     "name": "Ceadeus Horn",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 103,
     "name": "Great Ceadeus Horn",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 104,
     "name": "Fathom Arcana",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 105,
     "name": "Exia Lordlance",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 106,
     "name": "Bella Nocuus",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 107,
     "name": "Bel Nefastro",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 108,
     "name": "Bel Nefastro+",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 109,
     "name": "Wild Boar Lance",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 110,
     "name": "Wild Boar Lance+",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 111,
     "name": "Bulldrome Spear",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 112,
     "name": "Dios Stinger",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 113,
     "name": "Dios Stinger+",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 114,
     "name": "Demolition Lance",
-    "model": 53
+    "model": 53,
+    "pig": 0
    },
    {
     "id": 115,
     "name": "Albrach Demolisher",
-    "model": 53
+    "model": 53,
+    "pig": 0
    },
    {
     "id": 116,
     "name": "Grief Lance",
-    "model": 17
+    "model": 17,
+    "pig": 2
    },
    {
     "id": 117,
     "name": "Fiendish Tower",
-    "model": 17
+    "model": 17,
+    "pig": 2
    },
    {
     "id": 118,
     "name": "Nero's Atrocity",
-    "model": 17
+    "model": 17,
+    "pig": 2
    },
    {
     "id": 119,
     "name": "Blue Crater",
-    "model": 15
+    "model": 15,
+    "pig": 16
    },
    {
     "id": 120,
     "name": "Smalt Crater",
-    "model": 15
+    "model": 15,
+    "pig": 1
    },
    {
     "id": 121,
     "name": "Doom Crown",
-    "model": 15
+    "model": 15,
+    "pig": 21
    },
    {
     "id": 122,
     "name": "Eterno Crown",
-    "model": 15
+    "model": 15,
+    "pig": 16
    },
    {
     "id": 123,
     "name": "Aidion Crown",
-    "model": 15
+    "model": 15,
+    "pig": 16
    },
    {
     "id": 124,
     "name": "Rusted Lance",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 125,
     "name": "Tarnished Lance",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 126,
     "name": "Undertaker",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 127,
     "name": "High Undertaker",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 128,
     "name": "Neo Undertaker",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 129,
     "name": "Worn Spear",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 130,
     "name": "Weathered Spear",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 131,
     "name": "Skyscraper",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 132,
     "name": "Skysunderer",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 133,
     "name": "Plegis Needle",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 134,
     "name": "Plegis Needle+",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 135,
     "name": "Mighty Plegis",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 136,
     "name": "Sharq Byte",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 137,
     "name": "Sharq Attaq",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 138,
     "name": "Sharq Assawlt",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 139,
     "name": "Megiddo Spire",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 140,
     "name": "The Immaelestrom",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 141,
     "name": "Alatreon Lance",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 142,
     "name": "Alatreon Gleam",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 143,
     "name": "Altheos Gloralis",
-    "model": 21
+    "model": 21,
+    "pig": 0
    }
   ],
   "w04": [
    {
     "id": 1,
     "name": "Bone Blaster",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Bone Blaster+",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Bone Buster",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Queen's Longfire",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Queen's Farflier",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Queen's Scionfire",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Empress's Blossom",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Empress's Flower",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Empress's Garden",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Spheniscine Slayer",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Spheniscine Ruler",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Spheniscine Overlord",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Spheniscine God",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Arzuros Gun",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Arzuros Rumblegun",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Arzuros Fishergun",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Arzuros Ace",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Type 46 Gunflage I",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Type 46 Gunflage II",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Type 46 Gunflage III",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Nibelflage Prototype",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Super Trench Snarfer",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Pressurized Plaser",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Pressurized Plaser+",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Verdant Washbuckler",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "Captain Verde",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Tropeco Gun",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 28,
     "name": "Tropeco Flambogun",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 29,
     "name": "Pecopious Gun",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 30,
     "name": "Pecopious Thunder",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Paco Pico Peco",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Precision Pico Peco",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Dios Cannon",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Dios Cannon+",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Demolition Cannon",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Haize Demolisher",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Usurper's Tremor",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Despot's Paroxysm",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Oppressor's Making",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Stygian Temperantia",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Hidden Gambit",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Baleful Night",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Virnar Heavy Rifle",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Sinister Midnight",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Eclipse Gambit",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Dual Threat",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Dual Threat+",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Diablazooka",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Nero's Blazooka",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Griffon Blazooka",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Lagia Blitz",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Lagia Blitz+",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Thunderblitz Cannon",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Neo Lagia Blitz",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Blitzador Whitebolt",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Nether Salvatore",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Agnaboom",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Agnablaster",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Agna Hellblazer",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Agna Magnum",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Agna Scorpion",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Avel Agnagun",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Caim Agnagun",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Zeth Agnagun",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Jhen Cannon",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Jhen Dracannon",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Hallowed Dracannon",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Vulcannon",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Vulcannon+",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Vulmagnum",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Gigant Launcher",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Gigant Cannon",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Moby Deus",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Frater Deus",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Ark Precursor",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Arken Antiphon",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Chaos Wing",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Altheos Aetheria",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Carrozza Bazooka",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Queen's Carrozza",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Cendrillon",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Wishing Star",
-    "model": 22
+    "model": 22,
+    "pig": 13
    },
    {
     "id": 83,
     "name": "Meteorite",
-    "model": 22
+    "model": 22,
+    "pig": 13
    },
    {
     "id": 84,
     "name": "Great Meteor",
-    "model": 22
+    "model": 22,
+    "pig": 22
    },
    {
     "id": 85,
     "name": "Aquamatic \"Needler\"",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Aquamatic \"Firelash\"",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Aquamatic \"Ashmaker\"",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Carbalite Cannon",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Meteor Cannon",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Galaxy Cannon",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "The Hexclamation",
-    "model": 39
+    "model": 39,
+    "pig": 0
    }
   ],
   "w06": [
    {
     "id": 1,
     "name": "Cross Bowgun",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Cross Bowgun+",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Cross Blitz",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Hunter's Rifle",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Sniper Shot",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Sniper Ascension",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Barro Barrel",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Barro Barrel+",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Barrozooka",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Aurora Flare",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Avalauncher",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Glacialahti",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Arctica Cannon",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Dios Blaster",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Dios Blaster+",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Demolition Gun",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Ballista Demolisher",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Jaggid Fire",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Bandit Fire",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Bandit's Rage",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Merciless Rage",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Royal Launcher",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Royal Torrent",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Royal Inundation",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Maelstrom",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "Maelstrom+",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Plesioth Drencher",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 28,
     "name": "Jade Storm",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 29,
     "name": "Jade Tempest",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 30,
     "name": "Gobul Shooter",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Crimson Angler",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Crimson Angler+",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Zhen Angler",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Gobul Ganador",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Poison Stinger",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Poison Aftermath",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Immortal Shackle",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Immortal Gaol",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Immortal Prison",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Bloodthirsty Binder",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Crimson Seeker",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Deadly Chaser",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Specter of Grief",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Blizzard Cannon",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Blizzard Volley",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Tabula Blizzara",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Diamond Frost",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Diamond Crest",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Valkyrie Fire",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Valkyrie Flame",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Valkyrie Blaze",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Valkyrie's Heart",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Pinkocutioner",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Blossomayhem",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Hidden Eye",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Night Owl",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Virnar Gazer",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Squallhawk",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Eclipse Gazer",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Thundacrus",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Thundacrus+",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Thundacrus Rex",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Neo Thundacrus",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Eclair Whitebolt",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Rathling Gun",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Rathling Doombringer",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Rathling Phoenix",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Azurathling Skysear",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Azurathling Sunsear",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Usurper's Crime",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Despot's Wildfire",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Oppressor's Rift",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Orcus Barqus",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Nether Phloxion",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Stygian Invidia",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Durambarrel",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Taurambarrel",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Aldebaran Dreadgun",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Horn of Taurus",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Crown of Taurus",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Devil's Grin",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Devil's Madness",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Diregun \"Dementia\"",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Doomgun \"Dementia\"",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Demon's Isle",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Demon's Island",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Kettleblower",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Kettleblower Deluxe",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Master Kettleblower",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "God's Isle",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "God's Island",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "God's Archipelago",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Gourd Shot",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Teasel Shot",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Crookneck Shot",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "The Willuminator",
-    "model": 41
+    "model": 41,
+    "pig": 0
    }
   ],
   "w07": [
    {
     "id": 1,
     "name": "Iron Katana",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Iron Grace",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Iron Gospel",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Chainslaughter",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Rumbalarum",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Thunder Saw",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Usurper's Boltslicer",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Despot's Boltbreaker",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Oppressor's Law",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Nether Katana",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Nether Dilemnity",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Stygian Gula",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Rimeblade",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Rimeblossom",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Rime & Treason",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Edel's Ice",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Hidden Saber",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Hidden Saber+",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Deepest Night",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Eclipse Saber",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Megrez's Asterism",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Virnar Saber",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Depths of Midnight",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Wroggi Sword",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Nightshade's Bite",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "Belladonna's Bite",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Thunderclap",
-    "model": 3
+    "model": 3,
+    "pig": 27
    },
    {
     "id": 28,
     "name": "Thunderclap+",
-    "model": 3
+    "model": 3,
+    "pig": 27
    },
    {
     "id": 29,
     "name": "Heaven's Thunder",
-    "model": 3
+    "model": 3,
+    "pig": 2
    },
    {
     "id": 30,
     "name": "Heaven's Sunderer",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Truest Sunderer",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Plesioth Splasher",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Plesioth Splasher+",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Verdant Splash",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Verdant Splash+",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Jade Vagalhao",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Arzuros Naginata",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Arzuros Naginata+",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Arzuros Strikequill",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Guan Dao",
-    "model": 6
+    "model": 6,
+    "pig": 1
    },
    {
     "id": 41,
     "name": "Yan Yue Dao",
-    "model": 6
+    "model": 6,
+    "pig": 24
    },
    {
     "id": 42,
     "name": "Yi Duan",
-    "model": 6
+    "model": 6,
+    "pig": 24
    },
    {
     "id": 43,
     "name": "Drowning Shaft",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Douser Bardiche",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Wasserfallis",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Enfeebling Glaive",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Dispatcher Glaive",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Asthenia Glaive",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Canine Katana",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Lupine Katana",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Cerberus Katana",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Ananta Boneblade",
-    "model": 4
+    "model": 4,
+    "pig": 8
    },
    {
     "id": 53,
     "name": "Ananta Boneblade+",
-    "model": 4
+    "model": 4,
+    "pig": 8
    },
    {
     "id": 54,
     "name": "Shadowbinder",
-    "model": 4
+    "model": 4,
+    "pig": 25
    },
    {
     "id": 55,
     "name": "Soulbinder",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Soulstrangler",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Diapason",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Diapason+",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Crimsonfork",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Chrome Mazurka",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Chrome Waltz",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Wyvern Blade \"Fire\"",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Wyvern Blade \"Flame\"",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Wyvern Blade \"Flare\"",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Wyvern Blade \"Pale\"",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Wyvern Blade \"Bloom\"",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Wyvern Blade \"Blaze\"",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Wyvern Blade \"Rose\"",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Mountain Reaper",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Mountain Archreaper",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Wild Heights",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Grandfolly",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Tribulation",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Bleeding Cross",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Bleeding Cross+",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Mephitic Katana",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Vampiric Edge",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Carmilla Bloodsucker",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Crimson Cross",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Lost Eden",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Banished Blood",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Law of the Guilty",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Dancing Flames",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Dancing Hellfire",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Principal Flame",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Snow Siren",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Blizzard Siren",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Glacial Diva",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Dios Katana",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Dios Katana+",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Demolition Katana",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Pyro Demolisher",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Barbarian Blade",
-    "model": 5
+    "model": 5,
+    "pig": 6
    },
    {
     "id": 94,
     "name": "Barbarian \"Sharq\"",
-    "model": 5
+    "model": 5,
+    "pig": 6
    },
    {
     "id": 95,
     "name": "Kibamaru",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Megiddo Katana",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "The Adjudition",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Dark Claw",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "Dark Claw \"Demise\"",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 100,
     "name": "Altheos Altrusta",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 101,
     "name": "Reaver \"Cruelty\"",
-    "model": 1
+    "model": 1,
+    "pig": 2
    },
    {
     "id": 102,
     "name": "Reaver \"Calamity\"",
-    "model": 1
+    "model": 1,
+    "pig": 2
    },
    {
     "id": 103,
     "name": "Nero's Calamity",
-    "model": 1
+    "model": 1,
+    "pig": 2
    },
    {
     "id": 104,
     "name": "Windeater",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 105,
     "name": "Soundeater",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 106,
     "name": "Zephyr",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 107,
     "name": "Hairtail's Hairblade",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 108,
     "name": "Fresh Hairblade",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 109,
     "name": "Premium Hairblade",
-    "model": 27
+    "model": 27,
+    "pig": 0
    }
   ],
   "w08": [
    {
     "id": 1,
     "name": "Bone Axe",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Bone Axe+",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Bone Smasher",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Assault Axe",
-    "model": 2
+    "model": 2,
+    "pig": 21
    },
    {
     "id": 5,
     "name": "Assault Axe+",
-    "model": 2
+    "model": 2,
+    "pig": 21
    },
    {
     "id": 6,
     "name": "Blitzkrieg",
-    "model": 2
+    "model": 2,
+    "pig": 1
    },
    {
     "id": 7,
     "name": "Blitzkrieg+",
-    "model": 2
+    "model": 2,
+    "pig": 6
    },
    {
     "id": 8,
     "name": "Bastion Blitz",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Hidden Axe",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Night's Crescent",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Avidya Axe",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Eclipse Axe",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Mizar's Asterism",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Tyrannos",
-    "model": 27
+    "model": 27,
+    "pig": 2
    },
    {
     "id": 15,
     "name": "Terror Tyrannos",
-    "model": 27
+    "model": 27,
+    "pig": 2
    },
    {
     "id": 16,
     "name": "Saligia Vileaxe",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Saligia Enderaxe",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Bolt Axe",
-    "model": 7
+    "model": 7,
+    "pig": 27
    },
    {
     "id": 19,
     "name": "Bolt Axe+",
-    "model": 7
+    "model": 7,
+    "pig": 27
    },
    {
     "id": 20,
     "name": "High Bolt Axe",
-    "model": 7
+    "model": 7,
+    "pig": 6
    },
    {
     "id": 21,
     "name": "Volt Axe",
-    "model": 6
+    "model": 6,
+    "pig": 2
    },
    {
     "id": 22,
     "name": "Megavolt Axe",
-    "model": 6
+    "model": 6,
+    "pig": 19
    },
    {
     "id": 23,
     "name": "Neo Bolt Axe",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Remiel Whitebolt",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Nether Direaxe",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "Nether Excellion",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Arzuros Axe",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 28,
     "name": "Arzuros Axe+",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 29,
     "name": "Arzuros Massifax",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 30,
     "name": "Arzuros Revelax",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Dios Axe",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Dios Axe+",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Demolition Axe",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Brisant Demolisher",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Amber Slash",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Amber Slash+",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Amber Hoarfrost",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Galefrost",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Giga Galefrost",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Azurite Slash Axe",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Gale Azurite",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Giga Gale Azurite",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Pecospander",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Pecospander+",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Qurupexspander",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Motor Burst",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Motor Burst+",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Gigant Burst",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Giganceladus",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Sparqlepeco",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Peco Volt",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Peco Glitz",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Wild Axe",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Wild Axe+",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Ground Dasher",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Heavy Divider",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Heavy Divider+",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Grunhart",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Hartschlagen",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Nainokami",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Axe Semper Tyrannis",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Grand Chaos",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Axe of Gaia",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Axe of Thanatos",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Axe of Demons",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Axe of Hades",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Fire Tempest",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Flame Tempest",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Helstrong Firebath",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Liquid Storm",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Aqua Tempest",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Helstrong Deluge",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Binding Roller",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Binding Roller+",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Vermilingua",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Vermilion Bloodaxe",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Usurper's Downpour",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Despot's Cloudburst",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Brimstren Drakefang",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Stygian Vanagloria",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Ludroth Axe",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Ludroth Axe+",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Splish Splax",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Demonbind",
-    "model": 4
+    "model": 4,
+    "pig": 1
    },
    {
     "id": 85,
     "name": "Grand Demonbind",
-    "model": 4
+    "model": 4,
+    "pig": 1
    },
    {
     "id": 86,
     "name": "Celestial Demonbind",
-    "model": 4
+    "model": 4,
+    "pig": 24
    },
    {
     "id": 87,
     "name": "Finslash",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Finslash+",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Mega Rhipidon",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Dragonmaiden Axe",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Dragonmaiden Axe+",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Gr\u00ed\u00f0r's Landmaker",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Gr\u00ed\u00f0r's Landforger",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Azure Rose",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Azure Rosebloom",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Grim Cat",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Grimmig Katze",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Felyne Fatality",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "Rough Edge",
-    "model": 5
+    "model": 5,
+    "pig": 21
    },
    {
     "id": 100,
     "name": "Tough Break",
-    "model": 5
+    "model": 5,
+    "pig": 3
    },
    {
     "id": 101,
     "name": "Soulbreaker",
-    "model": 5
+    "model": 5,
+    "pig": 24
    },
    {
     "id": 102,
     "name": "Soulcrusher",
-    "model": 5
+    "model": 5,
+    "pig": 16
    },
    {
     "id": 103,
     "name": "Helios Crusher",
-    "model": 5
+    "model": 5,
+    "pig": 16
    },
    {
     "id": 104,
     "name": "Inceadeus",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 105,
     "name": "Great Inceadeus",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 106,
     "name": "Ceadeed Axe",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 107,
     "name": "Dark Switch Axe",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 108,
     "name": "Black Harvest",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 109,
     "name": "Altheos Voracion",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 110,
     "name": "Megiddo Crest",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 111,
     "name": "The Crimsidian",
-    "model": 26
+    "model": 26,
+    "pig": 0
    }
   ],
   "w09": [
    {
     "id": 1,
     "name": "Iron Gunlance",
-    "model": 6
+    "model": 6,
+    "pig": 1
    },
    {
     "id": 2,
     "name": "Iron Gunlance+",
-    "model": 6
+    "model": 6,
+    "pig": 1
    },
    {
     "id": 3,
     "name": "Steel Gunlance",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Striker's Gunlance",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Defender's Gunlance",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Imperial Guardlance",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "General's Arbalance",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Admiral's Arbalance",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Imperial Swornlance",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Hidden Gunlance",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Hidden Gunlance+",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Fading Night",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Eclipse Gunlance",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Alioth's Asterism",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Virnar Gunlance",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "End of Night",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Red Rook",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Red Rook+",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Crimson Rook",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Silver Rook",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Chariot Gun",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "World's Demise",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Ancient Gyrelance",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Ancient Gyresmite",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Progenesis",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "Type 62 Stormlance",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Assault Stormlance",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 28,
     "name": "War Marshal",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 29,
     "name": "Shattershot",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 30,
     "name": "Shatter Ace",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Shatter God",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Lagia Burst",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Lagia Burst+",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Exlagia Gunlance",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Neo Lagia Burst",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Eutaxy Whitebolt",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Eutaxy Whitebolt+",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Nether Gunlance",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Nether Jugulus",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Dios Gunlance",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Dios Gunlance+",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Demolition Gunlance",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Zvolta Demolisher",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Lagomberator",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Lagomberatrix",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Lagombalanche",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Flamethrower",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Flamethrower+",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Agna Magma",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Agna Vulcan",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Causta Agnavulcan",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Waterthrower",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Agna Aqua",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Rheo Agnacorso",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Bone Gunlance",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Great Bone Gunlance",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Wyvern Bone Gunlance",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Barroth Loader",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Barroth Loader+",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Rugged Loader",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Roscasludge",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Roscascarp",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Vaskaclast",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Vaskaclast+",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Roscaghast",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Roscavalanche",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Jaggid Gunlance",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Jaggid Gunlance+",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Hurricane Gunlance",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Princess Panoply",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Princess Panoply+",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Ortlinde",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Queen's Panoply",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Shining Ishtar",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Usurper's Roar",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Despot's Phlogiston",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Oppressor's Skyfall",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Brimstren Drakeblood",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Stygian Avaritia",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Peco Teepee",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Peco Teepee+",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Dreamy Teepee",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Thunder Feather",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Thunderbird",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Thunder Ark",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Marine Fisher",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Abyssal Fisher",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Deep Blue Sea",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Leviathan Gunlance",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Diviathan Gunlance",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Ravenous Gunlance",
-    "model": 18
+    "model": 18,
+    "pig": 2
    },
    {
     "id": 92,
     "name": "Insatiable Gunlance",
-    "model": 18
+    "model": 18,
+    "pig": 2
    },
    {
     "id": 93,
     "name": "Nero's Greed",
-    "model": 18
+    "model": 18,
+    "pig": 2
    },
    {
     "id": 94,
     "name": "Fangbreaker",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Fangdemonium",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Jhen Mortalis",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Worn Gunlance",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Weathered Gunlance",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "Obelisk",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 100,
     "name": "Deus Obelisk",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 101,
     "name": "Megiddo Forge",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 102,
     "name": "The Disasualty",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 103,
     "name": "Felyoshka",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 104,
     "name": "Felyoshka+",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 105,
     "name": "Felicitous Felyoshka",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 106,
     "name": "Cornpopper",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 107,
     "name": "Cornpopper+",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 108,
     "name": "Mighty Cornpopper",
-    "model": 42
+    "model": 42,
+    "pig": 0
    }
   ],
   "w10": [
    {
     "id": 1,
     "name": "Peckish Peco",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Famished Peco",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Heartbreaker",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Broken Heart",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Strong Heart",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Wroggi Revolver I",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Wroggi Revolver II",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Wroggi Revolver III",
-    "model": 12
+    "model": 12,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Dirty Revolver I",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Dirty Revolver II",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Spith & Venom",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Sponge Gear I",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Sponge Gear II",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Sponge Gear III",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Amethyst Gear I",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Amethyst Gear II",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Amir al Bahr",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Batal al Bahr",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Arko Nulo",
-    "model": 13
+    "model": 13,
+    "pig": 17
    },
    {
     "id": 20,
     "name": "Arko Unu",
-    "model": 13
+    "model": 13,
+    "pig": 17
    },
    {
     "id": 21,
     "name": "Arko Nulo (R)",
-    "model": 13
+    "model": 13,
+    "pig": 2
    },
    {
     "id": 22,
     "name": "Arko Unu (R)",
-    "model": 13
+    "model": 13,
+    "pig": 2
    },
    {
     "id": 23,
     "name": "Arko Du (R)",
-    "model": 13
+    "model": 13,
+    "pig": 2
    },
    {
     "id": 24,
     "name": "Arko Tri (R)",
-    "model": 13
+    "model": 13,
+    "pig": 2
    },
    {
     "id": 25,
     "name": "Arko Nulo (W)",
-    "model": 13
+    "model": 13,
+    "pig": 26
    },
    {
     "id": 26,
     "name": "Arko Unu (W)",
-    "model": 13
+    "model": 13,
+    "pig": 26
    },
    {
     "id": 27,
     "name": "Arko Du (W)",
-    "model": 13
+    "model": 13,
+    "pig": 26
    },
    {
     "id": 28,
     "name": "Arko Tri (W)",
-    "model": 13
+    "model": 13,
+    "pig": 26
    },
    {
     "id": 29,
     "name": "Arko Nulo (Y)",
-    "model": 13
+    "model": 13,
+    "pig": 16
    },
    {
     "id": 30,
     "name": "Arko Unu (Y)",
-    "model": 13
+    "model": 13,
+    "pig": 16
    },
    {
     "id": 31,
     "name": "Arko Du (Y)",
-    "model": 13
+    "model": 13,
+    "pig": 16
    },
    {
     "id": 32,
     "name": "Arko Tri (Y)",
-    "model": 13
+    "model": 13,
+    "pig": 16
    },
    {
     "id": 33,
     "name": "Hunter's Bow I",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Hunter's Bow II",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Hunter's Bow III",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Hunter's Stoutbow I",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Hunter's Stoutbow II",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Hunter's Proudbow",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Dios Flier",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Dios Flier+",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Demolition Bow",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Warflare Demolisher",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Type 64 Multibow I",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Type 64 Multibow II",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Scorpion Zinger",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Seahorse Harp",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Reignhorse Harp",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Aquasteed Harp",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Queen Blaster I",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Queen Blaster II",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Queen Blaster III",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Heartshot Bow I",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Heartshot Bow II",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Heartshot Bow III",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Selene Moonbroken",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Usurper's Rumble",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Despot's Earlybolt",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Oppressor's Answer",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Brimstren Drakesight",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Stygian Patientia",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Ice Crest",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Edelweiss",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Amber Arc Valanga",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Lithe Saberbow",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Fallenfriede",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Rafalga Sandraider",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Brazencord",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Gigacles",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Gigantomachy",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Chrome Corda I",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Chrome Corda II",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Steel Daedalops",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Hidden Bow I",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Hidden Bow II",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Night Flight",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Eclipse Bow",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Virnar Bow",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Midnight Farflight",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Boltsender I",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Boltsender II",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "High Voltsender",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Neo Voltsender",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Acrus Whitebolt",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Nether Battlebow",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Nether Emprestador",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Diablos Hornbow I",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Diablos Hornbow II",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Galebender",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Cera Coilbender",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Cera Cyclord",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Ala Victoria I",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Ala Victoria II",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Prayerful Victoria",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Ark Diosa",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Arken Victrine",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Worldseer's Bow",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Worldseer's Proof",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Worldseer's Bounty",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "Alatreon Bow",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 100,
     "name": "Alatreon Commandment",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 101,
     "name": "Altheos Incanonis",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 102,
     "name": "Arca Raptora",
-    "model": 21
+    "model": 21,
+    "pig": 13
    },
    {
     "id": 103,
     "name": "Arca Chaotica",
-    "model": 21
+    "model": 21,
+    "pig": 13
    },
    {
     "id": 104,
     "name": "Arca Insantia",
-    "model": 21
+    "model": 21,
+    "pig": 13
    },
    {
     "id": 105,
     "name": "Megiddo Phoenix",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 106,
     "name": "The Rysurrection",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 107,
     "name": "Morsel Bowfish",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 108,
     "name": "Ample Bowfish",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 109,
     "name": "Viand Bowfish",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 110,
     "name": "Kelbi Stingshot",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 111,
     "name": "Kelbi Strongshot",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 112,
     "name": "Great Kelbi Deershot",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 113,
     "name": "Bamboo Taketori",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 114,
     "name": "Bamboo Okina",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 115,
     "name": "Bamboo Kaguya",
-    "model": 23
+    "model": 23,
+    "pig": 0
    }
   ],
   "w11": [
    {
     "id": 1,
     "name": "Matched Slicers",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Matched Slicers+",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Dual Slicers",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Dual Hatchets",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Dual Hatchets+",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Dual Cleavers+",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Hurricane",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Hurricane+",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Cyclone",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Tornado Hatchets",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Typhoon",
-    "model": 42
+    "model": 42,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Dios Slicers",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Dios Slicers+",
-    "model": 24
+    "model": 24,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Demolition Blades",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Spectral Demolisher",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Sworn Rapiers",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Sworn Rapiers+",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Holy Sabers",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Guild Knight Sabers",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Master Sabers",
-    "model": 43
+    "model": 43,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Twin Chainsaws",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Twin Chainsaws+",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Guillotines",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Golem's Saws",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Golem's Maneaters",
-    "model": 44
+    "model": 44,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "Type 51 Macerators",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Deathsnarfs",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 28,
     "name": "Uber Deathsnarfs",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 29,
     "name": "Insecticutters",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 30,
     "name": "Insecticutters+",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Insectirippers",
-    "model": 45
+    "model": 45,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Insectiscythes",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Entomotheos",
-    "model": 46
+    "model": 46,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Gobul Stunprongs",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Gobul Stunprongs+",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Plegion Stunsword",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Jaggid Shotels",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Jaggid Shotels+",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Leader's Shotels",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Flamestorm",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Flamestorm+",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Salamanders",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Ignis Noire",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Agnaktor Inferno",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Dichotomy",
-    "model": 36
+    "model": 36,
+    "pig": 1
    },
    {
     "id": 46,
     "name": "Elemenders",
-    "model": 36
+    "model": 36,
+    "pig": 1
    },
    {
     "id": 47,
     "name": "Twin Acrus",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Twin Acrus+",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Levin Acrus",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Neo Twin Acrus",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Neo Acrus Whitebolt",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Bone Scythes",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Bone Scythes+",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Chief's Scythes",
-    "model": 47
+    "model": 47,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Ludroth Pair",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Ludroth Pair+",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Double Droth",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Hidden Gemini",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Night Wings",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Virnar Slicers",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Midnight Blackwings",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Eclipse Slicers",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Alkaid's Asterism",
-    "model": 38
+    "model": 38,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Usurper's Fulgur",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Despot's Blitz",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Oppressor's Miracle",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Nether Twinblades",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 68,
     "name": "Nether Confidants",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 69,
     "name": "Brimstren Drakeclaws",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 70,
     "name": "Stygian Superbia",
-    "model": 40
+    "model": 40,
+    "pig": 0
    },
    {
     "id": 71,
     "name": "Plesioth Cutlasses",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 72,
     "name": "Plesioth Cutlasses+",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 73,
     "name": "Plesioth Machetes",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 74,
     "name": "Verdant Slashers",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 75,
     "name": "Alluvion Slashers",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 76,
     "name": "Jade Plesioth Fans",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 77,
     "name": "Jade Battlefanzers",
-    "model": 41
+    "model": 41,
+    "pig": 0
    },
    {
     "id": 78,
     "name": "Bloodwings",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 79,
     "name": "Bloodwings+",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Venom Wings",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Grimgrim Wings",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Grimmest Noxwings",
-    "model": 39
+    "model": 39,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Boltgeist",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Double Boltwings",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Double Deathbolts",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Brother Flames",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Brother Blazes",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Wyvern Lovers",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Wyvern Strife",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Wyvern Conciliation",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Snow Slicers",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Snow Slicers+",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Snow Sisters",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Blizzarioths",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Blizzarioths+",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Raider's Icecarvers",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Ventus Vindictus",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Raider's Savagery",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "Diablos Bashers",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 100,
     "name": "Diablos Bashers+",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 101,
     "name": "Diablos Mashers",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 102,
     "name": "Diablos Sinidex",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 103,
     "name": "Sinistrus Dextraos",
-    "model": 48
+    "model": 48,
+    "pig": 0
    },
    {
     "id": 104,
     "name": "Wrath & Rancor",
-    "model": 12
+    "model": 12,
+    "pig": 2
    },
    {
     "id": 105,
     "name": "Wrathful Predation",
-    "model": 12
+    "model": 12,
+    "pig": 2
    },
    {
     "id": 106,
     "name": "Nero's Wrath",
-    "model": 12
+    "model": 12,
+    "pig": 2
    },
    {
     "id": 107,
     "name": "Worn Blades",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 108,
     "name": "Weathered Blades",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 109,
     "name": "Enduring Schism",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 110,
     "name": "Enduring Sacrifice",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 111,
     "name": "Mercury Edges",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 112,
     "name": "Neptune Edges",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 113,
     "name": "Pelagic Deublades",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 114,
     "name": "Shaka Scarecrows",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 115,
     "name": "Chum Scarecrows",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 116,
     "name": "Chum-Chum Scarecrows",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 117,
     "name": "Glutton's Tools",
-    "model": 49
+    "model": 49,
+    "pig": 0
    },
    {
     "id": 118,
     "name": "Gorger's Tools",
-    "model": 49
+    "model": 49,
+    "pig": 0
    },
    {
     "id": 119,
     "name": "Stewbry Stirfoils",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 120,
     "name": "Deepshake Frybakers",
-    "model": 50
+    "model": 50,
+    "pig": 0
    },
    {
     "id": 121,
     "name": "Megiddo Nova",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 122,
     "name": "The Fistolution",
-    "model": 25
+    "model": 25,
+    "pig": 0
    }
   ],
   "w12": [
    {
     "id": 1,
     "name": "Metal Bagpipe",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 2,
     "name": "Metal Bagpipe+",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 3,
     "name": "Great Bagpipe",
-    "model": 18
+    "model": 18,
+    "pig": 0
    },
    {
     "id": 4,
     "name": "Heavy Bagpipe",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 5,
     "name": "Heavy Bagpipe+",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 6,
     "name": "Fortissimo",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 7,
     "name": "Rinforzato",
-    "model": 19
+    "model": 19,
+    "pig": 0
    },
    {
     "id": 8,
     "name": "Usurper's Growl",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 9,
     "name": "Despot's Thunderclap",
-    "model": 2
+    "model": 2,
+    "pig": 0
    },
    {
     "id": 10,
     "name": "Brimstren Drakesong",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 11,
     "name": "Stygian Tristitia",
-    "model": 28
+    "model": 28,
+    "pig": 0
    },
    {
     "id": 12,
     "name": "Hidden Harmonic",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 13,
     "name": "Cry in the Night",
-    "model": 1
+    "model": 1,
+    "pig": 0
    },
    {
     "id": 14,
     "name": "Eclipse Tone",
-    "model": 29
+    "model": 29,
+    "pig": 0
    },
    {
     "id": 15,
     "name": "Qurupeco Horn",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 16,
     "name": "Qurupeco Trumpet",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 17,
     "name": "Qurupeco Honker",
-    "model": 13
+    "model": 13,
+    "pig": 0
    },
    {
     "id": 18,
     "name": "Magnifico Trumpet",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 19,
     "name": "Imperilude",
-    "model": 30
+    "model": 30,
+    "pig": 0
    },
    {
     "id": 20,
     "name": "Type 63 Warmonica",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 21,
     "name": "Snarfonix",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 22,
     "name": "Soldier's Snarfonica",
-    "model": 3
+    "model": 3,
+    "pig": 0
    },
    {
     "id": 23,
     "name": "Sandpipe",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 24,
     "name": "Sandcrier",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 25,
     "name": "Sandscreecher",
-    "model": 6
+    "model": 6,
+    "pig": 0
    },
    {
     "id": 26,
     "name": "Sandsinger",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 27,
     "name": "Sandsoother",
-    "model": 23
+    "model": 23,
+    "pig": 0
    },
    {
     "id": 28,
     "name": "Ice Kazoo",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 29,
     "name": "Glacial Kazoo",
-    "model": 15
+    "model": 15,
+    "pig": 0
    },
    {
     "id": 30,
     "name": "Frost Groaner",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 31,
     "name": "Frost General",
-    "model": 31
+    "model": 31,
+    "pig": 0
    },
    {
     "id": 32,
     "name": "Agnakdion",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 33,
     "name": "Brandoneon",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 34,
     "name": "Scaldertina",
-    "model": 11
+    "model": 11,
+    "pig": 0
    },
    {
     "id": 35,
     "name": "Bone Horn",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 36,
     "name": "Bone Horn+",
-    "model": 7
+    "model": 7,
+    "pig": 0
    },
    {
     "id": 37,
     "name": "Hunter's Horn",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 38,
     "name": "Hunter's Horn+",
-    "model": 35
+    "model": 35,
+    "pig": 0
    },
    {
     "id": 39,
     "name": "Swell Shell",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 40,
     "name": "Vertex Shell",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 41,
     "name": "Turban Shell",
-    "model": 36
+    "model": 36,
+    "pig": 0
    },
    {
     "id": 42,
     "name": "Zurogong Primo",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 43,
     "name": "Zurogong Secundo",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 44,
     "name": "Zurogong Tertio",
-    "model": 4
+    "model": 4,
+    "pig": 0
    },
    {
     "id": 45,
     "name": "Bariguiro",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 46,
     "name": "Algiguiro",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 47,
     "name": "Frigiguiro",
-    "model": 10
+    "model": 10,
+    "pig": 0
    },
    {
     "id": 48,
     "name": "Brazengaita",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 49,
     "name": "Gigas Gaita",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 50,
     "name": "Archgigas Gaita",
-    "model": 8
+    "model": 8,
+    "pig": 0
    },
    {
     "id": 51,
     "name": "Droth Drone",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 52,
     "name": "Droth Drone+",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 53,
     "name": "Droth Roar",
-    "model": 9
+    "model": 9,
+    "pig": 0
    },
    {
     "id": 54,
     "name": "Black Coffin",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 55,
     "name": "Shadow Coffin",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 56,
     "name": "Darkest Coffin",
-    "model": 5
+    "model": 5,
+    "pig": 0
    },
    {
     "id": 57,
     "name": "Bloodstopper",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 58,
     "name": "Bloodcurtler",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 59,
     "name": "Bloodfreezer",
-    "model": 16
+    "model": 16,
+    "pig": 0
    },
    {
     "id": 60,
     "name": "Valkyrie Chordmaker",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 61,
     "name": "Valkyrie Chordmaker+",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 62,
     "name": "Queen's Chordmaker",
-    "model": 14
+    "model": 14,
+    "pig": 0
    },
    {
     "id": 63,
     "name": "Coral Chordmaker",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 64,
     "name": "Coral Chordmaker+",
-    "model": 32
+    "model": 32,
+    "pig": 0
    },
    {
     "id": 65,
     "name": "Gold Chordmaker",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 66,
     "name": "Lunar Chordmaker",
-    "model": 37
+    "model": 37,
+    "pig": 0
    },
    {
     "id": 67,
     "name": "Vicello Nulo",
-    "model": 12
+    "model": 12,
+    "pig": 16
    },
    {
     "id": 68,
     "name": "Vicello Unu",
-    "model": 12
+    "model": 12,
+    "pig": 16
    },
    {
     "id": 69,
     "name": "Vicello Nulo (W)",
-    "model": 12
+    "model": 12,
+    "pig": 26
    },
    {
     "id": 70,
     "name": "Vicello Unu (W)",
-    "model": 12
+    "model": 12,
+    "pig": 26
    },
    {
     "id": 71,
     "name": "Vicello Du (W)",
-    "model": 12
+    "model": 12,
+    "pig": 26
    },
    {
     "id": 72,
     "name": "Vicello Nulo (Y)",
-    "model": 12
+    "model": 12,
+    "pig": 12
    },
    {
     "id": 73,
     "name": "Vicello Unu (Y)",
-    "model": 12
+    "model": 12,
+    "pig": 12
    },
    {
     "id": 74,
     "name": "Vicello Du (Y)",
-    "model": 12
+    "model": 12,
+    "pig": 12
    },
    {
     "id": 75,
     "name": "Vicello Nulo (G)",
-    "model": 12
+    "model": 12,
+    "pig": 21
    },
    {
     "id": 76,
     "name": "Vicello Unu (G)",
-    "model": 12
+    "model": 12,
+    "pig": 21
    },
    {
     "id": 77,
     "name": "Vicello Du (G)",
-    "model": 12
+    "model": 12,
+    "pig": 21
    },
    {
     "id": 78,
     "name": "Vicello Tri (G)",
-    "model": 12
+    "model": 12,
+    "pig": 21
    },
    {
     "id": 79,
     "name": "Cindervone",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 80,
     "name": "Scaldrovone",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 81,
     "name": "Meltrovone",
-    "model": 17
+    "model": 17,
+    "pig": 0
    },
    {
     "id": 82,
     "name": "Magia Charm",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 83,
     "name": "Magia Charmbell",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 84,
     "name": "Aria Rhota",
-    "model": 20
+    "model": 20,
+    "pig": 0
    },
    {
     "id": 85,
     "name": "Worn Horn",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 86,
     "name": "Weathered Horn",
-    "model": 21
+    "model": 21,
+    "pig": 0
    },
    {
     "id": 87,
     "name": "Avenir's Music Box",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 88,
     "name": "Eternal Music Box",
-    "model": 22
+    "model": 22,
+    "pig": 0
    },
    {
     "id": 89,
     "name": "Dios Bell",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 90,
     "name": "Dios Bell+",
-    "model": 25
+    "model": 25,
+    "pig": 0
    },
    {
     "id": 91,
     "name": "Demolition Chime",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 92,
     "name": "Timbral Demolisher",
-    "model": 33
+    "model": 33,
+    "pig": 0
    },
    {
     "id": 93,
     "name": "Lagia Horn",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 94,
     "name": "Lagia Horn+",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 95,
     "name": "Lagia Thunderpeal",
-    "model": 27
+    "model": 27,
+    "pig": 0
    },
    {
     "id": 96,
     "name": "Nether Flute",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 97,
     "name": "Nether Sinphony",
-    "model": 34
+    "model": 34,
+    "pig": 0
    },
    {
     "id": 98,
     "name": "Megiddo Mode",
-    "model": 26
+    "model": 26,
+    "pig": 0
    },
    {
     "id": 99,
     "name": "The Apocalypso",
-    "model": 26
+    "model": 26,
+    "pig": 0
    }
   ]
  },
+ "pigments": [
+  [
+   255,
+   255,
+   255
+  ],
+  [
+   255,
+   80,
+   80
+  ],
+  [
+   204,
+   41,
+   0
+  ],
+  [
+   255,
+   51,
+   0
+  ],
+  [
+   153,
+   0,
+   51
+  ],
+  [
+   102,
+   21,
+   0
+  ],
+  [
+   102,
+   204,
+   255
+  ],
+  [
+   0,
+   102,
+   204
+  ],
+  [
+   11,
+   153,
+   204
+  ],
+  [
+   0,
+   0,
+   153
+  ],
+  [
+   51,
+   102,
+   153
+  ],
+  [
+   255,
+   255,
+   102
+  ],
+  [
+   255,
+   255,
+   0
+  ],
+  [
+   255,
+   204,
+   0
+  ],
+  [
+   204,
+   153,
+   0
+  ],
+  [
+   255,
+   204,
+   51
+  ],
+  [
+   204,
+   153,
+   255
+  ],
+  [
+   153,
+   51,
+   255
+  ],
+  [
+   102,
+   0,
+   255
+  ],
+  [
+   102,
+   0,
+   102
+  ],
+  [
+   102,
+   81,
+   153
+  ],
+  [
+   153,
+   255,
+   153
+  ],
+  [
+   51,
+   153,
+   51
+  ],
+  [
+   102,
+   153,
+   0
+  ],
+  [
+   41,
+   61,
+   41
+  ],
+  [
+   79,
+   87,
+   41
+  ],
+  [
+   195,
+   205,
+   195
+  ],
+  [
+   100,
+   80,
+   71
+  ]
+ ],
  "models": {
   "axe/axe001": {
    "glb": "models/weapons/axe/axe001.glb",

@@ -13,6 +13,9 @@ either gender, with the hunter's face, hair, clothing and colours, in the game's
 - Faces and hairstyles, with the hair and face parts each helm leaves visible
 - The game's own colours: Skin Tone, Hair Color, Clothing Color and the two facial Features,
   from the game's own presets and colour board, and each piece's own armour pigment
+- Every weapon in the game's tables, with the game's own names and pigment, hung on the hunter
+  exactly where the game hangs it, sheathed or drawn (the game's own mount, read from the
+  executable): shields on the forearm, the Long Sword in its scabbard, the Bow's arrows on the hip
 - The hunter's common motion lists, clip by clip
 - Hunter slots, as in the MHGU Armor Viewer: named hunters, each with its own armour, look,
   colours, motion, lighting, effects and view; switch, copy, rename and delete them
@@ -38,8 +41,10 @@ No build step. Serve `docs/` with any static file server:
                          empty slot, per helm the hair and face parts it leaves, the colour choices
                          and the motion lists; `_about` says where each comes from
     docs/materials.json  each material's base texture, blend state and colour type
-    docs/weapons.json    the game's weapon tables: classes, part names, every weapon's name and
-                         model (the Weapon panel is not built yet: the mount is not decoded)
+    docs/weapons.json    the game's weapon tables: classes, part names, every weapon's name, model
+                         and pigment, and the pigment colours
+    docs/mount.json      how the game hangs each weapon part on the hunter: the bone, the
+                         placement for each carry state, the rest scale, per-model carry records
     docs/models/<g>/     armour, clothing, face and hair meshes (.glb)
     docs/models/weapons/ every weapon model (.glb)
     docs/poses/<g>/      the common motion lists, animations only
@@ -56,6 +61,9 @@ The scripts live beside this repository in `C:\MH3U-Extract` and read a decrypte
     mh3u_armor.py          the game's armour tables, read the way the game reads them
     build_armor.py         everything under docs/ but the poses
     build_armor_poses.py   the common motion lists onto each gender's skeleton
+    convert_weapons.py     every weapon model through RevilToolset
+    build_weapons.py       the weapon models, their materials and weapons.json
+    mh3u_mount.py          the weapon mount, read from the executable (mount.json)
 
 Decode notes: `C:\MH3U-Extract\notes\armor.md`. Neither the extract nor the game's files are part
 of this repository.
