@@ -507,7 +507,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   <header class="titlebar titlebar-header">
     <h1>MH3U Armor Viewer</h1>
     <button id="barBtn" class="btn tiny on" title="Show or hide the camera controls">Camera Controls</button>
-    <button id="resetBtn" class="btn tiny cta" title="Back to no armour and the first face and hair, under the Default lighting with no effects">Reset</button>
+    <button id="resetBtn" class="btn tiny cta" title="Restore the defaults for the hunter on screen: no armour, the first face, hair and clothing, the Default lighting and no effects; its gender is kept">Reset</button>
     <button id="aboutBtn" class="icon-btn" title="About" aria-label="About">&#9432;</button>
     <button id="themeBtn" class="icon-btn" title="Settings" aria-label="Settings">&#9881;</button>
     <button id="linksBtn" class="icon-btn" title="Other MHGU apps" aria-label="Other MHGU apps">&#128279;</button>
@@ -516,6 +516,20 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   <main class="layout">
     <aside class="sidebar">
       <div id="paneMonster">
+
+      <!-- HUNTERS: the MHGU Armor Viewer's hunter slots. Raven, 2026-10-04: "Also, add the Hunter slots of the
+           GU Armor Viewer". Each slot is a named hunter; click a row to switch to it. -->
+      <section class="panel" id="huntersPanel" data-open="false">
+        <button class="panel-head">Hunters <span class="chev">&#9662;</span></button>
+        <div class="panel-body">
+          <ol id="hunterList" class="chain hunters"></ol>
+          <div class="row">
+            <button id="hunterNew" class="btn tiny" title="A new hunter, starting as a copy of this one">New</button>
+            <button id="hunterRename" class="btn tiny" title="Rename this hunter">Rename</button>
+            <button id="hunterDelete" class="btn tiny" title="Delete this hunter">Delete</button>
+          </div>
+        </div>
+      </section>
 
       <section class="panel" data-open="true" data-keep-open>
         <div class="panel-head">Equipment <span class="chev">&#9662;</span></div>
@@ -1915,15 +1929,40 @@ const DEFAULTS = { g: 'f', type: 'all', helm: 0, body: 0, arm: 0, wst: 0, leg: 0
                    pig: { helm: null, body: null, arm: null, wst: null, leg: null },
                    pose: { list: '0000', clip: 'Motion[1]_loop' } };
 const clone = o => JSON.parse(JSON.stringify(o));
+// A hunter, every field type-guarded onto the defaults: what a save, a slot or an older version of this app
+// wrote is never trusted as it stands.
+function isColourSpec(v){
+  return !!v && typeof v === 'object' && (v.off === true || Number.isInteger(v.p) || (Number.isInteger(v.x) && Number.isInteger(v.y)));
+}
+function hunterOf(h){
+  const o = clone(DEFAULTS);
+  if (!h || typeof h !== 'object') return o;
+  if (h.g === 'f' || h.g === 'm') o.g = h.g;
+  if (['all', 'b', 'g'].includes(h.type)) o.type = h.type;
+  for (const k of DATA.slots.concat(['face', 'hair', 'cloth', 'skin'])) if (Number.isInteger(h[k]) && h[k] >= 0) o[k] = h[k];
+  for (const k of ['hairC', 'clothC', 'feat1', 'feat2']) if (isColourSpec(h[k])) o[k] = clone(h[k]);
+  if (h.pig && typeof h.pig === 'object')
+    for (const s of DATA.slots){ const v = h.pig[s]; o.pig[s] = v && Number.isInteger(v.x) && Number.isInteger(v.y) ? { x: v.x, y: v.y } : null; }
+  if (h.pose && typeof h.pose === 'object' && typeof h.pose.list === 'string' && typeof h.pose.clip === 'string')
+    o.pose = { list: h.pose.list, clip: h.pose.clip };
+  return o;
+}
 const state = clone(DEFAULTS);
-// the look (lighting, effects, the Camera panel) rides beside the set as `look`, put back at boot (restoreLook)
-let savedLook = null;
+// the look (lighting, effects, the Camera panel) rides beside the hunter as `look`, put back at boot
+// (restoreLook), and the hunter slots as `hunters` / `hunter` (the hunter slots, below)
+let savedLook = null, savedHunters = null, savedHunter = 0, savedAny = false;
 try {
-  const saved = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
-  if (saved && saved.v === 2){ savedLook = saved.look || null; delete saved.look; Object.assign(state, saved); }
+  const saved = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
+  if (saved && typeof saved === 'object') savedAny = true;
+  if (saved && saved.v === 2){
+    savedLook = saved.look || null; savedHunters = saved.hunters || null; savedHunter = saved.hunter;
+    Object.assign(state, hunterOf(saved));
+  }
 } catch (_) {}
 state.v = 2;
-function saveState(){ try { localStorage.setItem(LS_KEY, JSON.stringify(Object.assign({}, state, { look: lookState() }))); } catch (_) {} }
+function saveState(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(Object.assign({}, state, { look: lookState() }, hunterSaveState()))); } catch (_) {}
+}
 
 const pad3 = n => String(n).padStart(3, '0');
 const pieceRec = (g, slot, model) => DATA.pieces[g + '/' + g + '_' + slot + pad3(model)] || null;
@@ -2311,11 +2350,19 @@ genderSel.onchange = async () => { state.g = genderSel.value; buildLists(); awai
 faceSel.onchange = () => { state.face = +faceSel.value; refresh(); };
 hairSel.onchange = () => { state.hair = +hairSel.value; refresh(); };
 clothSel.onchange = () => { state.cloth = +clothSel.value; refresh(); };
+// Reset: the defaults for the hunter on screen, as the MHGU Armor Viewer's does -- its gender kept, no armour,
+// the first face, hair and clothing, the starting colours and motion, the Default lighting, no effects and a
+// fresh framing. It replaces a slot's look, so it asks first.
 document.getElementById('resetBtn').onclick = async () => {
-  Object.assign(state, clone(DEFAULTS)); state.v = 2; filterEl.value = '';
-  applyFxPreset('off'); applyLighting('default');   // Reset names Off and Default, as the MHGU viewers' does
-  colourBoard.close(); pigBoard.close();
-  buildLists(); framed = false; await refresh(); await playPose(); frameAll();
+  if (hunterBusy) return;
+  const h = HUNTERS[hunterIndex];
+  if (!confirm('Reset ' + (h ? h.name : 'the hunter') + ' (' + (state.g === 'm' ? 'male' : 'female') + ') to the defaults? The current look is replaced.')) return;
+  filterEl.value = '';
+  hunterBusy = true; setLoading(true);
+  try {
+    await applySet({ hunter: Object.assign(clone(DEFAULTS), { g: state.g }), lighting: 'default', effects: { preset: 'off' } }, { view: false });
+  } finally { hunterBusy = false; setLoading(false); }
+  saveState();
 };
 
 // THE WHEEL STEPS A DROPDOWN, CLOSED. The MHGU Monster Viewer's control (its index.html, commit f10d041), brought
@@ -2386,6 +2433,153 @@ document.querySelectorAll('.panel:not([data-keep-open]) > .panel-head').forEach(
   };
 });
 
+// ---- hunter slots -----------------------------------------------------------------------------
+// The MHGU Armor Viewer's hunter slots (its index.html, "hunter slots"), brought over 2026-10-04. Raven:
+// "Also, add the Hunter slots of the GU Armor Viewer". A slot is a named hunter, { name, set }. The set is
+// what the page shows of that hunter: what it wears, its face, hair, clothing, colours, pigment and motion
+// (`hunter`, the shape of `state`), its lighting and effects (as the session saves them), and its view --
+// the camera's place, focal length and lens, and first person. Switching banks the hunter on screen into its
+// slot and applies the other; a slot without lighting, effects or a view keeps what is on screen and frames
+// the hunter. The Camera panel's behaviour (turntable, smooth orbit, zoom to the pointer, fly speed) belongs
+// to the viewer, not to a slot, as in the MHGU Armor Viewer. A first visit starts with two slots: the default
+// female hunter and the default male one.
+const HUNTERS = [];
+let hunterIndex = 0, hunterBusy = false, hunterRenaming = false, hunterBoot = true;
+const hunterList = document.getElementById('hunterList');
+const escHtml = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// the view, as the MHGU Armor Viewer's cameraState writes it: in first person the target is a point a metre
+// ahead and the mode rides along; the lens only when it is not Standard
+function viewState(){
+  try {
+    const t = camMode === 'fly' ? camera.getWorldDirection(new THREE.Vector3()).add(camera.position) : controls.target;
+    const v = { p: camera.position.toArray().map(n => +n.toFixed(4)), t: t.toArray().map(n => +n.toFixed(4)),
+                fov: +camera.fov.toFixed(2) };
+    if (camMode === 'fly') v.mode = 'fly';
+    if (lensState.type !== 'standard') v.lens = lensFileState();
+    return v;
+  } catch (_) { return null; }
+}
+function applyView(c){
+  if (!c || !Array.isArray(c.p) || !Array.isArray(c.t) || c.p.length !== 3 || c.t.length !== 3) return false;
+  if (!c.p.every(Number.isFinite) || !c.t.every(Number.isFinite)) return false;
+  const wantFly = c.mode === 'fly';              // absent or anything else: the orbit camera
+  if (!wantFly && camMode === 'fly') leaveFly({ keepTarget: true });
+  camera.position.fromArray(c.p); controls.target.fromArray(c.t);
+  setFov(Number.isFinite(c.fov) ? c.fov : FOV_DEFAULT);
+  camera.lookAt(controls.target);
+  if (wantFly){ if (camMode === 'fly') flyFromCamera(); else enterFly({ drain: false }); }
+  else controls.update();
+  applyLens(c.lens && typeof c.lens === 'object' ? c.lens : { type: 'standard' });   // a view without one is Standard
+  updateDepthBias();
+  return true;
+}
+function currentSet(){
+  return Object.assign({ app: 'MH3U Armor Viewer', version: 1, hunter: hunterOf(state) },
+                       lightingSaveState(), { effects: effectsState(), view: viewState() });
+}
+// A set onto the page: the hunter, then its lighting and effects where it has them, then its view -- or, with
+// none or { view: false }, a fresh framing of the hunter.
+async function applySet(d, opt){
+  opt = opt || {};
+  if (!d || typeof d !== 'object') d = {};
+  Object.assign(state, hunterOf(d.hunter)); state.v = 2;
+  colourBoard.close(); pigBoard.close();
+  buildLists();
+  await refresh();
+  await playPose();
+  if ((d.lightRig && typeof d.lightRig === 'object') || typeof d.lighting === 'string') restoreLighting(d);
+  if (d.effects && typeof d.effects === 'object') restoreEffects(d.effects);
+  if (!(opt.view !== false && applyView(d.view))) frameAll();
+}
+function freeHunterName(){
+  for (let n = 1; ; n++){ const nm = 'Hunter ' + n; if (!HUNTERS.some(h => h.name === nm)) return nm; }
+}
+{
+  const valid = h => h && typeof h === 'object' && typeof h.name === 'string' && h.name.trim() &&
+                     (h.set === null || (h.set && typeof h.set === 'object'));
+  if (Array.isArray(savedHunters) && savedHunters.some(h => valid(h) && h.set)){
+    for (const h of savedHunters) if (valid(h)) HUNTERS.push({ name: h.name.trim().slice(0, 40), set: h.set, fresh: !!h.fresh });
+    hunterIndex = Number.isInteger(savedHunter) && HUNTERS[savedHunter] ? savedHunter : 0;
+  } else {
+    HUNTERS.push({ name: 'Hunter 1', set: null });          // banked from the page once it is dressed
+    if (!savedAny)                                          // a first visit: the other body, untouched
+      HUNTERS.push({ name: 'Hunter 2', set: { hunter: Object.assign(clone(DEFAULTS), { g: state.g === 'f' ? 'm' : 'f' }) }, fresh: true });
+  }
+}
+// the view the slot on screen was left with, taken before anything banks over it; the boot puts it back
+const bootView = HUNTERS[hunterIndex] && HUNTERS[hunterIndex].set ? HUNTERS[hunterIndex].set.view : null;
+function bankHunter(){ if (!hunterBusy && !hunterBoot && HUNTERS[hunterIndex]) HUNTERS[hunterIndex].set = currentSet(); }
+// what saveState writes: the slots with the one on screen freshly banked. A hoisted function, so saveState
+// can name it from higher up
+function hunterSaveState(){
+  try {
+    bankHunter();
+    if (!hunterRenaming) paintHunters();
+    return { hunters: HUNTERS.map(h => ({ name: h.name, set: h.set, fresh: h.fresh || undefined })), hunter: hunterIndex };
+  } catch (_) { return {}; }
+}
+function paintHunters(){
+  hunterList.innerHTML = HUNTERS.map((h, i) => {
+    const g = i === hunterIndex ? state.g : (h.set && h.set.hunter && h.set.hunter.g) || 'f';
+    return '<li class="' + (i === hunterIndex ? 'on' : '') + '" data-k="' + i + '" title="' + (i === hunterIndex ? 'The hunter on screen' : 'Switch to this hunter') + '">' +
+           '<span class="n">' + (i + 1) + '.</span><span class="lab">' + escHtml(h.name) + '</span>' +
+           '<span class="tag">' + (g === 'm' ? 'Male' : 'Female') + '</span></li>';
+  }).join('');
+  document.getElementById('hunterDelete').disabled = HUNTERS.length < 2;
+}
+async function switchHunter(k, opt){
+  opt = opt || {};
+  if (!HUNTERS[k] || (k === hunterIndex && !opt.force) || hunterBusy) return;
+  if (!opt.noBank) bankHunter();     // before the busy flag goes up: the bank skips while busy
+  hunterBusy = true;
+  setLoading(true);
+  try {
+    const to = HUNTERS[k];
+    hunterIndex = k; paintHunters();
+    await applySet(to.set);
+    delete to.fresh;
+  } finally { hunterBusy = false; setLoading(false); }
+  saveState();
+}
+hunterList.onclick = e => {
+  const li = e.target && e.target.closest ? e.target.closest('li') : null;
+  if (!li || hunterRenaming) return;
+  switchHunter(+li.dataset.k);
+};
+document.getElementById('hunterNew').onclick = () => {
+  if (hunterBusy) return;
+  bankHunter();
+  HUNTERS.push({ name: freeHunterName(), set: currentSet() });   // a copy of the hunter on screen
+  hunterIndex = HUNTERS.length - 1;
+  paintHunters(); saveState();
+};
+document.getElementById('hunterRename').onclick = () => {
+  const li = hunterList.querySelector('li.on'); if (!li || hunterRenaming) return;
+  const lab = li.querySelector('.lab'), h = HUNTERS[hunterIndex];
+  const inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 40; inp.value = h.name;
+  hunterRenaming = true;
+  lab.replaceWith(inp); inp.focus(); inp.select();
+  let done = false;
+  const finish = keep => {
+    if (done) return; done = true; hunterRenaming = false;
+    const v = inp.value.trim();
+    if (keep && v) h.name = v.slice(0, 40);
+    paintHunters(); saveState();
+  };
+  inp.onkeydown = ev => { if (ev.key === 'Enter') finish(true); else if (ev.key === 'Escape') finish(false); };
+  inp.onblur = () => finish(true);
+};
+document.getElementById('hunterDelete').onclick = async () => {
+  if (HUNTERS.length < 2 || hunterBusy) return;
+  const h = HUNTERS[hunterIndex];
+  if (!confirm('Delete ' + h.name + '? Its look is lost.')) return;
+  HUNTERS.splice(hunterIndex, 1);
+  const next = Math.min(hunterIndex, HUNTERS.length - 1);
+  hunterIndex = -1;
+  await switchHunter(next, { noBank: true, force: true });
+};
+paintHunters();
+
 // ---- the loop ---------------------------------------------------------------------------------
 // the canvas and the effects composer resize together (fitRenderer)
 addEventListener('resize', fitRenderer);
@@ -2408,11 +2602,18 @@ buildLists();
 await refresh();
 await playPose();
 frameAll();
+// the slot on screen comes back with the view it was left with, as the MHGU Armor Viewer's does
+if (bootView) applyView(bootView);
+hunterBoot = false;
+bankHunter(); paintHunters(); saveState();   // the hunter on screen into its slot, now that it is dressed
 window.__view = { DATA, state, mounted, scene, camera, controls, world, pose, refresh, frameAll, buildLists, playPose,
                   applyAllColours, applyHelmMasks };
 // the Camera, Lighting and Effects panels' hooks, in the MHGU viewers' shape, so a test drives them the same way
 Object.assign(window.__view, {
-  renderer, setFocal, setFov, lookState, restoreLook,
+  renderer, setFocal, setFov, lookState, restoreLook, currentSet, applySet,
+  hunters: { list: () => HUNTERS.map((h, i) => ({ name: h.name, g: i === hunterIndex ? state.g : (h.set && h.set.hunter && h.set.hunter.g) || null,
+                                                   banked: !!h.set, fresh: !!h.fresh })),
+             index: () => hunterIndex, switchTo: k => switchHunter(k) },
   light: { preset: applyLighting, state: () => lightingSaveState() },
   face: { set: on => setFaceLock(on), get: () => faceLock }, aimPoint: () => aimPoint(new THREE.Vector3()).toArray(),
   aimSurface: () => ({ depth: aimSurfaceDepth(true), hit: aimHit.hit, cost: +aimHit.cost.toFixed(2), every: aimHit.every }),

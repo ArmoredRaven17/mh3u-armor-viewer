@@ -14,6 +14,8 @@ either gender, with the hunter's face, hair, clothing and colours, in the game's
 - The game's own colours: Skin Tone, Hair Color, Clothing Color and the two facial Features,
   from the game's own presets and colour board, and each piece's own armour pigment
 - The hunter's common motion lists, clip by clip
+- Hunter slots, as in the MHGU Armor Viewer: named hunters, each with its own armour, look,
+  colours, motion, lighting, effects and view; switch, copy, rename and delete them
 - The MHGU viewers' Lighting, Camera and Effects panels: lighting presets and an adjustable light
   rig; an orbit or first-person camera with lens types (fisheye, orthographic, anamorphic,
   tilt-shift) and a focal length; post effects (bloom, depth of field that follows the hunter's
