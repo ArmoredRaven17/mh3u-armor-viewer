@@ -250,6 +250,12 @@ dl.info dd{margin:0;color:var(--text);font-variant-numeric:tabular-nums;
 .chain li{display:flex;align-items:center;gap:6px;font-size:12px;padding:3px 8px;border:1px solid var(--line);border-radius:6px;background:#ffffff14}
 .chain li.on{border-color:var(--accent-hover);background:#ffffff26}
 .chain li.off .lab{opacity:.45}
+.chain li .grip{cursor:grab;color:var(--text-hint);user-select:none;touch-action:none;padding:0 2px;font-size:13px;line-height:1}
+.chain li .grip:hover{color:var(--text)}
+.chain.dragging,.chain.dragging li,.chain.dragging li .grip{cursor:grabbing}
+.chain li.drag{opacity:.35}
+.chain li.ins-before{box-shadow:0 -3px 0 var(--accent-hover)}
+.chain li.ins-after{box-shadow:0 3px 0 var(--accent-hover)}
 /* the hunter slots: click a row to switch to that hunter; the one on screen is lit */
 .chain.hunters li{cursor:pointer}
 .chain.hunters li.on{cursor:default}
@@ -448,6 +454,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 #pigPalettes .stage-h,#pigBaseHead .stage-h{margin:16px 0 0;font-size:13px}
 #pigPalettes .hx,#pigBaseHead .hx{font-weight:400;font-size:11px;opacity:.6}
 #pigPalettes .stage-h:first-child{margin-top:6px}
+#pigModal .stage-h{margin:14px 0 0;font-size:13px}
+#pigModal .stage-h .hx{font-weight:400;font-size:11px;opacity:.6;margin-left:4px}
 .devrow{display:flex;align-items:center;gap:6px;margin:0 0 4px}
 .devpick{display:flex;align-items:center;gap:8px;flex:1;min-width:0;padding:5px 8px;
   background:transparent;border:1px solid var(--line);border-radius:6px;color:var(--text);
@@ -559,6 +567,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
           <div class="field"><label for="faceStyle">Face</label><select id="faceStyle"></select></div>
           <div class="field"><label for="hairStyle">Hair</label><select id="hairStyle"></select></div>
           <div class="field"><label for="clothing">Clothing</label><select id="clothing"></select></div>
+          <div class="field"><label for="huntPose">Pose</label><select id="huntPose"></select></div>
         </div>
       </section>
 
@@ -602,29 +611,49 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
       <!-- ARMOUR PIGMENT: every piece draws its pigment region (colour type 3) in its own default colour,
            armour record +5 into the game's 44-colour table. Pieces whose record +4 is 2 can carry their own
-           colour instead; Custom picks it from the colour board. -->
+           colour instead. The rows are the MHGU Armor Viewer's (Raven, 2026-10-08: GU parity, the game's
+           dye rule kept): a tick, a hex field, an RGB swatch, and the palette button, which opens the
+           game's 44 pigments and its colour board. -->
       <section class="panel" data-open="false">
         <button class="panel-head">Pigment <span class="chev">&#9662;</span></button>
         <div class="panel-body">
-          <div class="field"><label for="pig_helm">Head</label><div class="row gap"><select id="pig_helm" data-pig="helm"></select><span class="chip" id="pigChip_helm"></span></div></div>
-          <div class="field"><label for="pig_body">Chest</label><div class="row gap"><select id="pig_body" data-pig="body"></select><span class="chip" id="pigChip_body"></span></div></div>
-          <div class="field"><label for="pig_arm">Arms</label><div class="row gap"><select id="pig_arm" data-pig="arm"></select><span class="chip" id="pigChip_arm"></span></div></div>
-          <div class="field"><label for="pig_wst">Waist</label><div class="row gap"><select id="pig_wst" data-pig="wst"></select><span class="chip" id="pigChip_wst"></span></div></div>
-          <div class="field"><label for="pig_leg">Legs</label><div class="row gap"><select id="pig_leg" data-pig="leg"></select><span class="chip" id="pigChip_leg"></span></div></div>
-          <div class="field board-wrap" id="pigBoardWrap" hidden>
-            <label id="pigBoardLabel" for="pigBoard">Color Board</label>
-            <canvas id="pigBoard" title="Click or drag to pick a color from the game's own color board"></canvas>
-          </div>
+          <label class="chk" title="Show which parts of each piece take its pigment: the pigment region in magenta, the rest dimmed"><input type="checkbox" id="maskdbg">Dye mask</label>
+          <div id="slotPig"></div>
         </div>
       </section>
 
-      <!-- THE GAME'S OWN MOTIONS: the hunter's common motion lists (player\mot\plcom). The clips carry no
-           names in the game data, so they are listed as the game stores them. -->
-      <section class="panel" data-open="false">
-        <button class="panel-head">Pose <span class="chev">&#9662;</span></button>
+      <!-- THE ANIMATION PANEL, the MHGU Armor Viewer's (Raven, 2026-10-09: "The GU App has a Pose selection for Hunter
+           animations in the Hunter Panel ... stances under the Weapon panel ... If you see both in the same panel, that
+           is the animation panel"): the transport over whatever plays, and the Chain of poses and stances. The hunter's
+           motions are the game's common lists (player\mot\plcom); the clips carry no names in the game data. -->
+      <section class="panel" id="animPanel" data-open="false">
+        <button class="panel-head">Animation <span class="chev">&#9662;</span></button>
         <div class="panel-body">
-          <div class="field"><label for="poseList">Motion List</label><select id="poseList"></select></div>
-          <div class="field"><label for="poseClip">Clip</label><select id="poseClip"></select></div>
+          <div id="anim" class="idle">
+            <div class="transport">
+              <input id="animScrub" type="range" min="0" max="1" step="1" value="0" title="Scrub through the frames">
+              <div id="animFrame" class="hint">no animation playing</div>
+              <div class="row">
+                <button id="animFirst" class="btn tiny" title="First frame">|&lt;</button>
+                <button id="animPrev" class="btn tiny" title="Previous frame">&lt;</button>
+                <button id="animPlay" class="btn tiny" title="Play or pause">Pause</button>
+                <button id="animNext" class="btn tiny" title="Next frame">&gt;</button>
+                <button id="animLast" class="btn tiny" title="Last frame">&gt;|</button>
+              </div>
+              <div class="row">
+                <button id="animLoop" class="btn tiny" title="Repeat the animation instead of holding its last frame">Loop</button>
+              </div>
+            </div>
+            <div class="chain-head">Chain</div>
+            <div class="row pick"><select id="chainPoseSel" title="A hunter pose to add"></select><button id="chainPrevPose" class="btn tiny" title="Play this pose now (sheathed)">Preview</button><button id="chainAddPose" class="btn tiny" title="Add this pose to the chain">Add</button></div>
+            <div class="row pick"><select id="chainStanceSel" title="A weapon stance to add"></select><button id="chainPrevStance" class="btn tiny" title="Play this stance now (drawn)">Preview</button><button id="chainAddStance" class="btn tiny" title="Add this stance to the chain">Add</button></div>
+            <div class="row">
+              <button id="chainPlay" class="btn tiny" title="Play the chain back to back">Play chain</button>
+              <button id="chainLoop" class="btn tiny" title="Repeat the chain when it ends">Loop</button>
+              <button id="chainClear" class="btn tiny" title="Empty the chain">Clear</button>
+            </div>
+            <ol id="chainList" class="chain"></ol>
+          </div>
         </div>
       </section>
 
@@ -735,6 +764,24 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   </main>
 </div>
 
+<!-- THE PIGMENT PALETTE, the MHGU Armor Viewer's modal: opened from a pigment row's palette button, it writes
+     into that row. Default = the piece's own colour; the game's 44 pigments; the game's colour board. -->
+<div id="pigModal" class="modal hidden">
+  <div class="modal-card">
+    <h2 id="pigTitle">Pigment</h2>
+    <button id="pigDefault" class="btn block" title="The piece's own colour, which follows the armor">Default</button>
+    <h3 class="stage-h">Armor pigments <span class="hx" id="pigGameCount"></span></h3>
+    <div id="pigGrid"></div>
+    <div class="field board-wrap" id="pigBoardWrap">
+      <h3 class="stage-h" id="pigBoardLabel">Color board</h3>
+      <canvas id="pigBoard" title="Click or drag to pick a color from the game's own color board"></canvas>
+    </div>
+    <div class="row end gap">
+      <button id="pigClose" class="btn">Close</button>
+    </div>
+  </div>
+</div>
+
 <div id="linksModal" class="modal hidden">
   <div class="modal-card">
     <h2>Other MH3U Apps</h2>
@@ -752,6 +799,10 @@ input[type=range]{width:100%;accent-color:var(--accent)}
       <li>
         <a href="https://armoredraven17.github.io/mh3u-hunting-log/" target="_blank" rel="noopener">Hunting Log</a>
         <span class="app-desc">Keeps a running record of your MH3U hunts — what you were after, what you wore, who came along.</span>
+      </li>
+      <li>
+        <a href="https://armoredraven17.github.io/mh3u-armor-skills-explained/" target="_blank" rel="noopener">Armor Skills Explained</a>
+        <span class="app-desc">Every MH3U armor skill: the game's own description, then what it actually does, with the numbers.</span>
       </li>
       <li>
         <a href="https://armoredraven17.github.io/mh3u-quest-randomizer/" target="_blank" rel="noopener">Quest Randomizer</a>
@@ -926,10 +977,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     // greens and blues. Those key more forgivingly on real footage, where the backdrop is lit
     // cloth, but here the backdrop is a flat framebuffer value with no lighting on it at all,
     // so the reason to prefer them does not apply and a full channel is the easier pull.
-    const STAGE_KEY = "mh3u-monster-viewer-stage";
+    // The armour viewer's own key. It used to share the 3U Monster Viewer's ("mh3u-monster-viewer-stage", copied over
+    // with the stage code), so the two apps on the one Pages origin set each other's backdrop; a visitor with no
+    // armour-viewer value yet is read from that old key once, then keeps their own.
+    const STAGE_KEY = "mh3u-armor-viewer-stage", STAGE_KEY_OLD = "mh3u-monster-viewer-stage";
     const STAGES = { theme: null, green: "#00FF00", blue: "#0000FF" };
     let stageMode = "theme";
-    try { const v = localStorage.getItem(STAGE_KEY); if (v && v in STAGES) stageMode = v; } catch (e) {}
+    try {
+      const v = localStorage.getItem(STAGE_KEY) ?? localStorage.getItem(STAGE_KEY_OLD);
+      if (v && v in STAGES) stageMode = v;
+    } catch (e) {}
 
     const FALLBACK_ICON = "assets/MonsterIcons/MH3U-Question_Mark_Icon.png";
 
@@ -1942,6 +1999,9 @@ const clone = o => JSON.parse(JSON.stringify(o));
 function isColourSpec(v){
   return !!v && typeof v === 'object' && (v.off === true || Number.isInteger(v.p) || (Number.isInteger(v.x) && Number.isInteger(v.y)));
 }
+// a piece's own colour: a board pixel { x, y } (the game's way) or any RGB { c: '#rrggbb' } (the hex field and swatch)
+const isXY = v => !!v && typeof v === 'object' && Number.isInteger(v.x) && Number.isInteger(v.y);
+const isPigSpec = v => isXY(v) || (!!v && typeof v === 'object' && typeof v.c === 'string' && /^#[0-9a-f]{6}$/.test(v.c));
 function hunterOf(h){
   const o = clone(DEFAULTS);
   if (!h || typeof h !== 'object') return o;
@@ -1950,7 +2010,7 @@ function hunterOf(h){
   for (const k of DATA.slots.concat(['face', 'hair', 'cloth', 'skin'])) if (Number.isInteger(h[k]) && h[k] >= 0) o[k] = h[k];
   for (const k of ['hairC', 'clothC', 'feat1', 'feat2']) if (isColourSpec(h[k])) o[k] = clone(h[k]);
   if (h.pig && typeof h.pig === 'object')
-    for (const s of DATA.slots){ const v = h.pig[s]; o.pig[s] = v && Number.isInteger(v.x) && Number.isInteger(v.y) ? { x: v.x, y: v.y } : null; }
+    for (const s of DATA.slots){ const v = h.pig[s]; o.pig[s] = isXY(v) ? { x: v.x, y: v.y } : isPigSpec(v) ? { c: v.c } : null; }
   if (h.pose && typeof h.pose === 'object' && typeof h.pose.list === 'string' && typeof h.pose.clip === 'string')
     o.pose = { list: h.pose.list, clip: h.pose.clip };
   const w = h.weapon;
@@ -2100,21 +2160,115 @@ function paintChips(){
 }
 
 // ARMOUR PIGMENT (type 3): the worn piece's own colour, armour record +5 into the game's 44-colour
-// table (0x895754 -> 0x893e14); a dyeable piece (record +4 == 2) can take Custom instead.
+// table (0x895754 -> 0x893e14); a dyeable piece (record +4 == 2) can carry its own colour instead.
+// A colour given to a slot stays with the slot when the armour changes (as the MHGU viewer's rows do),
+// and is drawn while the worn piece is dyeable; on a piece that is not, it waits.
+const hexRGB = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+const rgbHex = c => '#' + c.map(v => v.toString(16).padStart(2, '0')).join('');
+const specRGB = s => isXY(s) ? boardRGB(s.x, s.y) : hexRGB(s.c);
+const dyeable = slot => { const r = worn(slot); return !!(r && r.dye); };
 function pigmentOf(slot){
   const r = worn(slot);
-  if (r && r.dye && state.pig[slot]) return boardRGB(state.pig[slot].x, state.pig[slot].y);
+  if (r && r.dye && state.pig[slot]) return specRGB(state.pig[slot]);
   return C.pigments[r ? r.pig : 0];
+}
+
+// THE ROWS, the MHGU Armor Viewer's: a tick (on = the piece's own colour, off = Default), a hex field
+// that can be typed into and copied, an RGB swatch, and the palette button. All writes through to the
+// dyeable pieces worn, so the five rows always show the truth.
+const SLOT_LABEL = { helm: 'Head', body: 'Chest', arm: 'Arms', wst: 'Waist', leg: 'Legs' };
+function pigRow(id, label){
+  return '<div class="field" id="pgRow_' + id + '"><label for="pg_' + id + '">' + label + '</label>' +
+    '<div class="row gap">' +
+    '<input type="checkbox" id="pgOn_' + id + '" aria-label="Dye ' + label + '">' +
+    '<input type="text" class="hexbtn" id="pgHex_' + id + '" maxlength="7" spellcheck="false" ' +
+    'autocomplete="off" title="Type or paste a hex value; click to select and copy">' +
+    '<input type="color" id="pg_' + id + '" class="rgb-input" title="Pigment for ' + label + '">' +
+    '<button type="button" class="palbtn" id="pgPal_' + id + '" title="In-game pigments" ' +
+    'aria-label="In-game pigments for ' + label + '">&#9638;</button></div></div>';
+}
+document.getElementById('slotPig').innerHTML =
+  pigRow('all', 'All') +
+  '<hr style="border:0;border-top:1px solid var(--line);margin:8px 0">' +
+  SLOTS.map(sl => pigRow(sl, SLOT_LABEL[sl])).join('');
+const PIG_ROWS = ['all'].concat(SLOTS);
+const pgEl = (kind, id) => document.getElementById(kind + id);
+// the slots a row speaks for: All = every dyeable piece worn
+const pigSlotsOf = id => id === 'all' ? SLOTS.filter(dyeable) : [id];
+// All is ticked while every dyeable piece worn carries one and the same colour of its own
+function allPigment(){
+  const sl = SLOTS.filter(dyeable);
+  if (!sl.length || !sl.every(s => state.pig[s])) return null;
+  const h = rgbHex(specRGB(state.pig[sl[0]]));
+  return sl.every(s => rgbHex(specRGB(state.pig[s])) === h) ? h : null;
 }
 function buildPigmentLists(){
   for (const slot of SLOTS){
-    const sel = document.getElementById('pig_' + slot), r = worn(slot);
-    if (!(r && r.dye)) state.pig[slot] = null;
-    sel.innerHTML = '<option value="default">Default</option>' + (r && r.dye ? '<option value="custom">Custom</option>' : '');
-    sel.disabled = !(r && r.dye);
-    sel.value = state.pig[slot] ? 'custom' : 'default';
-    document.getElementById('pigChip_' + slot).style.background = css(pigmentOf(slot));
+    const r = worn(slot), can = dyeable(slot), s = can ? state.pig[slot] : null;
+    const on = pgEl('pgOn_', slot), hex = pgEl('pgHex_', slot), col = pgEl('pg_', slot);
+    on.checked = !!s;
+    for (const e of [on, hex, col, pgEl('pgPal_', slot)]) e.disabled = !can;
+    col.value = rgbHex(pigmentOf(slot));
+    if (document.activeElement !== hex) hex.value = s ? col.value : r ? 'Default' : 'Nothing worn';
+    pgEl('pgRow_', slot).title = !r ? 'Nothing is worn in this slot'
+      : can ? '' : 'The game does not let this piece be dyed (armor record +4 is not 2): it keeps its own color';
   }
+  const all = allPigment(), anyDye = SLOTS.some(dyeable), anyOwn = SLOTS.some(s => dyeable(s) && state.pig[s]);
+  const on = pgEl('pgOn_', 'all'), hex = pgEl('pgHex_', 'all'), col = pgEl('pg_', 'all');
+  on.checked = !!all;
+  for (const e of [on, hex, col, pgEl('pgPal_', 'all')]) e.disabled = !anyDye;
+  // not uniform: All's swatch shows the first dyeable piece's colour, so ticking it changes that piece not at all
+  const first = SLOTS.find(dyeable);
+  col.value = all || (first ? rgbHex(pigmentOf(first)) : '#c0c0c0');
+  if (document.activeElement !== hex) hex.value = all || (anyOwn ? 'Mixed' : 'Default');
+  pgEl('pgRow_', 'all').title = anyDye ? '' : 'None of the pieces worn can be dyed';
+}
+// one colour into a row's slots: a spec, or null for Default
+function setPig(id, spec){
+  for (const sl of pigSlotsOf(id)) state.pig[sl] = spec ? Object.assign({}, spec) : null;
+  applyAllColours();
+}
+for (const id of PIG_ROWS){
+  const on = pgEl('pgOn_', id), hex = pgEl('pgHex_', id), col = pgEl('pg_', id);
+  // ticking starts from the colour the row shows, so the piece does not change until the colour does
+  on.onchange = () => { setPig(id, on.checked ? { c: col.value } : null); saveState(); };
+  col.oninput = () => setPig(id, { c: col.value });
+  col.onchange = saveState;
+  // one click selects the whole value, ready to copy; on a row on Default it shows the hex to copy
+  hex.onfocus = () => { if (!/^#/.test(hex.value)) hex.value = col.value; hex.select(); };
+  hex.onclick = () => { if (hex.selectionStart === hex.selectionEnd) hex.select(); };
+  hex.onblur = () => buildPigmentLists();
+  // the hex field takes nothing but a hex triple: anything else snaps back
+  hex.onchange = () => {
+    let v = hex.value.trim();
+    if (v[0] !== '#') v = '#' + v;
+    if (/^#[0-9a-f]{3}$/i.test(v)) v = '#' + v.slice(1).split('').map(c => c + c).join('');
+    if (!/^#[0-9a-f]{6}$/i.test(v)) { buildPigmentLists(); return; }
+    v = v.toLowerCase();
+    if (v !== col.value || !on.checked) { setPig(id, { c: v }); saveState(); }
+  };
+  hex.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); hex.onchange(); hex.blur(); } };
+  pgEl('pgPal_', id).onclick = () => openPig(id);
+}
+
+// THE DYE MASK: the pigment region (colour type 3) in magenta, every other material dimmed -- exact here,
+// since the game marks the region per material. The region also glows magenta, so a dark map still shows
+// it; each material's own emissive is kept and put back when the mask goes off.
+const maskCb = document.getElementById('maskdbg');
+const MASK_ON = [255, 0, 255], MASK_OFF = [70, 70, 70];
+maskCb.onchange = () => applyAllColours();
+function dyeMask(root, on){
+  if (on) applyColours(root, { 1: MASK_OFF, 2: MASK_OFF, 3: MASK_ON, 4: MASK_OFF, 5: MASK_OFF, 6: MASK_OFF });
+  root.traverse(o => {
+    const m = (o.isMesh || o.isSkinnedMesh) && o.material;
+    if (!m) return;
+    if (on && m.color && !m.userData.ct) m.color.setRGB(MASK_OFF[0] / 255, MASK_OFF[1] / 255, MASK_OFF[2] / 255, THREE.SRGBColorSpace);
+    if (!m.emissive) return;
+    if (on){
+      if (!m.userData.maskEmissive) m.userData.maskEmissive = m.emissive.clone();
+      if (m.userData.ct === 3) m.emissive.setRGB(0.45, 0, 0.45); else m.emissive.setRGB(0, 0, 0);
+    } else if (m.userData.maskEmissive){ m.emissive.copy(m.userData.maskEmissive); delete m.userData.maskEmissive; }
+  });
 }
 
 // THE GAME'S PER-UNIT COLOUR RULES (0x24bc00..0x24bcd0, 0x23f83c, 0x248bc4): every unit takes the
@@ -2128,6 +2282,7 @@ function applyAllColours(){
   if (mounted.hair) applyColours(mounted.hair, { 1: hair, 4: cloth });
   if (mounted.face) applyColours(mounted.face, { 2: skin, 4: cloth, 5: f1, 6: f2 });
   for (const slot of SLOTS) if (mounted[slot]) applyColours(mounted[slot], { 2: skin, 3: pigmentOf(slot), 4: cloth });
+  for (const k of SLOTS.concat(['hair', 'face'])) if (mounted[k]) dyeMask(mounted[k], maskCb.checked);
   paintChips(); buildPigmentLists();
 }
 
@@ -2170,8 +2325,9 @@ function makeBoard(canvasId, wrapId, labelId, onPick){
 const colourBoard = makeBoard('board', 'boardWrap', 'boardLabel', (key, at) => {
   state[key] = { x: at.x, y: at.y }; applyAllColours(); applyHelmMasks(); saveState();
 });
-const pigBoard = makeBoard('pigBoard', 'pigBoardWrap', 'pigBoardLabel', (slot, at) => {
-  state.pig[slot] = { x: at.x, y: at.y }; applyAllColours(); saveState();
+// the palette's board writes the pixel picked into the row the palette was opened for
+const pigBoard = makeBoard('pigBoard', 'pigBoardWrap', 'pigBoardLabel', (id, at) => {
+  setPig(id, { x: at.x, y: at.y }); markPigGrid(); saveState();
 });
 const presetAt = (list, k) => ({ x: C.presets[list[k]][3], y: C.presets[list[k]][4] });
 for (const r of COLOR_ROWS){
@@ -2193,26 +2349,47 @@ for (const r of COLOR_ROWS){
   sel.onfocus = () => { if (sel.value === 'custom') colourBoard.open(r.key, r.name + ': pick a color', state[r.key]); };
 }
 document.getElementById('skinTone').oninput = e => { state.skin = +e.target.value; applyAllColours(); saveState(); };
-for (const slot of SLOTS){
-  const sel = document.getElementById('pig_' + slot);
-  const label = sel.closest('.field').querySelector('label').textContent;
-  sel.onchange = () => {
-    if (sel.value === 'custom'){
-      const r = worn(slot), base = C.pigments[r ? r.pig : 0];
-      // start on the board pixel nearest the piece's own pigment
-      let best = null, bd = 1e9;
-      const [x0, y0, x1, y1] = C.board.region;
-      for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++){
-        if (boardData[(y * C.board.w + x) * 4 + 3] === 0) continue;
-        const c = boardRGB(x, y), d = (c[0] - base[0]) ** 2 + (c[1] - base[1]) ** 2 + (c[2] - base[2]) ** 2;
-        if (d < bd){ bd = d; best = { x, y }; }
-      }
-      state.pig[slot] = state.pig[slot] || best;
-      pigBoard.open(slot, 'Pigment: ' + label, state.pig[slot]);
-    } else { state.pig[slot] = null; pigBoard.close(slot); }
-    applyAllColours(); saveState();
-  };
+// ---- the pigment palette ------------------------------------------------------------------------
+// The MHGU Armor Viewer's modal, opened per row. Default puts the row back on the piece's own colour;
+// the grid is the game's 44 armour pigments (0xb028a0), deduped by colour; the board is the game's colour
+// board, where a picked pixel is kept as the pixel. A swatch closes the palette, the board does not (it
+// is dragged across).
+const pigModal = document.getElementById('pigModal'), pigGrid = document.getElementById('pigGrid');
+let pigTarget = null;
+{
+  const seen = new Set(), tiles = [];
+  C.pigments.forEach((c, i) => {
+    const h = rgbHex(c);
+    if (seen.has(h)) return;
+    seen.add(h);
+    tiles.push('<button type="button" data-hex="' + h + '" title="Pigment ' + i + ' — ' + h.toUpperCase() + '" style="background:' + h + '"></button>');
+  });
+  pigGrid.className = 'pig-grid';
+  pigGrid.innerHTML = tiles.join('');
+  document.getElementById('pigGameCount').textContent = tiles.length + ' colors';
 }
+// the swatch matching the row's colour, while the row carries one of its own
+function markPigGrid(){
+  const on = pgEl('pgOn_', pigTarget).checked, cur = pgEl('pg_', pigTarget).value.toLowerCase();
+  for (const b of pigGrid.querySelectorAll('button[data-hex]')) b.classList.toggle('sel', on && b.dataset.hex === cur);
+}
+function openPig(id){
+  pigTarget = id;
+  document.getElementById('pigTitle').textContent = 'Pigment: ' + (id === 'all' ? 'All' : SLOT_LABEL[id]);
+  markPigGrid();
+  const s = id === 'all' ? null : state.pig[id];
+  pigBoard.open(id, 'Color board', isXY(s) ? s : null);
+  pigModal.classList.remove('hidden');
+}
+function closePig(){ pigModal.classList.add('hidden'); pigBoard.close(); pigTarget = null; }
+pigGrid.onclick = e => {
+  const b = e.target.closest('button[data-hex]');
+  if (!b || !pigTarget) return;
+  setPig(pigTarget, { c: b.dataset.hex }); saveState(); closePig();
+};
+document.getElementById('pigDefault').onclick = () => { setPig(pigTarget, null); saveState(); closePig(); };
+document.getElementById('pigClose').onclick = closePig;
+pigModal.onclick = e => { if (e.target === pigModal) closePig(); };
 
 // ---- mounting ---------------------------------------------------------------------------------
 // Each slot loads on its own ticket: a fast scroll through a list fires faster than models load,
@@ -2281,23 +2458,24 @@ async function refresh(){
 // bone id each frame (render/pose.js). An accessory bone, placed differently by each helm and hair,
 // follows its animated parent. "Bind Pose" stops the clip and puts every piece back at rest.
 const pose = new PoseDriver({ frame: world, onError: msg => noteError(msg) });
-// a weapon stance that ends in _loop is the game's own cycle and repeats; any other plays once and holds its
-// last frame, as the MHGU Armor Viewer's stances do; the common motions keep the driver's default
-pose.loopMode = entry => entry.stance ? (/_loop$/.test(entry.clip) ? 'repeat' : 'once') : null;
-const poseListSel = document.getElementById('poseList'), poseClipSel = document.getElementById('poseClip');
+// THE HUNTER'S POSE (the Hunter panel; the MHGU Armor Viewer's Pose select): one select, a group per common motion
+// list, its clips the options (the source and length in the title); "Bind Pose" stops the clip.
+const huntPoseSel = document.getElementById('huntPose');
 function poseSet(){ return DATA.poses && DATA.poses[state.g]; }
+const listName = id => 'List ' + (+id / 100);
 function buildPoseLists(){
   const P = poseSet();
   const lists = (P && P.lists) || [];
-  poseListSel.innerHTML = lists.map(l => '<option value="' + l.id + '">List ' + (+l.id / 100) + ' &mdash; ' + l.clips.length + ' clips</option>').join('');
-  if (!lists.some(l => l.id === state.pose.list)) state.pose.list = lists.length ? lists[0].id : '';
-  poseListSel.value = state.pose.list;
+  if (!lists.some(l => l.id === state.pose.list)){ state.pose.list = lists.length ? lists[0].id : ''; state.pose.clip = ''; }
   const l = lists.find(x => x.id === state.pose.list);
-  const clips = (l && l.clips) || [];
-  poseClipSel.innerHTML = '<option value="">Bind Pose</option>' +
-    clips.map(c => '<option value="' + esc(c.clip) + '">' + esc(c.clip) + ' &mdash; ' + c.dur.toFixed(2) + ' s</option>').join('');
-  if (state.pose.clip && !clips.some(c => c.clip === state.pose.clip)) state.pose.clip = '';
-  poseClipSel.value = state.pose.clip;
+  if (state.pose.clip && !(l && l.clips.some(c => c.clip === state.pose.clip))) state.pose.clip = '';
+  let html = '<option value="">Bind Pose</option>';
+  for (const x of lists)
+    html += '<optgroup label="' + esc(listName(x.id)) + '">' + x.clips.map(c =>
+      '<option value="' + esc(x.id + '|' + c.clip) + '" title="' + esc(listName(x.id) + ' ' + c.clip + ', ' + c.dur.toFixed(2) + ' s') + '">' +
+      esc(c.clip) + '</option>').join('') + '</optgroup>';
+  huntPoseSel.innerHTML = html;
+  huntPoseSel.value = state.pose.clip ? state.pose.list + '|' + state.pose.clip : '';
 }
 function restoreBind(){
   for (const root of Object.values(mounted))
@@ -2329,14 +2507,12 @@ function sheatheForPose(){
   if (state.weapon.cls < 0 || !state.weapon.drawn) return;
   state.weapon.drawn = false; weaponDrawnSel.value = '0'; buildStanceList();
 }
-poseListSel.onchange = async () => {
-  sheatheForPose();
-  state.pose.list = poseListSel.value;
-  const l = poseSet().lists.find(x => x.id === state.pose.list);
-  state.pose.clip = (l && l.clips.length) ? l.clips[0].clip : '';
-  buildPoseLists(); await playPose(); saveState();
+huntPoseSel.onchange = async () => {
+  chainStop(); sheatheForPose();
+  const v = huntPoseSel.value, i = v.indexOf('|');
+  if (i >= 0){ state.pose.list = v.slice(0, i); state.pose.clip = v.slice(i + 1); } else state.pose.clip = '';
+  await playPose(); saveState();
 };
-poseClipSel.onchange = async () => { sheatheForPose(); state.pose.clip = poseClipSel.value; await playPose(); saveState(); };
 
 // ---- weapon -------------------------------------------------------------------------------------
 // THE GAME'S OWN WEAPON MOUNT (C:\MH3U-Extract\mh3u_mount.py, notes/armor.md "Weapon mount"; mount.json).
@@ -2576,18 +2752,286 @@ function placeWeapon(){
 }
 weaponClassSel.onchange = async () => {
   const cls = +weaponClassSel.value;
+  chainStop();
   state.weapon.cls = cls; state.weapon.stance = 0;       // Stance 1, the class's drawn idle
   const opts = weaponOptions(cls);
   if (opts.length){ state.weapon.model = opts[0].model; state.weapon.pig = opts[0].pig; }
   buildWeaponLists(); await refreshWeapon(); await playPose(); saveState();
+  paintChain();                                          // another class's stances go muted, this one's play
 };
 weaponModelSel.onchange = () => {
   const [m, g] = weaponModelSel.value.split(':').map(Number);
   state.weapon.model = m; state.weapon.pig = g;
   refreshWeapon().then(saveState);
 };
-weaponDrawnSel.onchange = async () => { state.weapon.drawn = weaponDrawnSel.value === '1'; buildStanceList(); await playPose(); saveState(); };
-weaponStanceSel.onchange = async () => { state.weapon.stance = +weaponStanceSel.value; await playPose(); saveState(); };
+weaponDrawnSel.onchange = async () => { chainStop(); state.weapon.drawn = weaponDrawnSel.value === '1'; buildStanceList(); await playPose(); saveState(); };
+weaponStanceSel.onchange = async () => { chainStop(); state.weapon.stance = +weaponStanceSel.value; await playPose(); saveState(); };
+
+// ---- the Animation panel ------------------------------------------------------------------------
+// THE TRANSPORT, the MHGU Armor Viewer's: scrub, step, play / pause and Loop over whatever plays -- the hunter's
+// pose, or the weapon's stance while drawn; the weapon follows the frame (placeWeapon reads the pose's time). A
+// frame step is 1/60 s. Loop starts on each animation's own default (a stance holds its last frame unless it is
+// the game's _loop cycle; the common motions loop) and, once pressed, applies to every animation, live.
+const FRAME = 1 / 60;
+const animBar = document.getElementById('anim'), animScrub = document.getElementById('animScrub'),
+      animFrameEl = document.getElementById('animFrame'), animPlayBtn = document.getElementById('animPlay'),
+      animLoopBtn = document.getElementById('animLoop');
+let animLoopPref = null;
+// THE CHAIN, the MHGU Armor Viewer's (as the MH4U Armor Viewer ported it): hunter poses and weapon stances back to
+// back. A link is { kind: 'pose', list, clip } -- it sheathes the weapon -- or { kind: 'stance', cls, clsName, list,
+// clip, label } -- it draws it; a stance is kept by its list and clip, so its "Stance N" can be found again. A
+// one-shot plays once and the chain moves on as it ends; a pose or a _loop stance holds CHAIN_HOLD seconds of
+// PLAYING time, and as the last link of a chain that does not repeat keeps looping. A stance of another class than
+// the one equipped shows muted and is skipped. Kept per browser; rows reorder by dragging their grip.
+const CHAIN_HOLD = 3, CHAIN_KEY = 'mh3u-armor-viewer-chain';
+const chain = [];
+let chainPos = -1, chainRunning = false, chainLoopOn = false;
+const isLoopClip = entry => /_loop$/.test((entry && entry.clip) || '');
+const holdsInChain = entry => isLoopClip(entry) || !(entry && entry.stance);
+pose.loopMode = entry => chainRunning
+  ? (holdsInChain(entry) ? 'repeat' : 'once')
+  : animLoopPref !== null ? (animLoopPref ? 'repeat' : 'once')
+  : entry.stance ? (isLoopClip(entry) ? 'repeat' : 'once') : null;
+const clipDur = act => Math.max(0, act.getClip().duration - 1e-3);
+function setLoop(on){
+  animLoopPref = on;
+  const act = pose.action;
+  if (!act) return;
+  act.loop = on ? THREE.LoopRepeat : THREE.LoopOnce;
+  act.clampWhenFinished = !on; act.repetitions = Infinity;
+  if (on && (act.paused || !act.isRunning())){
+    if (act.time >= clipDur(act)) act.time = 0;
+    act.paused = false; act.enabled = true; act.play();
+  }
+}
+animLoopBtn.onclick = () => setLoop(!(pose.action ? pose.action.loop === THREE.LoopRepeat : !!animLoopPref));
+function seek(t){
+  const act = pose.action; if (!act) return;
+  act.paused = true; act.enabled = true;
+  act.time = Math.min(Math.max(0, t), clipDur(act));
+}
+document.getElementById('animFirst').onclick = () => seek(0);
+document.getElementById('animLast').onclick  = () => { if (pose.action) seek(clipDur(pose.action)); };
+document.getElementById('animPrev').onclick  = () => { if (pose.action) seek((Math.round(pose.action.time / FRAME) - 1) * FRAME); };
+document.getElementById('animNext').onclick  = () => { if (pose.action) seek((Math.round(pose.action.time / FRAME) + 1) * FRAME); };
+animPlayBtn.onclick = () => {
+  const act = pose.action; if (!act) return;
+  if (act.paused || !act.isRunning()){
+    if (act.loop === THREE.LoopOnce && act.time >= clipDur(act)) act.reset();
+    act.paused = false; act.enabled = true; act.play();
+  } else act.paused = true;
+};
+animScrub.oninput = () => seek(+animScrub.value * FRAME);
+// the Play button keeps the width of its wider label, so the row never shifts as it toggles
+{
+  const keep = animPlayBtn.textContent; animPlayBtn.textContent = 'Pause';
+  const w = Math.ceil(animPlayBtn.getBoundingClientRect().width);
+  if (w) animPlayBtn.style.setProperty('--play-w', w + 'px');
+  animPlayBtn.textContent = keep;
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+    const t = animPlayBtn.textContent; animPlayBtn.textContent = 'Pause';
+    const w2 = Math.ceil(animPlayBtn.getBoundingClientRect().width);
+    if (w2) animPlayBtn.style.setProperty('--play-w', w2 + 'px');
+    animPlayBtn.textContent = t;
+  });
+}
+// every frame, from the render loop
+let animLast = '', animTick = 0;
+function paintAnim(){
+  if ((++animTick % 60) === 0) paintChainIfStale();     // the chain's pickers follow the Pose and Stance lists
+  const act = pose.action;
+  animBar.classList.toggle('idle', !act);
+  if (!act) { if (animLast !== ''){ animLast = ''; animFrameEl.textContent = 'no animation playing'; } return; }
+  const dur = clipDur(act), total = Math.round(dur / FRAME), cur = Math.min(total, Math.round(act.time / FRAME));
+  const playing = !act.paused && act.isRunning();
+  const key = cur + '/' + total + (playing ? 'p' : 's') + (act.loop === THREE.LoopRepeat ? 'L' : '');
+  if (key === animLast) return;
+  animLast = key;
+  animFrameEl.textContent = 'frame ' + cur + ' of ' + total + '  (' + (cur / 60).toFixed(2) + ' s)';
+  animScrub.max = String(total); animScrub.value = String(cur);
+  animPlayBtn.textContent = playing ? 'Pause' : 'Play';
+  animLoopBtn.classList.toggle('on', act.loop === THREE.LoopRepeat);
+}
+
+// the stance a link names, as its index in the class's "Stance N" list (-1: not this class, or not in it)
+function stanceIndex(el){
+  const c = wClass(state.weapon.cls), S = c && stanceJson[c.key];
+  if (!S || el.cls !== c.cls) return -1;
+  return S.stances.findIndex(st => st.list === el.list && st.clip === el.clip);
+}
+const chainPlayable = el => el.kind === 'pose' || stanceIndex(el) >= 0;
+const chainList = document.getElementById('chainList');
+const chainPoseSel = document.getElementById('chainPoseSel'), chainStanceSel = document.getElementById('chainStanceSel');
+let chainSelSig = '', chainPaintSig = '';
+// the pickers are copies of the Pose and Stance selects
+function syncChainSelects(){
+  const sig = huntPoseSel.options.length + ':' + weaponStanceSel.options.length + ':' + state.weapon.cls + ':' + state.g;
+  if (sig === chainSelSig) return;
+  chainSelSig = sig;
+  chainPoseSel.innerHTML = huntPoseSel.innerHTML.replace(/<option value="">[^<]*<\/option>/, '');
+  chainStanceSel.innerHTML = weaponStanceSel.innerHTML;
+  const none = !chainStanceSel.options.length;
+  chainStanceSel.disabled = none; document.getElementById('chainAddStance').disabled = none;
+}
+function paintChainIfStale(){
+  syncChainSelects();
+  const sig = chainSelSig + '|' + chain.length + '|' + chainPos;
+  if (sig !== chainPaintSig) paintChain();
+}
+function chainLabel(el){
+  if (el.kind === 'pose') return listName(el.list) + ' ' + el.clip;
+  return chainPlayable(el) ? el.label : el.label + ' (' + el.clsName + ')';
+}
+function paintChain(){
+  syncChainSelects();
+  chainPaintSig = chainSelSig + '|' + chain.length + '|' + chainPos;
+  chainList.innerHTML = chain.map((el, k) => {
+    const off = !chainPlayable(el);
+    return '<li class="' + (k === chainPos ? 'on' : '') + (off ? ' off' : '') + '" data-i="' + k + '"' +
+      (off ? ' title="A stance of another weapon class: it plays when that class is equipped"' : '') + '>' +
+      '<span class="grip" title="Drag to reorder">&#8942;&#8942;</span>' +
+      '<span class="n">' + (k + 1) + '.</span><span class="lab">' + esc(chainLabel(el)) + '</span>' +
+      '<span class="x" data-k="' + k + '" title="Remove from the chain">&times;</span></li>';
+  }).join('');
+  document.getElementById('chainLoop').classList.toggle('on', chainLoopOn);
+}
+function chainSave(){ try { localStorage.setItem(CHAIN_KEY, JSON.stringify({ chain, loop: chainLoopOn })); } catch (e) {} }
+// the hold counts on the animation's clock: stepped from the render loop, it waits while the animation is paused
+let chainHold = 0, chainHoldK = -1, chainHoldPrev = 0;
+function chainClearHold(){ chainHold = 0; chainHoldK = -1; }
+function stepChainHold(){
+  const now = performance.now();
+  const dt = chainHoldPrev ? Math.min((now - chainHoldPrev) / 1000, 0.1) : 0;
+  chainHoldPrev = now;
+  if (!chainRunning || chainHold <= 0 || chainHoldK !== chainPos) return;
+  const a = pose.action;
+  if (a && (a.paused || !a.isRunning())) return;
+  chainHold -= dt;
+  if (chainHold <= 0){ chainClearHold(); chainPlayFrom(chainPos + 1); }
+}
+function chainStop(){ chainClearHold(); if (!chainRunning && chainPos < 0) return; chainRunning = false; chainPos = -1; paintChain(); }
+// play a link as picking it in the Hunter or Weapon panel would
+async function chainApply(el){
+  if (el.kind === 'pose'){
+    state.weapon.drawn = false; state.pose.list = el.list; state.pose.clip = el.clip;
+    buildPoseLists();
+  } else {
+    const i = stanceIndex(el);
+    if (i < 0) return;
+    state.weapon.drawn = true; state.weapon.stance = i;
+  }
+  weaponDrawnSel.value = state.weapon.drawn ? '1' : '0';
+  buildStanceList(); await playPose(); saveState();
+}
+async function chainPlayFrom(k){
+  chainClearHold();
+  if (!chain.some(chainPlayable)){ chainStop(); return; }
+  if (k >= chain.length){ if (chainLoopOn && chain.length) k = 0; else { chainStop(); return; } }
+  const el = chain[k];
+  if (!chainPlayable(el)){ chainPos = k; chainRunning = true; return chainPlayFrom(k + 1); }
+  chainPos = k; chainRunning = true; paintChain();
+  await chainApply(el);
+  const holds = el.kind === 'pose' || isLoopClip(el);
+  const last = k === chain.length - 1;
+  if (chainRunning && chainPos === k && holds && !(last && !chainLoopOn)){ chainHold = CHAIN_HOLD; chainHoldK = k; }
+}
+pose.onFinished = () => { if (chainRunning) chainPlayFrom(chainPos + 1); };
+// a stance link from the Stance picker's index
+function stanceLink(i){
+  const c = wClass(state.weapon.cls), S = c && stanceJson[c.key], st = S && S.stances[i];
+  return st ? { kind: 'stance', cls: c.cls, clsName: c.name, list: st.list, clip: st.clip, label: st.label } : null;
+}
+document.getElementById('chainAddPose').onclick = () => {
+  const v = chainPoseSel.value, i = v.indexOf('|');
+  if (i < 0) return;
+  chain.push({ kind: 'pose', list: v.slice(0, i), clip: v.slice(i + 1) });
+  paintChain(); chainSave();
+};
+document.getElementById('chainAddStance').onclick = () => {
+  const el = chainStanceSel.value !== '' && stanceLink(+chainStanceSel.value);
+  if (!el) return;
+  chain.push(el); paintChain(); chainSave();
+};
+// Preview plays the pick now; picking in either list previews it at once (as the MHGU viewer's)
+document.getElementById('chainPrevPose').onclick = async () => {
+  const v = chainPoseSel.value, i = v.indexOf('|');
+  if (i < 0) return;
+  chainStop(); await chainApply({ kind: 'pose', list: v.slice(0, i), clip: v.slice(i + 1) });
+};
+document.getElementById('chainPrevStance').onclick = async () => {
+  const el = chainStanceSel.value !== '' && stanceLink(+chainStanceSel.value);
+  if (!el) return;
+  chainStop(); await chainApply(el);
+};
+chainPoseSel.onchange = () => document.getElementById('chainPrevPose').onclick();
+chainStanceSel.onchange = () => document.getElementById('chainPrevStance').onclick();
+document.getElementById('chainClear').onclick = () => { chainClearHold(); chain.length = 0; chainPos = -1; chainRunning = false; paintChain(); chainSave(); };
+document.getElementById('chainLoop').onclick = () => { chainLoopOn = !chainLoopOn; paintChain(); chainSave(); };
+document.getElementById('chainPlay').onclick = () => { if (chain.length) chainPlayFrom(0); };
+chainList.onclick = e => {
+  const k = e.target && e.target.dataset ? e.target.dataset.k : undefined;
+  if (k === undefined) return;
+  chain.splice(+k, 1); if (chainPos >= chain.length) chainPos = -1; paintChain(); chainSave();
+};
+// reordering by dragging a row's grip (pointer events: mouse and touch); the running link keeps its identity
+function chainMove(from, ins){
+  if (from === ins || from + 1 === ins) return;
+  const cur = chainPos >= 0 ? chain[chainPos] : null;
+  const [el] = chain.splice(from, 1);
+  chain.splice(ins > from ? ins - 1 : ins, 0, el);
+  if (cur){ chainPos = chain.indexOf(cur); if (chainHoldK >= 0) chainHoldK = chainPos; }
+  paintChain(); chainSave();
+}
+{
+  let from = -1, ins = -1, grip = null;
+  const rows = () => [...chainList.querySelectorAll('li')];
+  const clear = () => { rows().forEach(li => li.classList.remove('drag', 'ins-before', 'ins-after')); chainList.classList.remove('dragging'); };
+  const place = (x, y) => {
+    const list = rows(); if (!list.length) return -1;
+    const under = document.elementFromPoint(x, y), li = under && under.closest ? under.closest('#chainList li') : null;
+    if (li){ const r = li.getBoundingClientRect(), i = +li.dataset.i; return y < r.top + r.height / 2 ? i : i + 1; }
+    const first = list[0].getBoundingClientRect(), last = list[list.length - 1].getBoundingClientRect();
+    return y < first.top ? 0 : (y > last.bottom ? list.length : -1);
+  };
+  const paintIns = () => {
+    const list = rows(); list.forEach(li => li.classList.remove('ins-before', 'ins-after'));
+    if (ins < 0 || ins === from || ins === from + 1) return;
+    if (ins < list.length) list[ins].classList.add('ins-before'); else list[list.length - 1].classList.add('ins-after');
+  };
+  chainList.addEventListener('pointerdown', e => {
+    const g = e.target && e.target.closest ? e.target.closest('.grip') : null;
+    if (!g || e.button) return;
+    const li = g.closest('li'); from = +li.dataset.i; ins = -1; grip = g;
+    li.classList.add('drag'); chainList.classList.add('dragging');
+    try { g.setPointerCapture(e.pointerId); } catch (_) {}
+    e.preventDefault();
+  });
+  chainList.addEventListener('pointermove', e => { if (from < 0) return; ins = place(e.clientX, e.clientY); paintIns(); });
+  const end = e => {
+    if (from < 0) return;
+    const f = from, i = e.type === 'pointerup' ? place(e.clientX, e.clientY) : -1;
+    try { if (grip && grip.hasPointerCapture && grip.hasPointerCapture(e.pointerId)) grip.releasePointerCapture(e.pointerId); } catch (_) {}
+    from = -1; ins = -1; grip = null; clear();
+    if (i >= 0) chainMove(f, i);
+  };
+  chainList.addEventListener('pointerup', end);
+  chainList.addEventListener('pointercancel', end);
+}
+// the saved chain comes back checked link by link: listed, not started
+try {
+  const saved = JSON.parse(localStorage.getItem(CHAIN_KEY) || 'null');
+  if (saved && Array.isArray(saved.chain)){
+    for (const el of saved.chain){
+      if (!el || typeof el !== 'object' || typeof el.clip !== 'string' || typeof el.list !== 'string') continue;
+      if (el.kind === 'pose') chain.push({ kind: 'pose', list: el.list, clip: el.clip });
+      else if (el.kind === 'stance' && Number.isInteger(el.cls))
+        chain.push({ kind: 'stance', cls: el.cls, clsName: typeof el.clsName === 'string' ? el.clsName : String(el.cls),
+                     list: el.list, clip: el.clip, label: typeof el.label === 'string' ? el.label : el.clip });
+    }
+    chainLoopOn = !!saved.loop;
+  }
+} catch (e) {}
+paintChain();
 
 // ---- framing ----------------------------------------------------------------------------------
 // Under a clip a skinned mesh keeps its rest bounds, so the pose driver's own bounds -- the union of
@@ -2630,7 +3074,8 @@ function updateDepthBias(){
 
 // ---- controls ---------------------------------------------------------------------------------
 for (const slot of SLOTS) slotSel[slot].onchange = () => {
-  state[slot] = +slotSel[slot].value; state.pig[slot] = null; pigBoard.close(slot); refresh();
+  // a colour given to the slot stays, as the MHGU viewer's rows do: drawn while the piece is dyeable
+  state[slot] = +slotSel[slot].value; refresh();
 };
 filterEl.oninput = () => buildLists();
 typeSel.onchange = () => { state.type = typeSel.value; buildLists(); refresh(); };
@@ -2771,7 +3216,7 @@ async function applySet(d, opt){
   opt = opt || {};
   if (!d || typeof d !== 'object') d = {};
   Object.assign(state, hunterOf(d.hunter)); state.v = 2;
-  colourBoard.close(); pigBoard.close();
+  colourBoard.close(); closePig();
   buildLists();
   await refresh();
   await playPose();
@@ -2876,6 +3321,8 @@ fitRenderer();
 renderer.setAnimationLoop(() => {
   if (pose.mixer) pose.step(Object.values(mounted));
   placeWeapon();                           // the weapon follows the bones the pose just set
+  paintAnim();                             // the Animation panel's transport
+  stepChainHold();
   // update() would look at the target, which fly does not have
   if (camMode === 'fly') stepFly(); else controls.update();
   stepLighting();                          // the key light's orbit
