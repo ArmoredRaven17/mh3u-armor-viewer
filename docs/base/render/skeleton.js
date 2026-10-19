@@ -8,11 +8,6 @@ export { clone as skeletonClone } from 'three/addons/utils/SkeletonUtils.js';
 // "<n>:<gid>_s" LEAF and the posable node is its parent. Node NAMES cannot be used --
 // three.js strips the colon, so "11:5" and "1:15" both become "115".
 export function bonesByGid(root, joints){
-  // Keyed by NODE, not by gid: a few pieces carry the same joint id twice -- m_arm097 / m_arm136
-  // (Barioth Guards X / Z, male), m_leg115, f_leg089 and f_leg210 hold a second copy of an arm or
-  // leg chain, and their meshes are skinned to both copies. Keeping only the first node per gid left
-  // the other copy at bind, so its geometry hung in the T-pose beside the posed hunter (Raven,
-  // 2026-10-17). Every node with a gid is driven, as poseObject has always gone node by node.
   const map = new Map();
   root.traverse(o => {
     if (!o.isSkinnedMesh || !o.skeleton) return;
@@ -24,6 +19,10 @@ export function bonesByGid(root, joints){
       // is the one a pose drives. Everything that moves the skeleton works through `node`; only
       // SCALE has to reach the leaf as well, since MT authors a joint's scale on the leaf and
       // scaling the parent would drag the whole chain below it instead of just this joint's mesh.
+      // EVERY NODE OF A JOINT ID, not only the first (the MH3U Armor Viewer's ff15d83, 2026-10-18): a model can carry one
+      // gid on two nodes -- a second copy of an arm or leg chain its meshes are skinned to as well -- and keeping the first
+      // left the copy at bind, a T-posed limb beside the animated hunter (MH3U's Barioth Guards Z). Keyed by NODE, so the
+      // list can hold one gid twice; a caller that wants one node per gid keeps the first (pose.js firstByGid).
       if (node && !map.has(node)) map.set(node, { gid: info.gid, leaf: info.leaf ? bone : null });
     });
   });

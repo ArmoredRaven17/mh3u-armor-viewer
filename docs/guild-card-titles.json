@@ -1,0 +1,3011 @@
+{
+ "version": 1,
+ "src": "CardTitle_eng.gmd (the MAIN pool 0..0x234 = the words, the SUB pool from 0x264 = the connectors) and CardEdit_eng.gmd (the unlock texts), arranged as the game's own title menu reads them; build_guild_titles.py (C:\\MH3U-Extract), notes/armor.md \"Guild Card titles\"",
+ "dropped": "DUMMY / HARDUMMY slots (560-564 in the DLC range), and the (None) head of each pool, shipped as noneReq. CardTitle ids 0x235.. (\"Trooper\" .. \"Capcom\") are never listed by the game (0x45bc44 stops at 0x234) and are left out.",
+ "order": "the game's order: word id ascending, connector id ascending (0x45bc44, 0x45bd24)",
+ "pages": "eight slots to a page (0x45b7f0: cursor slots 6..13). The menu lists only words the save has unlocked (0x99880c), so a page number from this table is an upper bound for a real card.",
+ "note": "Available from the start.",
+ "noneReq": "Available from the start.",
+ "colo": "a word with `colo` is written in the game's text with that <COLO n> colour (the HR 999 word); the COLO palette is not read, so the colour itself is not shipped",
+ "hidden": [],
+ "words": [
+  {
+   "w": "Noob",
+   "req": "Available from the start.",
+   "id": "w001"
+  },
+  {
+   "w": "Greenhorn",
+   "req": "Available from the start.",
+   "id": "w002"
+  },
+  {
+   "w": "Beginner",
+   "req": "Available from the start.",
+   "id": "w003"
+  },
+  {
+   "w": "Fledgling",
+   "req": "Available from the start.",
+   "id": "w004"
+  },
+  {
+   "w": "Rookie",
+   "req": "Available from the start.",
+   "id": "w005"
+  },
+  {
+   "w": "Hunter",
+   "req": "Available from the start.",
+   "id": "w006"
+  },
+  {
+   "w": "Fisher",
+   "req": "Available from the start.",
+   "id": "w007"
+  },
+  {
+   "w": "Fighter",
+   "req": "Available from the start.",
+   "id": "w008"
+  },
+  {
+   "w": "Sniper",
+   "req": "Available from the start.",
+   "id": "w009"
+  },
+  {
+   "w": "Weapon",
+   "req": "Available from the start.",
+   "id": "w010"
+  },
+  {
+   "w": "Sword&Shield",
+   "req": "Available from the start.",
+   "id": "w011"
+  },
+  {
+   "w": "Blade",
+   "req": "Available from the start.",
+   "id": "w012"
+  },
+  {
+   "w": "Great Sword",
+   "req": "Available from the start.",
+   "id": "w013"
+  },
+  {
+   "w": "Lance",
+   "req": "Available from the start.",
+   "id": "w014"
+  },
+  {
+   "w": "Spear",
+   "req": "Available from the start.",
+   "id": "w015"
+  },
+  {
+   "w": "Hammer",
+   "req": "Available from the start.",
+   "id": "w016"
+  },
+  {
+   "w": "Cudgel",
+   "req": "Available from the start.",
+   "id": "w017"
+  },
+  {
+   "w": "Knife",
+   "req": "Available from the start.",
+   "id": "w018"
+  },
+  {
+   "w": "Dual Blades",
+   "req": "Available from the start.",
+   "id": "w019"
+  },
+  {
+   "w": "Light Bowgun",
+   "req": "Available from the start.",
+   "id": "w020"
+  },
+  {
+   "w": "Crossbow",
+   "req": "Available from the start.",
+   "id": "w021"
+  },
+  {
+   "w": "Heavy Bowgun",
+   "req": "Available from the start.",
+   "id": "w022"
+  },
+  {
+   "w": "Launcher",
+   "req": "Available from the start.",
+   "id": "w023"
+  },
+  {
+   "w": "Katana",
+   "req": "Available from the start.",
+   "id": "w024"
+  },
+  {
+   "w": "Long Sword",
+   "req": "Available from the start.",
+   "id": "w025"
+  },
+  {
+   "w": "Arrow",
+   "req": "Available from the start.",
+   "id": "w026"
+  },
+  {
+   "w": "Bow",
+   "req": "Available from the start.",
+   "id": "w027"
+  },
+  {
+   "w": "Gunlance",
+   "req": "Available from the start.",
+   "id": "w028"
+  },
+  {
+   "w": "Artillery",
+   "req": "Available from the start.",
+   "id": "w029"
+  },
+  {
+   "w": "Music",
+   "req": "Available from the start.",
+   "id": "w030"
+  },
+  {
+   "w": "Hunting Horn",
+   "req": "Available from the start.",
+   "id": "w031"
+  },
+  {
+   "w": "Axe",
+   "req": "Available from the start.",
+   "id": "w032"
+  },
+  {
+   "w": "Switch Axe",
+   "req": "Available from the start.",
+   "id": "w033"
+  },
+  {
+   "w": "Seeking",
+   "req": "Available from the start.",
+   "id": "w034"
+  },
+  {
+   "w": "Recruiting",
+   "req": "Available from the start.",
+   "id": "w035"
+  },
+  {
+   "w": "Helper",
+   "req": "Available from the start.",
+   "id": "w036"
+  },
+  {
+   "w": "Courageous",
+   "req": "Available from the start.",
+   "id": "w037"
+  },
+  {
+   "w": "Gentleman",
+   "req": "Available from the start.",
+   "id": "w038"
+  },
+  {
+   "w": "Lady",
+   "req": "Available from the start.",
+   "id": "w039"
+  },
+  {
+   "w": "Shepherd",
+   "req": "Available from the start.",
+   "id": "w040"
+  },
+  {
+   "w": "Soldier",
+   "req": "Available from the start.",
+   "id": "w041"
+  },
+  {
+   "w": "Man",
+   "req": "Available from the start.",
+   "id": "w042"
+  },
+  {
+   "w": "Woman",
+   "req": "Available from the start.",
+   "id": "w043"
+  },
+  {
+   "w": "Son",
+   "req": "Available from the start.",
+   "id": "w044"
+  },
+  {
+   "w": "Daughter",
+   "req": "Available from the start.",
+   "id": "w045"
+  },
+  {
+   "w": "Loner",
+   "req": "Available from the start.",
+   "id": "w046"
+  },
+  {
+   "w": "Loving",
+   "req": "Available from the start.",
+   "id": "w047"
+  },
+  {
+   "w": "Poogie",
+   "req": "Available from the start.",
+   "id": "w048"
+  },
+  {
+   "w": "Stranger",
+   "req": "Available from the start.",
+   "id": "w049"
+  },
+  {
+   "w": "Nervous",
+   "req": "Available from the start.",
+   "id": "w050"
+  },
+  {
+   "w": "Excited",
+   "req": "Available from the start.",
+   "id": "w051"
+  },
+  {
+   "w": "Solo",
+   "req": "Available from the start.",
+   "id": "w052"
+  },
+  {
+   "w": "Dual",
+   "req": "Available from the start.",
+   "id": "w053"
+  },
+  {
+   "w": "Triple",
+   "req": "Available from the start.",
+   "id": "w054"
+  },
+  {
+   "w": "Party",
+   "req": "Available from the start.",
+   "id": "w055"
+  },
+  {
+   "w": "Potion",
+   "req": "Available from the start.",
+   "id": "w056"
+  },
+  {
+   "w": "Honey",
+   "req": "Available from the start.",
+   "id": "w057"
+  },
+  {
+   "w": "Red",
+   "req": "Available from the start.",
+   "id": "w058"
+  },
+  {
+   "w": "Blue",
+   "req": "Available from the start.",
+   "id": "w059"
+  },
+  {
+   "w": "Green",
+   "req": "Available from the start.",
+   "id": "w060"
+  },
+  {
+   "w": "Tanzia",
+   "req": "Available from the start.",
+   "id": "w061"
+  },
+  {
+   "w": "Up-and-coming",
+   "req": "Available from the start.",
+   "id": "w062"
+  },
+  {
+   "w": "Lazy",
+   "req": "Available from the start.",
+   "id": "w063"
+  },
+  {
+   "w": "Third-rate",
+   "req": "Available from the start.",
+   "id": "w064"
+  },
+  {
+   "w": "Offensive",
+   "req": "Available from the start.",
+   "id": "w065"
+  },
+  {
+   "w": "Defensive",
+   "req": "Available from the start.",
+   "id": "w066"
+  },
+  {
+   "w": "Tri",
+   "req": "Available from the start.",
+   "id": "w067"
+  },
+  {
+   "w": "Bargain",
+   "req": "Available from the start.",
+   "id": "w068"
+  },
+  {
+   "w": "Warrior",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w069"
+  },
+  {
+   "w": "Archer",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w070"
+  },
+  {
+   "w": "Attacker",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w071"
+  },
+  {
+   "w": "Bug-catcher",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w072"
+  },
+  {
+   "w": "Farmer",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w073"
+  },
+  {
+   "w": "Diver",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w074"
+  },
+  {
+   "w": "Bookworm",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w075"
+  },
+  {
+   "w": "Fashionista",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w076"
+  },
+  {
+   "w": "Coot",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w077"
+  },
+  {
+   "w": "Dame",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w078"
+  },
+  {
+   "w": "Motherly",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w079"
+  },
+  {
+   "w": "Baker",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w080"
+  },
+  {
+   "w": "Professor",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w081"
+  },
+  {
+   "w": "Sharpshooter",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w082"
+  },
+  {
+   "w": "Beast",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w083"
+  },
+  {
+   "w": "Freelancer",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w084"
+  },
+  {
+   "w": "Coward",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w085"
+  },
+  {
+   "w": "Mascot",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w086"
+  },
+  {
+   "w": "Bug",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w087"
+  },
+  {
+   "w": "Winner",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w088"
+  },
+  {
+   "w": "Loser",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w089"
+  },
+  {
+   "w": "Addict",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w090"
+  },
+  {
+   "w": "Wimp",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w091"
+  },
+  {
+   "w": "Wandering",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w092"
+  },
+  {
+   "w": "Skilled",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w093"
+  },
+  {
+   "w": "Burned",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w094"
+  },
+  {
+   "w": "Silent",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w095"
+  },
+  {
+   "w": "Poser",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w096"
+  },
+  {
+   "w": "Shakalaka",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w097"
+  },
+  {
+   "w": "Cha-Cha",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w098"
+  },
+  {
+   "w": "Kayamba",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w099"
+  },
+  {
+   "w": "Minion",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w100"
+  },
+  {
+   "w": "Lackey",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w101"
+  },
+  {
+   "w": "Friend",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w102"
+  },
+  {
+   "w": "Leader",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w103"
+  },
+  {
+   "w": "Chum-Chum",
+   "req": "Achieved Elite Hunter status.",
+   "id": "w104"
+  },
+  {
+   "w": "Elite",
+   "req": "Completed many High-rank Quests.",
+   "id": "w105"
+  },
+  {
+   "w": "Braggart",
+   "req": "Completed many High-rank Quests.",
+   "id": "w106"
+  },
+  {
+   "w": "Treasure",
+   "req": "Completed many High-rank Quests.",
+   "id": "w107"
+  },
+  {
+   "w": "Walker",
+   "req": "Completed many High-rank Quests.",
+   "id": "w108"
+  },
+  {
+   "w": "Alchemist",
+   "req": "Completed many High-rank Quests.",
+   "id": "w109"
+  },
+  {
+   "w": "Thief",
+   "req": "Completed many High-rank Quests.",
+   "id": "w110"
+  },
+  {
+   "w": "Hostage",
+   "req": "Completed many High-rank Quests.",
+   "id": "w111"
+  },
+  {
+   "w": "Miner",
+   "req": "Completed many High-rank Quests.",
+   "id": "w112"
+  },
+  {
+   "w": "Transporter",
+   "req": "Completed many High-rank Quests.",
+   "id": "w113"
+  },
+  {
+   "w": "Guardian",
+   "req": "Completed many High-rank Quests.",
+   "id": "w114"
+  },
+  {
+   "w": "Gladiator",
+   "req": "Completed many High-rank Quests.",
+   "id": "w115"
+  },
+  {
+   "w": "Phoenix",
+   "req": "Completed many High-rank Quests.",
+   "id": "w116"
+  },
+  {
+   "w": "Rodeo",
+   "req": "Completed many High-rank Quests.",
+   "id": "w117"
+  },
+  {
+   "w": "Beloved",
+   "req": "Completed many High-rank Quests.",
+   "id": "w118"
+  },
+  {
+   "w": "Client",
+   "req": "Completed many High-rank Quests.",
+   "id": "w119"
+  },
+  {
+   "w": "Strolling",
+   "req": "Completed many High-rank Quests.",
+   "id": "w120"
+  },
+  {
+   "w": "Wunderkind",
+   "req": "Completed many High-rank Quests.",
+   "id": "w121"
+  },
+  {
+   "w": "Prodigy",
+   "req": "Completed many High-rank Quests.",
+   "id": "w122"
+  },
+  {
+   "w": "Hot-blooded",
+   "req": "Completed many High-rank Quests.",
+   "id": "w123"
+  },
+  {
+   "w": "Vanguard",
+   "req": "Completed many High-rank Quests.",
+   "id": "w124"
+  },
+  {
+   "w": "Amnesiac",
+   "req": "Completed many High-rank Quests.",
+   "id": "w125"
+  },
+  {
+   "w": "War",
+   "req": "Completed many High-rank Quests.",
+   "id": "w126"
+  },
+  {
+   "w": "Scrivener",
+   "req": "Completed many High-rank Quests.",
+   "id": "w127"
+  },
+  {
+   "w": "Mushroom",
+   "req": "Completed many High-rank Quests.",
+   "id": "w128"
+  },
+  {
+   "w": "Goldenfish",
+   "req": "Completed many High-rank Quests.",
+   "id": "w129"
+  },
+  {
+   "w": "Carefree",
+   "req": "Completed many High-rank Quests.",
+   "id": "w130"
+  },
+  {
+   "w": "Deviant",
+   "req": "Completed many High-rank Quests.",
+   "id": "w131"
+  },
+  {
+   "w": "Stinger",
+   "req": "Completed many High-rank Quests.",
+   "id": "w132"
+  },
+  {
+   "w": "Pal",
+   "req": "Completed many High-rank Quests.",
+   "id": "w133"
+  },
+  {
+   "w": "Starstruck",
+   "req": "Completed many High-rank Quests.",
+   "id": "w134"
+  },
+  {
+   "w": "Infatuated",
+   "req": "Completed many High-rank Quests.",
+   "id": "w135"
+  },
+  {
+   "w": "Love",
+   "req": "Completed many High-rank Quests.",
+   "id": "w136"
+  },
+  {
+   "w": "Roving",
+   "req": "Completed many High-rank Quests.",
+   "id": "w137"
+  },
+  {
+   "w": "Rare",
+   "req": "Completed many High-rank Quests.",
+   "id": "w138"
+  },
+  {
+   "w": "Well-done",
+   "req": "Completed many High-rank Quests.",
+   "id": "w139"
+  },
+  {
+   "w": "Second-rate",
+   "req": "Completed many High-rank Quests.",
+   "id": "w140"
+  },
+  {
+   "w": "Hustler",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w141"
+  },
+  {
+   "w": "Nightingale",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w142"
+  },
+  {
+   "w": "Entomologist",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w143"
+  },
+  {
+   "w": "Piper",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w144"
+  },
+  {
+   "w": "Gunslinger",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w145"
+  },
+  {
+   "w": "Angler",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w146"
+  },
+  {
+   "w": "Berserker",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w147"
+  },
+  {
+   "w": "Mercenary",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w148"
+  },
+  {
+   "w": "Prototype",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w149"
+  },
+  {
+   "w": "Warhorse",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w150"
+  },
+  {
+   "w": "Explorer",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w151"
+  },
+  {
+   "w": "Assaulter",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w152"
+  },
+  {
+   "w": "Spelunker",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w153"
+  },
+  {
+   "w": "Bride",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w154"
+  },
+  {
+   "w": "Head",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w155"
+  },
+  {
+   "w": "Face",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w156"
+  },
+  {
+   "w": "Chest",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w157"
+  },
+  {
+   "w": "Torso",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w158"
+  },
+  {
+   "w": "Arms",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w159"
+  },
+  {
+   "w": "Hands",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w160"
+  },
+  {
+   "w": "Waist",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w161"
+  },
+  {
+   "w": "Hips",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w162"
+  },
+  {
+   "w": "Legs",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w163"
+  },
+  {
+   "w": "Feet",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w164"
+  },
+  {
+   "w": "Armor",
+   "req": "Reached Hunter Rank 6.",
+   "id": "w165"
+  },
+  {
+   "w": "Assassin",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w166"
+  },
+  {
+   "w": "Magnificent",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w167"
+  },
+  {
+   "w": "Buster",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w168"
+  },
+  {
+   "w": "Strider",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w169"
+  },
+  {
+   "w": "Saber",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w170"
+  },
+  {
+   "w": "Slayer",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w171"
+  },
+  {
+   "w": "Brave",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w172"
+  },
+  {
+   "w": "Pioneer",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w173"
+  },
+  {
+   "w": "Veteran",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w174"
+  },
+  {
+   "w": "Commando",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w175"
+  },
+  {
+   "w": "Divider",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w176"
+  },
+  {
+   "w": "Flash",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w177"
+  },
+  {
+   "w": "Melody",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w178"
+  },
+  {
+   "w": "Cannon",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w179"
+  },
+  {
+   "w": "Morphing",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w180"
+  },
+  {
+   "w": "Rotating",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w181"
+  },
+  {
+   "w": "Frenzied",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w182"
+  },
+  {
+   "w": "Reliable",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w183"
+  },
+  {
+   "w": "Adventurous",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w184"
+  },
+  {
+   "w": "Meteor",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w185"
+  },
+  {
+   "w": "Quick-draw",
+   "req": "Reached Hunter Rank 9.",
+   "id": "w186"
+  },
+  {
+   "w": "Ruler",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w187"
+  },
+  {
+   "w": "Shinobi",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w188"
+  },
+  {
+   "w": "Freedom",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w189"
+  },
+  {
+   "w": "Dream",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w190"
+  },
+  {
+   "w": "Altair",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w191"
+  },
+  {
+   "w": "Kunoichi",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w192"
+  },
+  {
+   "w": "Vega",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w193"
+  },
+  {
+   "w": "Vagrant",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w194"
+  },
+  {
+   "w": "Iron",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w195"
+  },
+  {
+   "w": "Breaker",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w196"
+  },
+  {
+   "w": "Samurai",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w197"
+  },
+  {
+   "w": "Model",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w198"
+  },
+  {
+   "w": "Traveler",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w199"
+  },
+  {
+   "w": "Slash",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w200"
+  },
+  {
+   "w": "Wing",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w201"
+  },
+  {
+   "w": "Broken",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w202"
+  },
+  {
+   "w": "All",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w203"
+  },
+  {
+   "w": "Armed",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w204"
+  },
+  {
+   "w": "Nameless",
+   "req": "Reached Hunter Rank 50.",
+   "id": "w205"
+  },
+  {
+   "w": "Tail",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w206"
+  },
+  {
+   "w": "Slasher",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w207"
+  },
+  {
+   "w": "Shaker",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w208"
+  },
+  {
+   "w": "Sheathed",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w209"
+  },
+  {
+   "w": "Deadeye",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w210"
+  },
+  {
+   "w": "Collector",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w211"
+  },
+  {
+   "w": "Coordinated",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w212"
+  },
+  {
+   "w": "Royal",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w213"
+  },
+  {
+   "w": "Maniac",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w214"
+  },
+  {
+   "w": "Millionaire",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w215"
+  },
+  {
+   "w": "Superstar",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w216"
+  },
+  {
+   "w": "Dedicated",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w217"
+  },
+  {
+   "w": "Detailed",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w218"
+  },
+  {
+   "w": "Merciful",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w219"
+  },
+  {
+   "w": "Relentless",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w220"
+  },
+  {
+   "w": "Pyro",
+   "req": "Reached Hunter Rank 100.",
+   "id": "w221"
+  },
+  {
+   "w": "Complete",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w222"
+  },
+  {
+   "w": "Sage",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w223"
+  },
+  {
+   "w": "Perfect",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w224"
+  },
+  {
+   "w": "Sovereign",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w225"
+  },
+  {
+   "w": "Striker",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w226"
+  },
+  {
+   "w": "Swordsman",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w227"
+  },
+  {
+   "w": "Ferocious",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w228"
+  },
+  {
+   "w": "Risk-taker",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w229"
+  },
+  {
+   "w": "Heavyweight",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w230"
+  },
+  {
+   "w": "Mechanical",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w231"
+  },
+  {
+   "w": "Executioner",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w232"
+  },
+  {
+   "w": "Profiteer",
+   "req": "Reached Hunter Rank 200.",
+   "id": "w233"
+  },
+  {
+   "w": "Legend",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w234"
+  },
+  {
+   "w": "Champion",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w235"
+  },
+  {
+   "w": "Hero",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w236"
+  },
+  {
+   "w": "Savior",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w237"
+  },
+  {
+   "w": "Composed",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w238"
+  },
+  {
+   "w": "Voracious",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w239"
+  },
+  {
+   "w": "First-rate",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w240"
+  },
+  {
+   "w": "Strongest",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w241"
+  },
+  {
+   "w": "Unmatched",
+   "req": "Reached Hunter Rank 500.",
+   "id": "w242"
+  },
+  {
+   "w": "Monster",
+   "req": "Reached Hunter Rank 999.",
+   "id": "w243",
+   "colo": 2
+  },
+  {
+   "w": "Secret",
+   "req": "Began in a hidden area 5 times.",
+   "id": "w244"
+  },
+  {
+   "w": "Hidden",
+   "req": "Began in a hidden area 10 times.",
+   "id": "w245"
+  },
+  {
+   "w": "D. Island",
+   "req": "Completed 20 Quests on the Deserted Island.",
+   "id": "w246"
+  },
+  {
+   "w": "Sandy Plains",
+   "req": "Completed 20 Quests in the Sandy Plains.",
+   "id": "w247"
+  },
+  {
+   "w": "F. Forest",
+   "req": "Completed 20 Quests in the Flooded Forest.",
+   "id": "w248"
+  },
+  {
+   "w": "Tundra",
+   "req": "Completed 20 Quests on the Tundra.",
+   "id": "w249"
+  },
+  {
+   "w": "Volcano",
+   "req": "Completed 20 Quests in the Volcano.",
+   "id": "w250"
+  },
+  {
+   "w": "Misty Peaks",
+   "req": "Completed 20 Quests in the Misty Peaks.",
+   "id": "w251"
+  },
+  {
+   "w": "Guide",
+   "req": "Completed 100 Quests.",
+   "id": "w252"
+  },
+  {
+   "w": "Researcher",
+   "req": "Completed 1000 Quests.",
+   "id": "w253"
+  },
+  {
+   "w": "Protector",
+   "req": "Completed 20 Quests in the Great Desert.",
+   "id": "w254"
+  },
+  {
+   "w": "Arcadia",
+   "req": "Completed 20 Quests in the Tainted Sea, the Sacred Land, and the Tower.",
+   "id": "w255"
+  },
+  {
+   "w": "Sea",
+   "req": "Completed all 1★ Village Quests.",
+   "id": "w256"
+  },
+  {
+   "w": "Partner",
+   "req": "Completed all 2★ Village Quests.",
+   "id": "w257"
+  },
+  {
+   "w": "Defender",
+   "req": "Completed all 3★ Village Quests.",
+   "id": "w258"
+  },
+  {
+   "w": "Scout",
+   "req": "Completed all 4★ Village Quests.",
+   "id": "w259"
+  },
+  {
+   "w": "Pathfinder",
+   "req": "Completed all 5★ Village Quests.",
+   "id": "w260"
+  },
+  {
+   "w": "Master",
+   "req": "Completed all 6★ Village Quests.",
+   "id": "w261"
+  },
+  {
+   "w": "Bearer",
+   "req": "Completed all 7★ Village Quests.",
+   "id": "w262"
+  },
+  {
+   "w": "Commander",
+   "req": "Completed all 8★ Village Quests.",
+   "id": "w263"
+  },
+  {
+   "w": "Rescuer",
+   "req": "Completed all 9★ Village Quests and all Urgent Quests.",
+   "id": "w264"
+  },
+  {
+   "w": "Guild",
+   "req": "Completed all 1★ Port Quests.",
+   "id": "w265"
+  },
+  {
+   "w": "Knight",
+   "req": "Completed all 2★ Port Quests.",
+   "id": "w266"
+  },
+  {
+   "w": "Ace",
+   "req": "Completed all 3★ Port Quests.",
+   "id": "w267"
+  },
+  {
+   "w": "Pro",
+   "req": "Completed all 4★ Port Quests.",
+   "id": "w268"
+  },
+  {
+   "w": "General",
+   "req": "Completed all 5★ Port Quests.",
+   "id": "w269"
+  },
+  {
+   "w": "Imperial",
+   "req": "Completed all 6★ Port Quests.",
+   "id": "w270"
+  },
+  {
+   "w": "Last-ditch",
+   "req": "Completed all 7★ Port Quests.",
+   "id": "w271"
+  },
+  {
+   "w": "Supreme",
+   "req": "Completed all 8★ Port Quests.",
+   "id": "w272"
+  },
+  {
+   "w": "Transcendant",
+   "req": "Completed all Village Quests and Port Quests.",
+   "id": "w273"
+  },
+  {
+   "w": "Guru",
+   "req": "Achieved Rank B or higher in all Arena Quests.",
+   "id": "w274"
+  },
+  {
+   "w": "Expert",
+   "req": "Achieved Rank A or higher in all Arena Quests.",
+   "id": "w275"
+  },
+  {
+   "w": "Strongman",
+   "req": "Achieved Rank S in an Arena Quest.",
+   "id": "w276"
+  },
+  {
+   "w": "Instructor",
+   "req": "Achieved Rank S in all Arena Quests.",
+   "id": "w277"
+  },
+  {
+   "w": "Jaggi",
+   "req": "Hunted 20 Great Jaggi.",
+   "id": "w278"
+  },
+  {
+   "w": "Frilly",
+   "req": "Hunted 30 Great Jaggi.",
+   "id": "w279"
+  },
+  {
+   "w": "Alpha",
+   "req": "Hunted 40 Great Jaggi.",
+   "id": "w280"
+  },
+  {
+   "w": "Boss",
+   "req": "Hunted 50 Great Jaggi.",
+   "id": "w281"
+  },
+  {
+   "w": "Baggi",
+   "req": "Hunted 20 Great Baggi.",
+   "id": "w282"
+  },
+  {
+   "w": "Intelligent",
+   "req": "Hunted 30 Great Baggi.",
+   "id": "w283"
+  },
+  {
+   "w": "Crested",
+   "req": "Hunted 40 Great Baggi.",
+   "id": "w284"
+  },
+  {
+   "w": "Sleepy",
+   "req": "Hunted 50 Great Baggi.",
+   "id": "w285"
+  },
+  {
+   "w": "Wroggi",
+   "req": "Hunted 20 Great Wroggi.",
+   "id": "w286"
+  },
+  {
+   "w": "Cunning",
+   "req": "Hunted 30 Great Wroggi.",
+   "id": "w287"
+  },
+  {
+   "w": "Wrangler",
+   "req": "Hunted 40 Great Wroggi.",
+   "id": "w288"
+  },
+  {
+   "w": "Misty",
+   "req": "Hunted 50 Great Wroggi.",
+   "id": "w289"
+  },
+  {
+   "w": "Arzuros",
+   "req": "Hunted 20 Arzuros.",
+   "id": "w290"
+  },
+  {
+   "w": "Mountain",
+   "req": "Hunted 30 Arzuros.",
+   "id": "w291"
+  },
+  {
+   "w": "Bear",
+   "req": "Hunted 40 Arzuros.",
+   "id": "w292"
+  },
+  {
+   "w": "Meat",
+   "req": "Hunted 50 Arzuros.",
+   "id": "w293"
+  },
+  {
+   "w": "Lagombi",
+   "req": "Hunted 20 Lagombi.",
+   "id": "w294"
+  },
+  {
+   "w": "Ice",
+   "req": "Hunted 30 Lagombi.",
+   "id": "w295"
+  },
+  {
+   "w": "Glider",
+   "req": "Hunted 40 Lagombi.",
+   "id": "w296"
+  },
+  {
+   "w": "Rabbit",
+   "req": "Hunted 50 Lagombi.",
+   "id": "w297"
+  },
+  {
+   "w": "Volvidon",
+   "req": "Hunted 20 Volvidons.",
+   "id": "w298"
+  },
+  {
+   "w": "Armadillo",
+   "req": "Hunted 30 Volvidons.",
+   "id": "w299"
+  },
+  {
+   "w": "Round",
+   "req": "Hunted 40 Volvidons.",
+   "id": "w300"
+  },
+  {
+   "w": "Tongue",
+   "req": "Hunted 50 Volvidons.",
+   "id": "w301"
+  },
+  {
+   "w": "Qurupeco",
+   "req": "Hunted 20 Qurupecoes.",
+   "id": "w302"
+  },
+  {
+   "w": "Colorful",
+   "req": "Hunted 30 Qurupecoes.",
+   "id": "w303"
+  },
+  {
+   "w": "Impersonator",
+   "req": "Hunted 40 Qurupecoes.",
+   "id": "w304"
+  },
+  {
+   "w": "Flamboyant",
+   "req": "Hunted 50 Qurupecoes.",
+   "id": "w305"
+  },
+  {
+   "w": "Dancer",
+   "req": "Hunted 20 Crimson Qurupecoes.",
+   "id": "w306"
+  },
+  {
+   "w": "Crimson",
+   "req": "Hunted 30 Crimson Qurupecoes.",
+   "id": "w307"
+  },
+  {
+   "w": "Vivid",
+   "req": "Hunted 40 Crimson Qurupecoes.",
+   "id": "w308"
+  },
+  {
+   "w": "Shocker",
+   "req": "Hunted 50 Crimson Qurupecoes.",
+   "id": "w309"
+  },
+  {
+   "w": "Royal Ludroth",
+   "req": "Hunted 20 Royal Ludroth.",
+   "id": "w310"
+  },
+  {
+   "w": "Shower",
+   "req": "Hunted 30 Royal Ludroth.",
+   "id": "w311"
+  },
+  {
+   "w": "Spongy",
+   "req": "Hunted 40 Royal Ludroth.",
+   "id": "w312"
+  },
+  {
+   "w": "Mane",
+   "req": "Hunted 50 Royal Ludroth.",
+   "id": "w313"
+  },
+  {
+   "w": "Purple",
+   "req": "Hunted 20 Purple Ludroth.",
+   "id": "w314"
+  },
+  {
+   "w": "Toxin",
+   "req": "Hunted 30 Purple Ludroth.",
+   "id": "w315"
+  },
+  {
+   "w": "Aura",
+   "req": "Hunted 40 Purple Ludroth.",
+   "id": "w316"
+  },
+  {
+   "w": "Moisture",
+   "req": "Hunted 50 Purple Ludroth.",
+   "id": "w317"
+  },
+  {
+   "w": "Barroth",
+   "req": "Hunted 20 Barroth.",
+   "id": "w318"
+  },
+  {
+   "w": "Crown",
+   "req": "Hunted 30 Barroth.",
+   "id": "w319"
+  },
+  {
+   "w": "Muddy",
+   "req": "Hunted 40 Barroth.",
+   "id": "w320"
+  },
+  {
+   "w": "Fortress",
+   "req": "Hunted 50 Barroth.",
+   "id": "w321"
+  },
+  {
+   "w": "Jade",
+   "req": "Hunted 20 Jade Barroth.",
+   "id": "w322"
+  },
+  {
+   "w": "Iceberg",
+   "req": "Hunted 30 Jade Barroth.",
+   "id": "w323"
+  },
+  {
+   "w": "Frosty",
+   "req": "Hunted 40 Jade Barroth.",
+   "id": "w324"
+  },
+  {
+   "w": "Shattered",
+   "req": "Hunted 50 Jade Barroth.",
+   "id": "w325"
+  },
+  {
+   "w": "Gobul",
+   "req": "Hunted 20 Gobul.",
+   "id": "w326"
+  },
+  {
+   "w": "Barbel",
+   "req": "Hunted 30 Gobul.",
+   "id": "w327"
+  },
+  {
+   "w": "Covert",
+   "req": "Hunted 40 Gobul.",
+   "id": "w328"
+  },
+  {
+   "w": "Stalker",
+   "req": "Hunted 50 Gobul.",
+   "id": "w329"
+  },
+  {
+   "w": "Rathian",
+   "req": "Hunted 20 Rathians.",
+   "id": "w330"
+  },
+  {
+   "w": "Land",
+   "req": "Hunted 30 Rathians.",
+   "id": "w331"
+  },
+  {
+   "w": "Graceful",
+   "req": "Hunted 40 Rathians.",
+   "id": "w332"
+  },
+  {
+   "w": "Wyverness",
+   "req": "Hunted 50 Rathians.",
+   "id": "w333"
+  },
+  {
+   "w": "Pink",
+   "req": "Hunted 20 Pink Rathians.",
+   "id": "w334"
+  },
+  {
+   "w": "Poisonous",
+   "req": "Hunted 30 Pink Rathians.",
+   "id": "w335"
+  },
+  {
+   "w": "Soaring",
+   "req": "Hunted 40 Pink Rathians.",
+   "id": "w336"
+  },
+  {
+   "w": "Queen",
+   "req": "Hunted 50 Pink Rathians.",
+   "id": "w337"
+  },
+  {
+   "w": "Female",
+   "req": "Hunted 10 Gold Rathians.",
+   "id": "w338"
+  },
+  {
+   "w": "Golden",
+   "req": "Hunted 15 Gold Rathians.",
+   "id": "w339"
+  },
+  {
+   "w": "Lune",
+   "req": "Hunted 20 Gold Rathians.",
+   "id": "w340"
+  },
+  {
+   "w": "Heart",
+   "req": "Hunted 30 Gold Rathians.",
+   "id": "w341"
+  },
+  {
+   "w": "Plesioth",
+   "req": "Hunted 20 Plesioth.",
+   "id": "w342"
+  },
+  {
+   "w": "Torrent",
+   "req": "Hunted 30 Plesioth.",
+   "id": "w343"
+  },
+  {
+   "w": "Finned",
+   "req": "Hunted 40 Plesioth.",
+   "id": "w344"
+  },
+  {
+   "w": "Fish",
+   "req": "Hunted 50 Plesioth.",
+   "id": "w345"
+  },
+  {
+   "w": "Emerald",
+   "req": "Hunted 20 Green Plesioth.",
+   "id": "w346"
+  },
+  {
+   "w": "Charging",
+   "req": "Hunted 30 Green Plesioth.",
+   "id": "w347"
+  },
+  {
+   "w": "Aquatic",
+   "req": "Hunted 40 Green Plesioth.",
+   "id": "w348"
+  },
+  {
+   "w": "Piscine",
+   "req": "Hunted 50 Green Plesioth.",
+   "id": "w349"
+  },
+  {
+   "w": "Gigginox",
+   "req": "Hunted 20 Gigginox.",
+   "id": "w350"
+  },
+  {
+   "w": "Uncanny",
+   "req": "Hunted 30 Gigginox.",
+   "id": "w351"
+  },
+  {
+   "w": "Vampire",
+   "req": "Hunted 40 Gigginox.",
+   "id": "w352"
+  },
+  {
+   "w": "Reaper",
+   "req": "Hunted 50 Gigginox.",
+   "id": "w353"
+  },
+  {
+   "w": "Baleful",
+   "req": "Hunted 20 Baleful Gigginox.",
+   "id": "w354"
+  },
+  {
+   "w": "Creepy",
+   "req": "Hunted 30 Baleful Gigginox.",
+   "id": "w355"
+  },
+  {
+   "w": "Cursed",
+   "req": "Hunted 40 Baleful Gigginox.",
+   "id": "w356"
+  },
+  {
+   "w": "Electric",
+   "req": "Hunted 50 Baleful Gigginox.",
+   "id": "w357"
+  },
+  {
+   "w": "Barioth",
+   "req": "Hunted 20 Barioth.",
+   "id": "w358"
+  },
+  {
+   "w": "Blizzard",
+   "req": "Hunted 30 Barioth.",
+   "id": "w359"
+  },
+  {
+   "w": "Swift",
+   "req": "Hunted 40 Barioth.",
+   "id": "w360"
+  },
+  {
+   "w": "Freezing",
+   "req": "Hunted 50 Barioth.",
+   "id": "w361"
+  },
+  {
+   "w": "Sabertooth",
+   "req": "Hunted 20 Sand Barioth.",
+   "id": "w362"
+  },
+  {
+   "w": "Sand",
+   "req": "Hunted 30 Sand Barioth.",
+   "id": "w363"
+  },
+  {
+   "w": "Twister",
+   "req": "Hunted 40 Sand Barioth.",
+   "id": "w364"
+  },
+  {
+   "w": "Sentry",
+   "req": "Hunted 50 Sand Barioth.",
+   "id": "w365"
+  },
+  {
+   "w": "Nibelsnarf",
+   "req": "Hunted 20 Nibelsnarf.",
+   "id": "w366"
+  },
+  {
+   "w": "Glutton",
+   "req": "Hunted 30 Nibelsnarf.",
+   "id": "w367"
+  },
+  {
+   "w": "Maw",
+   "req": "Hunted 40 Nibelsnarf.",
+   "id": "w368"
+  },
+  {
+   "w": "Burrower",
+   "req": "Hunted 50 Nibelsnarf.",
+   "id": "w369"
+  },
+  {
+   "w": "Duramboros",
+   "req": "Hunted 20 Duramboros.",
+   "id": "w370"
+  },
+  {
+   "w": "Slam",
+   "req": "Hunted 30 Duramboros.",
+   "id": "w371"
+  },
+  {
+   "w": "Giant",
+   "req": "Hunted 40 Duramboros.",
+   "id": "w372"
+  },
+  {
+   "w": "Mossy",
+   "req": "Hunted 50 Duramboros.",
+   "id": "w373"
+  },
+  {
+   "w": "Tremendous",
+   "req": "Hunted 20 Rust Duramboros.",
+   "id": "w374"
+  },
+  {
+   "w": "Rust",
+   "req": "Hunted 30 Rust Duramboros.",
+   "id": "w375"
+  },
+  {
+   "w": "Hefty",
+   "req": "Hunted 40 Rust Duramboros.",
+   "id": "w376"
+  },
+  {
+   "w": "Lumberjack",
+   "req": "Hunted 50 Rust Duramboros.",
+   "id": "w377"
+  },
+  {
+   "w": "Diablos",
+   "req": "Hunted 20 Diablos.",
+   "id": "w378"
+  },
+  {
+   "w": "Chaotic",
+   "req": "Hunted 30 Diablos.",
+   "id": "w379"
+  },
+  {
+   "w": "Desert",
+   "req": "Hunted 40 Diablos.",
+   "id": "w380"
+  },
+  {
+   "w": "Horned",
+   "req": "Hunted 50 Diablos.",
+   "id": "w381"
+  },
+  {
+   "w": "Territorial",
+   "req": "Hunted 20 Black Diablos.",
+   "id": "w382"
+  },
+  {
+   "w": "Tyrant",
+   "req": "Hunted 30 Black Diablos.",
+   "id": "w383"
+  },
+  {
+   "w": "Twisted",
+   "req": "Hunted 40 Black Diablos.",
+   "id": "w384"
+  },
+  {
+   "w": "Disaster",
+   "req": "Hunted 50 Black Diablos.",
+   "id": "w385"
+  },
+  {
+   "w": "Rathalos",
+   "req": "Hunted 20 Rathalos.",
+   "id": "w386"
+  },
+  {
+   "w": "Skies",
+   "req": "Hunted 30 Rathalos.",
+   "id": "w387"
+  },
+  {
+   "w": "Fireball",
+   "req": "Hunted 40 Rathalos.",
+   "id": "w388"
+  },
+  {
+   "w": "King",
+   "req": "Hunted 50 Rathalos.",
+   "id": "w389"
+  },
+  {
+   "w": "Azure",
+   "req": "Hunted 20 Azure Rathalos.",
+   "id": "w390"
+  },
+  {
+   "w": "Flying",
+   "req": "Hunted 30 Azure Rathalos.",
+   "id": "w391"
+  },
+  {
+   "w": "Soul",
+   "req": "Hunted 40 Azure Rathalos.",
+   "id": "w392"
+  },
+  {
+   "w": "Flame",
+   "req": "Hunted 50 Azure Rathalos.",
+   "id": "w393"
+  },
+  {
+   "w": "Male",
+   "req": "Hunted 10 Silver Rathalos.",
+   "id": "w394"
+  },
+  {
+   "w": "Silver",
+   "req": "Hunted 15 Silver Rathalos.",
+   "id": "w395"
+  },
+  {
+   "w": "Sol",
+   "req": "Hunted 20 Silver Rathalos.",
+   "id": "w396"
+  },
+  {
+   "w": "Wyvern",
+   "req": "Hunted 30 Silver Rathalos.",
+   "id": "w397"
+  },
+  {
+   "w": "Uragaan",
+   "req": "Hunted 20 Uragaan.",
+   "id": "w398"
+  },
+  {
+   "w": "Lava",
+   "req": "Hunted 30 Uragaan.",
+   "id": "w399"
+  },
+  {
+   "w": "Rolling",
+   "req": "Hunted 40 Uragaan.",
+   "id": "w400"
+  },
+  {
+   "w": "Mineral",
+   "req": "Hunted 50 Uragaan.",
+   "id": "w401"
+  },
+  {
+   "w": "Steel",
+   "req": "Hunted 20 Steel Uragaan.",
+   "id": "w402"
+  },
+  {
+   "w": "Digger",
+   "req": "Hunted 30 Steel Uragaan.",
+   "id": "w403"
+  },
+  {
+   "w": "Bomber",
+   "req": "Hunted 40 Steel Uragaan.",
+   "id": "w404"
+  },
+  {
+   "w": "Combustion",
+   "req": "Hunted 50 Steel Uragaan.",
+   "id": "w405"
+  },
+  {
+   "w": "Agnaktor",
+   "req": "Hunted 20 Agnaktor.",
+   "id": "w406"
+  },
+  {
+   "w": "Spark",
+   "req": "Hunted 30 Agnaktor.",
+   "id": "w407"
+  },
+  {
+   "w": "Scorched",
+   "req": "Hunted 40 Agnaktor.",
+   "id": "w408"
+  },
+  {
+   "w": "Magma",
+   "req": "Hunted 50 Agnaktor.",
+   "id": "w409"
+  },
+  {
+   "w": "Icy",
+   "req": "Hunted 20 Glacial Agnaktor.",
+   "id": "w410"
+  },
+  {
+   "w": "Snow",
+   "req": "Hunted 30 Glacial Agnaktor.",
+   "id": "w411"
+  },
+  {
+   "w": "Frozen",
+   "req": "Hunted 40 Glacial Agnaktor.",
+   "id": "w412"
+  },
+  {
+   "w": "Glacial",
+   "req": "Hunted 50 Glacial Agnaktor.",
+   "id": "w413"
+  },
+  {
+   "w": "Nargacuga",
+   "req": "Hunted 20 Nargacugas.",
+   "id": "w414"
+  },
+  {
+   "w": "Nocturnal",
+   "req": "Hunted 30 Nargacugas.",
+   "id": "w415"
+  },
+  {
+   "w": "Midnight",
+   "req": "Hunted 40 Nargacugas.",
+   "id": "w416"
+  },
+  {
+   "w": "Predator",
+   "req": "Hunted 50 Nargacugas.",
+   "id": "w417"
+  },
+  {
+   "w": "Camouflage",
+   "req": "Hunted 20 Green Nargacugas.",
+   "id": "w418"
+  },
+  {
+   "w": "Forest",
+   "req": "Hunted 30 Green Nargacugas.",
+   "id": "w419"
+  },
+  {
+   "w": "Spiny",
+   "req": "Hunted 40 Green Nargacugas.",
+   "id": "w420"
+  },
+  {
+   "w": "Shadow",
+   "req": "Hunted 50 Green Nargacugas.",
+   "id": "w421"
+  },
+  {
+   "w": "Invisible",
+   "req": "Hunted 10 Lucent Nargacugas.",
+   "id": "w422"
+  },
+  {
+   "w": "Eclipse",
+   "req": "Hunted 15 Lucent Nargacugas.",
+   "id": "w423"
+  },
+  {
+   "w": "Deathblow",
+   "req": "Hunted 20 Lucent Nargacugas.",
+   "id": "w424"
+  },
+  {
+   "w": "Lucent",
+   "req": "Hunted 30 Lucent Nargacugas.",
+   "id": "w425"
+  },
+  {
+   "w": "Brachydios",
+   "req": "Hunted 20 Brachydios.",
+   "id": "w426"
+  },
+  {
+   "w": "Slime",
+   "req": "Hunted 30 Brachydios.",
+   "id": "w427"
+  },
+  {
+   "w": "Obsidian",
+   "req": "Hunted 40 Brachydios.",
+   "id": "w428"
+  },
+  {
+   "w": "Explosive",
+   "req": "Hunted 50 Brachydios.",
+   "id": "w429"
+  },
+  {
+   "w": "Lagiacrus",
+   "req": "Hunted 20 Lagiacrus.",
+   "id": "w430"
+  },
+  {
+   "w": "Whirlpool",
+   "req": "Hunted 30 Lagiacrus.",
+   "id": "w431"
+  },
+  {
+   "w": "Rival",
+   "req": "Hunted 40 Lagiacrus.",
+   "id": "w432"
+  },
+  {
+   "w": "Lord",
+   "req": "Hunted 50 Lagiacrus.",
+   "id": "w433"
+  },
+  {
+   "w": "Voltage",
+   "req": "Hunted 20 Ivory Lagiacrus.",
+   "id": "w434"
+  },
+  {
+   "w": "Fated",
+   "req": "Hunted 30 Ivory Lagiacrus.",
+   "id": "w435"
+  },
+  {
+   "w": "Ivory",
+   "req": "Hunted 40 Ivory Lagiacrus.",
+   "id": "w436"
+  },
+  {
+   "w": "Electroshock",
+   "req": "Hunted 50 Ivory Lagiacrus.",
+   "id": "w437"
+  },
+  {
+   "w": "Netherworld",
+   "req": "Slayed 10 Abyssal Lagiacrus.",
+   "id": "w438"
+  },
+  {
+   "w": "Abyssal",
+   "req": "Slayed 15 Abyssal Lagiacrus.",
+   "id": "w439"
+  },
+  {
+   "w": "Destroyer",
+   "req": "Slayed 20 Abyssal Lagiacrus.",
+   "id": "w440"
+  },
+  {
+   "w": "Omega",
+   "req": "Slayed 30 Abyssal Lagiacrus.",
+   "id": "w441"
+  },
+  {
+   "w": "Zinogre",
+   "req": "Hunted 20 Zinogres.",
+   "id": "w442"
+  },
+  {
+   "w": "Peerless",
+   "req": "Hunted 30 Zinogres.",
+   "id": "w443"
+  },
+  {
+   "w": "Wolf",
+   "req": "Hunted 40 Zinogres.",
+   "id": "w444"
+  },
+  {
+   "w": "Monarch",
+   "req": "Hunted 50 Zinogres.",
+   "id": "w445"
+  },
+  {
+   "w": "Underworld",
+   "req": "Hunted 20 Stygian Zinogres.",
+   "id": "w446"
+  },
+  {
+   "w": "Stygian",
+   "req": "Hunted 30 Stygian Zinogres.",
+   "id": "w447"
+  },
+  {
+   "w": "Rebel",
+   "req": "Hunted 40 Stygian Zinogres.",
+   "id": "w448"
+  },
+  {
+   "w": "Emperor",
+   "req": "Hunted 50 Stygian Zinogres.",
+   "id": "w449"
+  },
+  {
+   "w": "Deviljho",
+   "req": "Hunted 20 Deviljho.",
+   "id": "w450"
+  },
+  {
+   "w": "Demon",
+   "req": "Hunted 30 Deviljho.",
+   "id": "w451"
+  },
+  {
+   "w": "Savage",
+   "req": "Hunted 40 Deviljho.",
+   "id": "w452"
+  },
+  {
+   "w": "Devourer",
+   "req": "Hunted 50 Deviljho.",
+   "id": "w453"
+  },
+  {
+   "w": "Ceadeus",
+   "req": "Slayed 10 Ceadeus.",
+   "id": "w454"
+  },
+  {
+   "w": "Quake",
+   "req": "Slayed 15 Ceadeus.",
+   "id": "w455"
+  },
+  {
+   "w": "Depths",
+   "req": "Slayed 20 Ceadeus.",
+   "id": "w456"
+  },
+  {
+   "w": "Shining",
+   "req": "Slayed 20 Ceadeus.",
+   "id": "w457"
+  },
+  {
+   "w": "Legendary",
+   "req": "Slayed 30 Ceadeus.",
+   "id": "w458"
+  },
+  {
+   "w": "Sacred",
+   "req": "Slayed 30 Ceadeus.",
+   "id": "w459"
+  },
+  {
+   "w": "Divine",
+   "req": "Slayed 10 Goldbeard Ceadeus.",
+   "id": "w460"
+  },
+  {
+   "w": "Goldbeard",
+   "req": "Slayed 15 Goldbeard Ceadeus.",
+   "id": "w461"
+  },
+  {
+   "w": "Ruins",
+   "req": "Slayed 20 Goldbeard Ceadeus.",
+   "id": "w462"
+  },
+  {
+   "w": "Majestic",
+   "req": "Slayed 30 Goldbeard Ceadeus.",
+   "id": "w463"
+  },
+  {
+   "w": "Jhen Mohran",
+   "req": "Slayed 10 Jhen Mohran.",
+   "id": "w464"
+  },
+  {
+   "w": "Strife",
+   "req": "Slayed 15 Jhen Mohran.",
+   "id": "w465"
+  },
+  {
+   "w": "Juggernaut",
+   "req": "Slayed 20 Jhen Mohran.",
+   "id": "w466"
+  },
+  {
+   "w": "Prosperity",
+   "req": "Slayed 30 Jhen Mohran.",
+   "id": "w467"
+  },
+  {
+   "w": "Hallowed",
+   "req": "Slayed 10 Hallowed Jhen Mohran.",
+   "id": "w468"
+  },
+  {
+   "w": "Mystical",
+   "req": "Slayed 15 Hallowed Jhen Mohran.",
+   "id": "w469"
+  },
+  {
+   "w": "Ore",
+   "req": "Slayed 20 Hallowed Jhen Mohran.",
+   "id": "w470"
+  },
+  {
+   "w": "Crystal",
+   "req": "Slayed 30 Hallowed Jhen Mohran.",
+   "id": "w471"
+  },
+  {
+   "w": "Alatreon",
+   "req": "Slayed 10 Alatreon.",
+   "id": "w472"
+  },
+  {
+   "w": "Evil",
+   "req": "Slayed 15 Alatreon.",
+   "id": "w473"
+  },
+  {
+   "w": "Darkness",
+   "req": "Slayed 20 Alatreon.",
+   "id": "w474"
+  },
+  {
+   "w": "Finale",
+   "req": "Slayed 30 Alatreon.",
+   "id": "w475"
+  },
+  {
+   "w": "Dire",
+   "req": "Slayed 10 Dire Miralis.",
+   "id": "w476"
+  },
+  {
+   "w": "Hellfire",
+   "req": "Slayed 15 Dire Miralis.",
+   "id": "w477"
+  },
+  {
+   "w": "Creation",
+   "req": "Slayed 20 Dire Miralis.",
+   "id": "w478"
+  },
+  {
+   "w": "Annihilation",
+   "req": "Slayed 30 Dire Miralis.",
+   "id": "w479"
+  },
+  {
+   "w": "Trailblazer",
+   "req": "Talk to Neko to travel from Moga Village to Port Tanzia for the first time.",
+   "id": "w480"
+  },
+  {
+   "w": "StreetPass",
+   "req": "Talk to Neko to travel from Moga Village to Port Tanzia 100 times.",
+   "id": "w481"
+  },
+  {
+   "w": "Kokoto",
+   "req": "Acquired via DLC.",
+   "id": "w482"
+  },
+  {
+   "w": "Jumbo",
+   "req": "Acquired via DLC.",
+   "id": "w483"
+  },
+  {
+   "w": "Minegarde",
+   "req": "Acquired via DLC.",
+   "id": "w484"
+  },
+  {
+   "w": "Dondruma",
+   "req": "Acquired via DLC.",
+   "id": "w485"
+  },
+  {
+   "w": "Yukumo",
+   "req": "Acquired via DLC.",
+   "id": "w486"
+  },
+  {
+   "w": "Pokke",
+   "req": "Acquired via DLC.",
+   "id": "w487"
+  },
+  {
+   "w": "Moga",
+   "req": "Acquired via DLC.",
+   "id": "w488"
+  },
+  {
+   "w": "Loc Lac",
+   "req": "Acquired via DLC.",
+   "id": "w489"
+  },
+  {
+   "w": "Schrade",
+   "req": "Acquired via DLC.",
+   "id": "w490"
+  },
+  {
+   "w": "Scholar",
+   "req": "Acquired via DLC.",
+   "id": "w491"
+  },
+  {
+   "w": "Graduate",
+   "req": "Acquired via DLC.",
+   "id": "w492"
+  },
+  {
+   "w": "Elder",
+   "req": "Acquired via DLC.",
+   "id": "w493"
+  },
+  {
+   "w": "Fan",
+   "req": "Acquired via DLC.",
+   "id": "w494"
+  },
+  {
+   "w": "Unity",
+   "req": "Acquired via DLC.",
+   "id": "w495"
+  },
+  {
+   "w": "Snuggly",
+   "req": "Acquired via DLC.",
+   "id": "w496"
+  },
+  {
+   "w": "MonHan",
+   "req": "Acquired via DLC.",
+   "id": "w497"
+  },
+  {
+   "w": "VIP",
+   "req": "Acquired via DLC.",
+   "id": "w498"
+  },
+  {
+   "w": "Felyne",
+   "req": "Acquired via DLC.",
+   "id": "w499"
+  },
+  {
+   "w": "Fire",
+   "req": "Acquired via DLC.",
+   "id": "w500"
+  },
+  {
+   "w": "Dragon",
+   "req": "Acquired via DLC.",
+   "id": "w501"
+  },
+  {
+   "w": "Scarlet",
+   "req": "Acquired via DLC.",
+   "id": "w502"
+  },
+  {
+   "w": "Bold",
+   "req": "Acquired via DLC.",
+   "id": "w503"
+  },
+  {
+   "w": "Bullfango",
+   "req": "Acquired via DLC.",
+   "id": "w504"
+  },
+  {
+   "w": "Brute",
+   "req": "Acquired via DLC.",
+   "id": "w505"
+  },
+  {
+   "w": "Absolute",
+   "req": "Acquired via DLC.",
+   "id": "w506"
+  },
+  {
+   "w": "Wild",
+   "req": "Acquired via DLC.",
+   "id": "w507"
+  },
+  {
+   "w": "Muscle",
+   "req": "Acquired via DLC.",
+   "id": "w508"
+  },
+  {
+   "w": "Conquerer",
+   "req": "Acquired via DLC.",
+   "id": "w509"
+  },
+  {
+   "w": "Baller",
+   "req": "Acquired via DLC.",
+   "id": "w510"
+  },
+  {
+   "w": "Eternal",
+   "req": "Acquired via DLC.",
+   "id": "w511"
+  },
+  {
+   "w": "Drink",
+   "req": "Acquired via DLC.",
+   "id": "w512"
+  },
+  {
+   "w": "Egg",
+   "req": "Acquired via DLC.",
+   "id": "w513"
+  },
+  {
+   "w": "Tart",
+   "req": "Acquired via DLC.",
+   "id": "w514"
+  },
+  {
+   "w": "Friendly",
+   "req": "Acquired via DLC.",
+   "id": "w515"
+  },
+  {
+   "w": "Caretaker",
+   "req": "Acquired via DLC.",
+   "id": "w516"
+  },
+  {
+   "w": "Nya",
+   "req": "Acquired via DLC.",
+   "id": "w517"
+  },
+  {
+   "w": "Comrade",
+   "req": "Acquired via DLC.",
+   "id": "w518"
+  },
+  {
+   "w": "Stray",
+   "req": "Acquired via DLC.",
+   "id": "w519"
+  }
+ ],
+ "joins": [
+  {
+   "w": "of",
+   "id": "j001"
+  },
+  {
+   "w": "and",
+   "id": "j002"
+  },
+  {
+   "w": "for",
+   "id": "j003"
+  },
+  {
+   "w": "by",
+   "id": "j004"
+  },
+  {
+   "w": "or",
+   "id": "j005"
+  },
+  {
+   "w": "to",
+   "id": "j006"
+  },
+  {
+   "w": "from",
+   "id": "j007"
+  },
+  {
+   "w": "in",
+   "id": "j008"
+  },
+  {
+   "w": "out",
+   "id": "j009"
+  },
+  {
+   "w": "on",
+   "id": "j010"
+  },
+  {
+   "w": "off",
+   "id": "j011"
+  },
+  {
+   "w": "but",
+   "id": "j012"
+  },
+  {
+   "w": "not",
+   "id": "j013"
+  },
+  {
+   "w": "yet",
+   "id": "j014"
+  },
+  {
+   "w": "my",
+   "id": "j015"
+  },
+  {
+   "w": "your",
+   "id": "j016"
+  },
+  {
+   "w": "near",
+   "id": "j017"
+  },
+  {
+   "w": "far",
+   "id": "j018"
+  },
+  {
+   "w": "do",
+   "id": "j019"
+  },
+  {
+   "w": "back",
+   "id": "j020"
+  },
+  {
+   "w": "best",
+   "id": "j021"
+  },
+  {
+   "w": "our",
+   "id": "j022"
+  },
+  {
+   "w": "onto",
+   "id": "j023"
+  },
+  {
+   "w": "up",
+   "id": "j024"
+  },
+  {
+   "w": "down",
+   "id": "j025"
+  },
+  {
+   "w": "via",
+   "id": "j026"
+  },
+  {
+   "w": "till",
+   "id": "j027"
+  },
+  {
+   "w": "plus",
+   "id": "j028"
+  },
+  {
+   "w": "at",
+   "id": "j029"
+  },
+  {
+   "w": "as",
+   "id": "j030"
+  },
+  {
+   "w": "the",
+   "id": "j031"
+  },
+  {
+   "w": "want",
+   "id": "j032"
+  },
+  {
+   "w": "with",
+   "id": "j033"
+  },
+  {
+   "w": "is",
+   "id": "j034"
+  },
+  {
+   "w": "are",
+   "id": "j035"
+  },
+  {
+   "w": "when",
+   "id": "j036"
+  },
+  {
+   "w": "mega",
+   "id": "j037"
+  },
+  {
+   "w": "uber",
+   "id": "j038"
+  },
+  {
+   "w": "was",
+   "id": "j039"
+  },
+  {
+   "w": "will",
+   "id": "j040"
+  },
+  {
+   "w": "lead",
+   "id": "j041"
+  },
+  {
+   "w": "main",
+   "id": "j042"
+  },
+  {
+   "w": "be",
+   "id": "j043"
+  },
+  {
+   "w": "only",
+   "id": "j044"
+  },
+  {
+   "w": "more",
+   "id": "j045"
+  },
+  {
+   "w": "less",
+   "id": "j046"
+  },
+  {
+   "w": "Khan",
+   "id": "j047"
+  },
+  {
+   "w": "Czar",
+   "id": "j048"
+  },
+  {
+   "w": "Miss",
+   "id": "j049"
+  },
+  {
+   "w": "Duke",
+   "id": "j050"
+  },
+  {
+   "w": "Earl",
+   "id": "j051"
+  },
+  {
+   "w": "Von",
+   "id": "j052"
+  },
+  {
+   "w": "Van",
+   "id": "j053"
+  },
+  {
+   "w": "Ser",
+   "id": "j054"
+  },
+  {
+   "w": "Sire",
+   "id": "j055"
+  },
+  {
+   "w": "&",
+   "id": "j056"
+  },
+  {
+   "w": "+",
+   "id": "j057"
+  },
+  {
+   "w": "-",
+   "id": "j058"
+  },
+  {
+   "w": "×",
+   "id": "j059"
+  },
+  {
+   "w": "?",
+   "id": "j060"
+  },
+  {
+   "w": "!",
+   "id": "j061"
+  },
+  {
+   "w": "=",
+   "id": "j062"
+  },
+  {
+   "w": "～",
+   "id": "j063"
+  },
+  {
+   "w": "・",
+   "id": "j064"
+  },
+  {
+   "w": "/",
+   "id": "j065"
+  },
+  {
+   "w": ":",
+   "id": "j066"
+  },
+  {
+   "w": ",",
+   "id": "j067"
+  },
+  {
+   "w": "$",
+   "id": "j068"
+  },
+  {
+   "w": "\\",
+   "id": "j069"
+  },
+  {
+   "w": "€",
+   "id": "j070"
+  },
+  {
+   "w": "α",
+   "id": "j071"
+  },
+  {
+   "w": "β",
+   "id": "j072"
+  },
+  {
+   "w": "γ",
+   "id": "j073"
+  },
+  {
+   "w": "★",
+   "id": "j074"
+  },
+  {
+   "w": "A",
+   "id": "j075"
+  },
+  {
+   "w": "B",
+   "id": "j076"
+  },
+  {
+   "w": "C",
+   "id": "j077"
+  },
+  {
+   "w": "D",
+   "id": "j078"
+  },
+  {
+   "w": "E",
+   "id": "j079"
+  },
+  {
+   "w": "F",
+   "id": "j080"
+  },
+  {
+   "w": "G",
+   "id": "j081"
+  },
+  {
+   "w": "H",
+   "id": "j082"
+  },
+  {
+   "w": "I",
+   "id": "j083"
+  },
+  {
+   "w": "J",
+   "id": "j084"
+  },
+  {
+   "w": "K",
+   "id": "j085"
+  },
+  {
+   "w": "L",
+   "id": "j086"
+  },
+  {
+   "w": "M",
+   "id": "j087"
+  },
+  {
+   "w": "N",
+   "id": "j088"
+  },
+  {
+   "w": "O",
+   "id": "j089"
+  },
+  {
+   "w": "P",
+   "id": "j090"
+  },
+  {
+   "w": "Q",
+   "id": "j091"
+  },
+  {
+   "w": "R",
+   "id": "j092"
+  },
+  {
+   "w": "S",
+   "id": "j093"
+  },
+  {
+   "w": "T",
+   "id": "j094"
+  },
+  {
+   "w": "U",
+   "id": "j095"
+  },
+  {
+   "w": "V",
+   "id": "j096"
+  },
+  {
+   "w": "W",
+   "id": "j097"
+  },
+  {
+   "w": "X",
+   "id": "j098"
+  },
+  {
+   "w": "Y",
+   "id": "j099"
+  },
+  {
+   "w": "Z",
+   "id": "j100"
+  }
+ ]
+}
