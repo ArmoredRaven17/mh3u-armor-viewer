@@ -43,8 +43,8 @@ window.VIEWER_GAME = {
     { name: "Diablos", hex: "#997c54" },
     { name: "Barroth", hex: "#835A32" },
     { name: "Bullfango", hex: "#B17A47" },
-    { name: "S. Rathalos", hex: "#505358", icon: "Silver Rathalos" },
-    { name: "Barioth", hex: "#7C879B" },
+    { name: "Barioth", hex: "#505358" },
+    { name: "S. Rathalos", hex: "#7C879B", icon: "Silver Rathalos" },
     { name: "Forbidden", hex: "#1E2025", icon: "Question Mark" },
   ],
   themeDefault: '#1E2025',             // Forbidden, the family default
