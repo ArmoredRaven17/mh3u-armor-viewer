@@ -1,12 +1,12 @@
 {
  "version": 1,
- "generated": "2026-10-01T01:48:07",
+ "generated": "2026-10-19T14:11:55",
  "_about": {
-  "armor": "the game's armour tables (mh3u_armor.py): helm 0xba6418, body 0xba87b8, arm 0xbaab88, waist 0xbacd90, leg 0xbaf058, 0x18-byte records read through 0x892ffc. `m`/`f` = the model each gender draws (record +2/+3, READ at 0x892a48); `wear` = record +6 (READ at 0x5dcb8c): m, f, b = Blademaster, g = Gunner. Names: the slot's message file at the record's index (Helm_eng.gmd ...), whose counts equal the table counts at 0xb02854; the message lookup itself is not traced. Records named DUMMY and the (None) record 0 are left out.",
+  "armor": "the game's armour tables (mh3u_armor.py): helm 0xba6418, body 0xba87b8, arm 0xbaab88, waist 0xbacd90, leg 0xbaf058, 0x18-byte records read through 0x892ffc. `m`/`f` = the model each gender draws (record +2/+3, READ at 0x892a48); `wear` = record +6 (READ at 0x5dcb8c): m, f, b = Blademaster, g = Gunner. A helm's `type` (b, g or bg) is the type of its set, INFERRED from the pieces sharing its stat line (helm_types()): the records let either type wear almost every helm. Names: the slot's message file at the record's index (Helm_eng.gmd ...), whose counts equal the table counts at 0xb02854; the message lookup itself is not traced. Records named DUMMY and the (None) record 0 are left out.",
   "inner": "models drawn for an empty body / arm / leg slot, by the save's inner-wear byte (0x892a14 falls back to rodata 0xb06f78 / 0xb06f80 / 0xb06f88 = 60-63, indexed by player data +0x74, which 0x3d5b64 copies from the save). An empty helm or waist draws model 0.",
   "hairFace": "per gender, per HELM MODEL (0-213): `hair[h]` = 14 masks, one per hair model, bit n set = hair part n drawn (0x24a9f8: a helm record +6 picks a row of the mask table 0xba59d0, 0 = the record's own u32); `face[h]` = face parts 0-6 drawn (record +5, 0x24a930); `hairClearsFace0[k]` = hair model k takes face part 0 away (its record +1). Male hair 13 clears the hair unit's flag 0x4000 instead (0x24aa14); that model is a 3-vertex stub.",
   "substituted": "models 64, 200-206 and 208 are loaded as model 1 (0x8eef28); only DUMMY records use them.",
-  "colors": "the player's colours (notes/armor.md \"Colours\"). Each material carries a colour type (materials.json `ct` = .mrl record +0x18 bits 23-30; 0x199598 matches it) and the game writes the colour into that material's fMaterialStdAlbedoColor (0x567b54), which multiplies its albedo map: 1 hair (char +0x1c, the hair unit only), 2 skin (char +0x73e0, every unit but the hair), 3 armour pigment (per slot), 4 clothing (char +0x5768, every unit), 5 / 6 the face's Feature 1 / 2 (char +0x73e8 / +0x73ec; a colour whose top byte is 0 is Off and hides face part 5 / 6, 0x23f83c). `presets` = the 24 colour records at 0xb9b724, {R, G, B, x, y}: records 0-11 are the Hair Color choices (0x3dde28), 12-23 the Clothing Color and Feature choices (0x3ddee4, 0x3ddfa8); x, y is where each sits on the colour board td_color (`board`), and each is that board pixel. `skin.strip` = the Skin Tone choices: row 273 of GUI\\Texture\\startmenu\\st_menu_01_eng.tex at x 0-189, the slider's range (0x3dc6a0 reads the texel; 0x3dc454 clamps to 0xbd); a new character starts at 189 (0x3db30c). `pigments` = the 44 armour pigment colours at 0xb028a0; armour row `pig` = the piece's own pigment (record +5, 0x895754) and `dye` = record +4 == 2, the pieces whose item can carry its own colour instead (0x894cd4 -> 0x893d90). A new character's hair, clothing and feature colours are not read.",
+  "colors": "the player's colours (notes/armor.md \"Colours\"). Each material carries a colour type (materials.json `ct` = .mrl record +0x18 bits 23-30; 0x199598 matches it) and the game writes the colour into that material's fMaterialStdAlbedoColor (0x567b54), which multiplies its albedo map: 1 hair (char +0x1c, the hair unit only), 2 skin (char +0x73e0, every unit but the hair), 3 armour pigment (per slot), 4 clothing (char +0x5768, every unit), 5 / 6 the face's Feature 1 / 2 (char +0x73e8 / +0x73ec; a colour whose top byte is 0 is Off and hides face part 5 / 6, 0x23f83c). `presets` = the 24 colour records at 0xb9b724, {R, G, B, x, y}: records 0-11 are the Hair Color choices (0x3dde28), 12-23 the Clothing Color and Feature choices (0x3ddee4, 0x3ddfa8); x, y is where each sits on the colour board td_color (`board`), and each is that board pixel. `skin.strip` = the Skin Tone choices: row 273 of GUI\\Texture\\startmenu\\st_menu_01_eng.tex at x 0-189, the slider's range (0x3dc6a0 reads the texel; 0x3dc454 clamps to 0xbd); a new character starts at 189 (0x3db30c). `pigments` = the 44 armour pigment colours at 0xb028a0; armour row `pig` = the piece's own pigment (record +5, 0x895754) and `dye` = record +4 == 2, the pieces whose item can carry its own colour instead (0x894cd4 -> 0x893d90). A new character's hair is 0x7a431e, clothing 0x8ba150, skin white and both features Off (the new-save routine 0x99b128, notes/armor.md).",
   "poses": "the hunter's common motion lists (player\\mot\\plcom\\mot_plcom_0000-0700), converted per gender onto the inner-wear body (build_armor_poses.py), played on that body as a proxy and copied to every piece by bone id. Bones 20-23 are each helm's and hair's own (their bind differs model to model) and follow their animated parent. The clips carry no names in the game data.",
   "models": "v flipped and ETC1A4 alpha replicated as in the monster viewer (notes/decode.md 1-2); `hideIdx` = primitives whose mesh-table row lacks the draw bit (+0 bit 0), the proxy layer."
  },
@@ -31,7 +31,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "bg"
    },
    {
     "id": 2,
@@ -41,7 +42,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "bg"
    },
    {
     "id": 3,
@@ -51,7 +53,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "bg"
    },
    {
     "id": 4,
@@ -61,7 +64,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "b"
    },
    {
     "id": 5,
@@ -71,7 +75,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "g"
    },
    {
     "id": 6,
@@ -81,7 +86,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "b"
    },
    {
     "id": 7,
@@ -91,7 +97,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "g"
    },
    {
     "id": 8,
@@ -101,7 +108,8 @@
     "wear": "mfbg",
     "pig": 15,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "b"
    },
    {
     "id": 9,
@@ -111,7 +119,8 @@
     "wear": "mfbg",
     "pig": 15,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "g"
    },
    {
     "id": 10,
@@ -121,7 +130,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 11,
@@ -131,7 +141,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 12,
@@ -141,7 +152,8 @@
     "wear": "mfbg",
     "pig": 19,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 13,
@@ -151,7 +163,8 @@
     "wear": "mfbg",
     "pig": 19,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 14,
@@ -161,7 +174,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 15,
@@ -171,7 +185,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 16,
@@ -181,7 +196,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 17,
@@ -191,7 +207,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 18,
@@ -201,7 +218,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 19,
@@ -211,7 +229,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 20,
@@ -221,7 +240,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 21,
@@ -231,7 +251,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 22,
@@ -241,7 +262,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 23,
@@ -251,7 +273,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 24,
@@ -261,7 +284,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 25,
@@ -271,7 +295,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 28,
@@ -281,7 +306,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 29,
@@ -291,7 +317,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 30,
@@ -301,7 +328,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 31,
@@ -311,7 +339,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 32,
@@ -321,7 +350,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 33,
@@ -331,7 +361,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 34,
@@ -341,7 +372,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 35,
@@ -351,7 +383,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 36,
@@ -361,7 +394,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 37,
@@ -371,7 +405,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 38,
@@ -381,7 +416,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 39,
@@ -391,7 +427,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 40,
@@ -401,7 +438,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 41,
@@ -411,7 +449,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 42,
@@ -421,7 +460,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 43,
@@ -431,7 +471,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 44,
@@ -441,7 +482,8 @@
     "wear": "mfbg",
     "pig": 15,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 45,
@@ -451,7 +493,8 @@
     "wear": "mfbg",
     "pig": 15,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 46,
@@ -461,7 +504,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 47,
@@ -471,7 +515,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 48,
@@ -481,7 +526,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 49,
@@ -491,7 +537,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 50,
@@ -501,7 +548,8 @@
     "wear": "mbg",
     "pig": 18,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 51,
@@ -511,7 +559,8 @@
     "wear": "mbg",
     "pig": 18,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 52,
@@ -521,7 +570,8 @@
     "wear": "fbg",
     "pig": 18,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 53,
@@ -531,7 +581,8 @@
     "wear": "fbg",
     "pig": 18,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 54,
@@ -541,7 +592,8 @@
     "wear": "mfbg",
     "pig": 30,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 55,
@@ -551,7 +603,8 @@
     "wear": "mfbg",
     "pig": 30,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 56,
@@ -561,7 +614,8 @@
     "wear": "mfbg",
     "pig": 22,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 57,
@@ -571,7 +625,8 @@
     "wear": "mfbg",
     "pig": 22,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 58,
@@ -581,7 +636,8 @@
     "wear": "mfbg",
     "pig": 24,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 59,
@@ -591,7 +647,8 @@
     "wear": "mfbg",
     "pig": 24,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 60,
@@ -601,7 +658,8 @@
     "wear": "mfbg",
     "pig": 28,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 61,
@@ -611,7 +669,8 @@
     "wear": "mfbg",
     "pig": 28,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 62,
@@ -621,7 +680,8 @@
     "wear": "mfbg",
     "pig": 29,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "b"
    },
    {
     "id": 63,
@@ -631,7 +691,8 @@
     "wear": "mfbg",
     "pig": 29,
     "dye": false,
-    "rare": 2
+    "rare": 2,
+    "type": "g"
    },
    {
     "id": 64,
@@ -641,7 +702,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "b"
    },
    {
     "id": 65,
@@ -651,7 +713,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "g"
    },
    {
     "id": 66,
@@ -661,7 +724,8 @@
     "wear": "mfbg",
     "pig": 21,
     "dye": false,
-    "rare": 1
+    "rare": 1,
+    "type": "bg"
    },
    {
     "id": 73,
@@ -671,7 +735,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 74,
@@ -681,7 +746,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 75,
@@ -691,7 +757,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 76,
@@ -701,7 +768,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 77,
@@ -711,7 +779,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 78,
@@ -721,7 +790,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 79,
@@ -731,7 +801,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 80,
@@ -741,7 +812,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 81,
@@ -751,7 +823,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 82,
@@ -761,7 +834,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 83,
@@ -771,7 +845,8 @@
     "wear": "mfbg",
     "pig": 15,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 84,
@@ -781,7 +856,8 @@
     "wear": "mfbg",
     "pig": 15,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 85,
@@ -791,7 +867,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 86,
@@ -801,7 +878,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 87,
@@ -811,7 +889,8 @@
     "wear": "mfbg",
     "pig": 19,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 88,
@@ -821,7 +900,8 @@
     "wear": "mfbg",
     "pig": 19,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 89,
@@ -831,7 +911,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 90,
@@ -841,7 +922,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 91,
@@ -851,7 +933,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 92,
@@ -861,7 +944,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 93,
@@ -871,7 +955,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 94,
@@ -881,7 +966,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 95,
@@ -891,7 +977,8 @@
     "wear": "mfbg",
     "pig": 32,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 96,
@@ -901,7 +988,8 @@
     "wear": "mfbg",
     "pig": 32,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 97,
@@ -911,7 +999,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 98,
@@ -921,7 +1010,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 99,
@@ -931,7 +1021,8 @@
     "wear": "mfbg",
     "pig": 33,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 100,
@@ -941,7 +1032,8 @@
     "wear": "mfbg",
     "pig": 33,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 101,
@@ -951,7 +1043,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 102,
@@ -961,7 +1054,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 103,
@@ -971,7 +1065,8 @@
     "wear": "mfbg",
     "pig": 30,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 104,
@@ -981,7 +1076,8 @@
     "wear": "mfbg",
     "pig": 30,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 105,
@@ -991,7 +1087,8 @@
     "wear": "mfbg",
     "pig": 22,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 106,
@@ -1001,7 +1098,8 @@
     "wear": "mfbg",
     "pig": 22,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 107,
@@ -1011,7 +1109,8 @@
     "wear": "mfbg",
     "pig": 24,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 108,
@@ -1021,7 +1120,8 @@
     "wear": "mfbg",
     "pig": 24,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 109,
@@ -1031,7 +1131,8 @@
     "wear": "mfbg",
     "pig": 28,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 110,
@@ -1041,7 +1142,8 @@
     "wear": "mfbg",
     "pig": 28,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 111,
@@ -1051,7 +1153,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 112,
@@ -1061,7 +1164,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 113,
@@ -1071,7 +1175,8 @@
     "wear": "mfbg",
     "pig": 12,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 114,
@@ -1081,7 +1186,8 @@
     "wear": "mfbg",
     "pig": 12,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 115,
@@ -1091,7 +1197,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 116,
@@ -1101,7 +1208,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 117,
@@ -1111,7 +1219,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 118,
@@ -1121,7 +1230,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 119,
@@ -1131,7 +1241,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 120,
@@ -1141,7 +1252,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 121,
@@ -1151,7 +1263,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 122,
@@ -1161,7 +1274,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 123,
@@ -1171,7 +1285,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 124,
@@ -1181,7 +1296,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 125,
@@ -1191,7 +1307,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 126,
@@ -1201,7 +1318,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 127,
@@ -1211,7 +1329,8 @@
     "wear": "mfbg",
     "pig": 12,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 128,
@@ -1221,7 +1340,8 @@
     "wear": "mfbg",
     "pig": 12,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 129,
@@ -1231,7 +1351,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 130,
@@ -1241,7 +1362,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 131,
@@ -1251,7 +1373,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 132,
@@ -1261,7 +1384,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 133,
@@ -1271,7 +1395,8 @@
     "wear": "mfbg",
     "pig": 21,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "b"
    },
    {
     "id": 134,
@@ -1281,7 +1406,8 @@
     "wear": "mfbg",
     "pig": 21,
     "dye": true,
-    "rare": 4
+    "rare": 4,
+    "type": "g"
    },
    {
     "id": 135,
@@ -1291,7 +1417,8 @@
     "wear": "mbg",
     "pig": 25,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 136,
@@ -1301,7 +1428,8 @@
     "wear": "mbg",
     "pig": 25,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 137,
@@ -1311,7 +1439,8 @@
     "wear": "fbg",
     "pig": 26,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 138,
@@ -1321,7 +1450,8 @@
     "wear": "fbg",
     "pig": 26,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 139,
@@ -1331,7 +1461,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 140,
@@ -1341,7 +1472,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 141,
@@ -1351,7 +1483,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 142,
@@ -1361,7 +1494,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 143,
@@ -1371,7 +1505,8 @@
     "wear": "mfbg",
     "pig": 32,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 144,
@@ -1381,7 +1516,8 @@
     "wear": "mfbg",
     "pig": 32,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 145,
@@ -1391,7 +1527,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 146,
@@ -1401,7 +1538,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 147,
@@ -1411,7 +1549,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 148,
@@ -1421,7 +1560,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 149,
@@ -1431,7 +1571,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 150,
@@ -1441,7 +1582,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 151,
@@ -1451,7 +1593,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 152,
@@ -1461,7 +1604,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 153,
@@ -1471,7 +1615,8 @@
     "wear": "mfbg",
     "pig": 15,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 154,
@@ -1481,7 +1626,8 @@
     "wear": "mfbg",
     "pig": 15,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 155,
@@ -1491,7 +1637,8 @@
     "wear": "mfbg",
     "pig": 23,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 156,
@@ -1501,7 +1648,8 @@
     "wear": "mfbg",
     "pig": 23,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 157,
@@ -1511,7 +1659,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 158,
@@ -1521,7 +1670,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 159,
@@ -1531,7 +1681,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 160,
@@ -1541,7 +1692,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 161,
@@ -1551,7 +1703,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 162,
@@ -1561,7 +1714,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 163,
@@ -1571,7 +1725,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 164,
@@ -1581,7 +1736,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 165,
@@ -1591,7 +1747,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "b"
    },
    {
     "id": 166,
@@ -1601,7 +1758,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "g"
    },
    {
     "id": 167,
@@ -1611,7 +1769,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "b"
    },
    {
     "id": 168,
@@ -1621,7 +1780,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 6
+    "rare": 6,
+    "type": "g"
    },
    {
     "id": 173,
@@ -1631,7 +1791,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "b"
    },
    {
     "id": 174,
@@ -1641,7 +1802,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "g"
    },
    {
     "id": 175,
@@ -1651,7 +1813,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "b"
    },
    {
     "id": 176,
@@ -1661,7 +1824,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "g"
    },
    {
     "id": 177,
@@ -1671,7 +1835,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "b"
    },
    {
     "id": 178,
@@ -1681,7 +1846,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "g"
    },
    {
     "id": 179,
@@ -1691,7 +1857,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 180,
@@ -1701,7 +1868,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 181,
@@ -1711,7 +1879,8 @@
     "wear": "mfbg",
     "pig": 29,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 182,
@@ -1721,7 +1890,8 @@
     "wear": "mfbg",
     "pig": 29,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 183,
@@ -1731,7 +1901,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 184,
@@ -1741,7 +1912,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 185,
@@ -1751,7 +1923,8 @@
     "wear": "mfbg",
     "pig": 7,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 186,
@@ -1761,7 +1934,8 @@
     "wear": "mfbg",
     "pig": 7,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 187,
@@ -1771,7 +1945,8 @@
     "wear": "mfbg",
     "pig": 1,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 188,
@@ -1781,7 +1956,8 @@
     "wear": "mfbg",
     "pig": 1,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 189,
@@ -1791,7 +1967,8 @@
     "wear": "mfbg",
     "pig": 39,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 190,
@@ -1801,7 +1978,8 @@
     "wear": "mfbg",
     "pig": 39,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 191,
@@ -1811,7 +1989,8 @@
     "wear": "fbg",
     "pig": 35,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 192,
@@ -1821,7 +2000,8 @@
     "wear": "fbg",
     "pig": 35,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 193,
@@ -1831,7 +2011,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "b"
    },
    {
     "id": 194,
@@ -1841,7 +2022,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "g"
    },
    {
     "id": 207,
@@ -1851,7 +2033,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 208,
@@ -1861,7 +2044,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 209,
@@ -1871,7 +2055,8 @@
     "wear": "mfbg",
     "pig": 19,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 210,
@@ -1881,7 +2066,8 @@
     "wear": "mfbg",
     "pig": 19,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 211,
@@ -1891,7 +2077,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 212,
@@ -1901,7 +2088,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 213,
@@ -1911,7 +2099,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 214,
@@ -1921,7 +2110,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 215,
@@ -1931,7 +2121,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 216,
@@ -1941,7 +2132,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 217,
@@ -1951,7 +2143,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 218,
@@ -1961,7 +2154,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 219,
@@ -1971,7 +2165,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 220,
@@ -1981,7 +2176,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 221,
@@ -1991,7 +2187,8 @@
     "wear": "mfbg",
     "pig": 22,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 222,
@@ -2001,7 +2198,8 @@
     "wear": "mfbg",
     "pig": 22,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 223,
@@ -2011,7 +2209,8 @@
     "wear": "mfbg",
     "pig": 24,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 224,
@@ -2021,7 +2220,8 @@
     "wear": "mfbg",
     "pig": 24,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 225,
@@ -2031,7 +2231,8 @@
     "wear": "mfbg",
     "pig": 28,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 226,
@@ -2041,7 +2242,8 @@
     "wear": "mfbg",
     "pig": 28,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 227,
@@ -2051,7 +2253,8 @@
     "wear": "mfbg",
     "pig": 43,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 228,
@@ -2061,7 +2264,8 @@
     "wear": "mfbg",
     "pig": 43,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 229,
@@ -2071,7 +2275,8 @@
     "wear": "mfbg",
     "pig": 32,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 230,
@@ -2081,7 +2286,8 @@
     "wear": "mfbg",
     "pig": 32,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 231,
@@ -2091,7 +2297,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 232,
@@ -2101,7 +2308,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 233,
@@ -2111,7 +2319,8 @@
     "wear": "mfbg",
     "pig": 33,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 234,
@@ -2121,7 +2330,8 @@
     "wear": "mfbg",
     "pig": 33,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 235,
@@ -2131,7 +2341,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 236,
@@ -2141,7 +2352,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 237,
@@ -2151,7 +2363,8 @@
     "wear": "mfbg",
     "pig": 12,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 238,
@@ -2161,7 +2374,8 @@
     "wear": "mfbg",
     "pig": 12,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 239,
@@ -2171,7 +2385,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 240,
@@ -2181,7 +2396,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 241,
@@ -2191,7 +2407,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 242,
@@ -2201,7 +2418,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 243,
@@ -2211,7 +2429,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 244,
@@ -2221,7 +2440,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 245,
@@ -2231,7 +2451,8 @@
     "wear": "mfbg",
     "pig": 1,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 246,
@@ -2241,7 +2462,8 @@
     "wear": "mfbg",
     "pig": 1,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 247,
@@ -2251,7 +2473,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 248,
@@ -2261,7 +2484,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 249,
@@ -2271,7 +2495,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 250,
@@ -2281,7 +2506,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 251,
@@ -2291,7 +2517,8 @@
     "wear": "mfbg",
     "pig": 31,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 252,
@@ -2301,7 +2528,8 @@
     "wear": "mfbg",
     "pig": 31,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 253,
@@ -2311,7 +2539,8 @@
     "wear": "mfbg",
     "pig": 40,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 254,
@@ -2321,7 +2550,8 @@
     "wear": "mfbg",
     "pig": 40,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 255,
@@ -2331,7 +2561,8 @@
     "wear": "mfbg",
     "pig": 32,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 256,
@@ -2341,7 +2572,8 @@
     "wear": "mfbg",
     "pig": 32,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 257,
@@ -2351,7 +2583,8 @@
     "wear": "mfbg",
     "pig": 39,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 258,
@@ -2361,7 +2594,8 @@
     "wear": "mfbg",
     "pig": 39,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 259,
@@ -2371,7 +2605,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 260,
@@ -2381,7 +2616,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 261,
@@ -2391,7 +2627,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 262,
@@ -2401,7 +2638,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 263,
@@ -2411,7 +2649,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 264,
@@ -2421,7 +2660,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 265,
@@ -2431,7 +2671,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 266,
@@ -2441,7 +2682,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 267,
@@ -2451,7 +2693,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 268,
@@ -2461,7 +2704,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 269,
@@ -2471,7 +2715,8 @@
     "wear": "mfbg",
     "pig": 23,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 270,
@@ -2481,7 +2726,8 @@
     "wear": "mfbg",
     "pig": 23,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 271,
@@ -2491,7 +2737,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 272,
@@ -2501,7 +2748,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 273,
@@ -2511,7 +2759,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 274,
@@ -2521,7 +2770,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 275,
@@ -2531,7 +2781,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 276,
@@ -2541,7 +2792,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 277,
@@ -2551,7 +2803,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 278,
@@ -2561,7 +2814,8 @@
     "wear": "mfbg",
     "pig": 17,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 279,
@@ -2571,7 +2825,8 @@
     "wear": "mbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 280,
@@ -2581,7 +2836,8 @@
     "wear": "mbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 281,
@@ -2591,7 +2847,8 @@
     "wear": "mbg",
     "pig": 3,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 282,
@@ -2601,7 +2858,8 @@
     "wear": "mbg",
     "pig": 3,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 283,
@@ -2611,7 +2869,8 @@
     "wear": "fbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 284,
@@ -2621,7 +2880,8 @@
     "wear": "fbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 285,
@@ -2631,7 +2891,8 @@
     "wear": "fbg",
     "pig": 3,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 286,
@@ -2641,7 +2902,8 @@
     "wear": "fbg",
     "pig": 3,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 287,
@@ -2651,7 +2913,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 288,
@@ -2661,7 +2924,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 289,
@@ -2671,7 +2935,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 290,
@@ -2681,7 +2946,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 291,
@@ -2691,7 +2957,8 @@
     "wear": "mbg",
     "pig": 19,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 292,
@@ -2701,7 +2968,8 @@
     "wear": "mbg",
     "pig": 19,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 293,
@@ -2711,7 +2979,8 @@
     "wear": "fbg",
     "pig": 19,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 294,
@@ -2721,7 +2990,8 @@
     "wear": "fbg",
     "pig": 19,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 295,
@@ -2731,7 +3001,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 296,
@@ -2741,7 +3012,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 297,
@@ -2751,7 +3023,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 298,
@@ -2761,7 +3034,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 299,
@@ -2771,7 +3045,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 300,
@@ -2781,7 +3056,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 301,
@@ -2791,7 +3067,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 302,
@@ -2801,7 +3078,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 303,
@@ -2811,7 +3089,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 304,
@@ -2821,7 +3100,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 305,
@@ -2831,7 +3111,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 306,
@@ -2841,7 +3122,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 307,
@@ -2851,7 +3133,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 308,
@@ -2861,7 +3144,8 @@
     "wear": "mfbg",
     "pig": 14,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 309,
@@ -2871,7 +3155,8 @@
     "wear": "mfbg",
     "pig": 7,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 310,
@@ -2881,7 +3166,8 @@
     "wear": "mfbg",
     "pig": 7,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 311,
@@ -2891,7 +3177,8 @@
     "wear": "mfbg",
     "pig": 12,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 312,
@@ -2901,7 +3188,8 @@
     "wear": "mfbg",
     "pig": 12,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 313,
@@ -2911,7 +3199,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 314,
@@ -2921,7 +3210,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 315,
@@ -2931,7 +3221,8 @@
     "wear": "mfbg",
     "pig": 1,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 316,
@@ -2941,7 +3232,8 @@
     "wear": "mfbg",
     "pig": 1,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 317,
@@ -2951,7 +3243,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 318,
@@ -2961,7 +3254,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 319,
@@ -2971,7 +3265,8 @@
     "wear": "mfbg",
     "pig": 40,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "b"
    },
    {
     "id": 320,
@@ -2981,7 +3276,8 @@
     "wear": "mfbg",
     "pig": 40,
     "dye": true,
-    "rare": 8
+    "rare": 8,
+    "type": "g"
    },
    {
     "id": 321,
@@ -2991,7 +3287,8 @@
     "wear": "mfbg",
     "pig": 40,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 322,
@@ -3001,7 +3298,8 @@
     "wear": "mfbg",
     "pig": 40,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 323,
@@ -3011,7 +3309,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "b"
    },
    {
     "id": 324,
@@ -3021,7 +3320,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": true,
-    "rare": 10
+    "rare": 10,
+    "type": "g"
    },
    {
     "id": 325,
@@ -3031,7 +3331,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 326,
@@ -3041,7 +3342,8 @@
     "wear": "mfbg",
     "pig": 18,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 329,
@@ -3051,7 +3353,8 @@
     "wear": "mbg",
     "pig": 25,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 330,
@@ -3061,7 +3364,8 @@
     "wear": "mbg",
     "pig": 25,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 331,
@@ -3071,7 +3375,8 @@
     "wear": "fbg",
     "pig": 26,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 332,
@@ -3081,7 +3386,8 @@
     "wear": "fbg",
     "pig": 26,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 333,
@@ -3091,7 +3397,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 334,
@@ -3101,7 +3408,8 @@
     "wear": "mfbg",
     "pig": 2,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 335,
@@ -3111,7 +3419,8 @@
     "wear": "fbg",
     "pig": 35,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 336,
@@ -3121,7 +3430,8 @@
     "wear": "fbg",
     "pig": 35,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 337,
@@ -3131,7 +3441,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 338,
@@ -3141,7 +3452,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 339,
@@ -3151,7 +3463,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 340,
@@ -3161,7 +3474,8 @@
     "wear": "mbg",
     "pig": 13,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 341,
@@ -3171,7 +3485,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 342,
@@ -3181,7 +3496,8 @@
     "wear": "fbg",
     "pig": 13,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 345,
@@ -3191,7 +3507,8 @@
     "wear": "fbg",
     "pig": 42,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 346,
@@ -3201,7 +3518,8 @@
     "wear": "fbg",
     "pig": 42,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 347,
@@ -3211,7 +3529,8 @@
     "wear": "mfbg",
     "pig": 16,
     "dye": true,
-    "rare": 7
+    "rare": 7,
+    "type": "bg"
    },
    {
     "id": 348,
@@ -3221,7 +3540,8 @@
     "wear": "mfbg",
     "pig": 13,
     "dye": false,
-    "rare": 3
+    "rare": 3,
+    "type": "bg"
    },
    {
     "id": 349,
@@ -3231,7 +3551,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "bg"
    },
    {
     "id": 350,
@@ -3241,7 +3562,8 @@
     "wear": "mfbg",
     "pig": 20,
     "dye": true,
-    "rare": 5
+    "rare": 5,
+    "type": "bg"
    },
    {
     "id": 351,
@@ -3251,7 +3573,8 @@
     "wear": "mfb",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "b"
    },
    {
     "id": 352,
@@ -3261,7 +3584,8 @@
     "wear": "mfbg",
     "pig": 0,
     "dye": false,
-    "rare": 9
+    "rare": 9,
+    "type": "bg"
    },
    {
     "id": 376,
@@ -3271,7 +3595,8 @@
     "wear": "mfbg",
     "pig": 0,
     "dye": false,
-    "rare": 10
+    "rare": 10,
+    "type": "bg"
    },
    {
     "id": 377,
@@ -3281,7 +3606,8 @@
     "wear": "mfbg",
     "pig": 0,
     "dye": false,
-    "rare": 10
+    "rare": 10,
+    "type": "bg"
    },
    {
     "id": 378,
@@ -3291,7 +3617,8 @@
     "wear": "mfg",
     "pig": 20,
     "dye": true,
-    "rare": 9
+    "rare": 9,
+    "type": "g"
    },
    {
     "id": 379,
@@ -3301,7 +3628,8 @@
     "wear": "mfbg",
     "pig": 0,
     "dye": false,
-    "rare": 9
+    "rare": 9,
+    "type": "bg"
    }
   ],
   "body": [

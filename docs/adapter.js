@@ -44,8 +44,11 @@ export function armorOptions(slot, type){
     if (!groups.has(k)) groups.set(k, { id: r.id, model: r[g], rare: r.rare, ids: [], names: [] });
     const e = groups.get(k);
     e.ids.push(r.id);
-    // the name and the Type filter count the pieces of that type only
-    if (type !== 'all' && r.wear.indexOf(type) < 0) continue;
+    // the name and the Type filter count the pieces of that type only; a helm by its set's type (armor.json `type`):
+    // the game's own record lets either type wear almost every helm, which Settings' "Treat Head Armors as
+    // Blademaster/Gunner" shows (the base asks for 'all' then)
+    const kind = slot === 'helm' && r.type ? r.type : r.wear;
+    if (type !== 'all' && kind.indexOf(type) < 0) continue;
     if (e.names.indexOf(r.name) < 0) e.names.push(r.name);
   }
   const out = [];
